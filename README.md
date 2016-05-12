@@ -3,8 +3,21 @@ Reassembly Genetic Algorithm for ship creation
 
 Early alpha build of the program. This can randomly generate an importable ship into Reassembly. It has a GUI and depends on the following. 
 
-SFML 2.3.2
+SFML 2.3.2 
+
 SFGUI 0.2.3
+#Installation
+Linux
+
+Go into the Reassembler Directory
+
+cmake -G "Unix Makefiles"   --- Or whatever you wanna build to. Code::Blocks. Whatever
+
+make
+
+./Reassembler
+
+For windows just use cmake-gui. Have not tested this on windows
 
 #About
 So far all data for the block is stored in "data/block_data.csv". The block data contains the bounding vertex position information, the attachment information, including the normal angle, and other block data. 
@@ -12,6 +25,7 @@ So far all data for the block is stored in "data/block_data.csv". The block data
 Perfromance: The program can generate a usable ship file of 9000 P value in less than a second from init to writing in release
 
 Here is an example of what I am thinking, but in wind turbine form
+
 https://www.youtube.com/watch?v=YZUNRmwoijw
 
 #TODO/Project Needs
@@ -19,10 +33,15 @@ Command line Call:
 I need to figure out how to call the tournament command from terminal. I have tried almost everything in order to get it to work.
 
 Current call-------
+
  ~/.steam/bin32/steam-runtime/run.sh /home/robv/.steam/steamapps/common/Reassembly/linux/./ReassemblySteam32 --HeadlessMode 1 --NetworkEnable 0 --LoadSuperFast 1 --SteamEnable 0 --TimeStampLog 0 --SandboxScript "bracket 8_ship1 8_ship2"
  
 I cannot get the sandbox script arg to recgonize things after the first word. For instance.
+
+
 --SandboxScript "help ship" // Brings up only help
+
+
 --SandboxScript "ship 8_blarg" // Lists known ships
 
 Also, when in headless mode there are no recognized ships. I need help from the dev as to how I can make this call work. Once that is done we can work on calling tournaments, getting results, and eveolving the ships.
