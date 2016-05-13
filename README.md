@@ -20,7 +20,9 @@ make
 For windows just use cmake-gui. Have not tested this on windows
 
 #About
-So far all data for the block is stored in "data/block_data.csv". The block data contains the bounding vertex position information, the attachment information, including the normal angle, and other block data. 
+So far all data for the block is stored in "data/block_data.csv". The block data file contains the lua number of the block, a custom shape naming scheme, the block number of the mirror of the current block, and the weighting for random selection during ship creation.
+
+All the shape data is in "data/shape_data.csv". The shape data contains the bounding vertex position information, the attachment information, including the normal angle, and other  data. 
 
 Perfromance: The program can generate a usable ship file of 9000 P value in less than a second from init to writing in release
 
@@ -51,6 +53,3 @@ I need more assitacne in defining the block geometry. There are so many scales, 
 
 Genetic Mixing:
 I have several ideas for this, but I can't move foreward without tournament calling. I think a good approach would be to break up the ship into random "chunks" of varrying sizes. The best performers from a population could have random chunks sampled from it. A set of chunks from one parent and another set from another could be added together until a new ship is formed. It would be possible to figure out which chunks were most responsible for a win, and an organization of specific blocks could be identified as superior. 
-
-Thruster Adding:
-I need to figure out what will work for thruster blocks. Thruster do not work as attachments for other blocks, which makes them unique. I will probably have a value for is_thruster. Just simple and works. Low on the TODO list
