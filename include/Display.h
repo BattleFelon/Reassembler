@@ -37,7 +37,7 @@ class Display
         void createGui();
 
         void createNewShip(){ships.push_back(Ship(8));}
-        void addBlock(){SB.addBlock(ships.back(),8);}
+        void addBlock(){SB.addBlock(ships.back(),8,false);}
         void saveShip(){ships.back().writeShip("8_Ship.lua","RandomShip","Me");}
         void debugBlock(){ships.back().getBlocks().back().debugBlock();}
 

@@ -19,6 +19,7 @@ struct Attachment
 {
     sf::Vector2f position;
     float angle;
+    bool is_thruster_attachment;
 };
 
 class Block
@@ -70,6 +71,8 @@ class Block
         //Mirror the block
         void mirror();
 
+        bool hasThrustAttachment(){for(auto attachment : m_attachments) if(attachment.is_thruster_attachment) return(true); return(false);}
+
         //Output all block data to console
         void debugBlock();
 
@@ -100,6 +103,7 @@ class Block
 
         //rotation to write to file. Kept in radians
         float m_block_rotation;
+
 };
 
 #endif // BLOCK_H

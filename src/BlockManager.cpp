@@ -34,18 +34,24 @@ bool BlockManager::loadBlockData(std::string file_name)
 
     std::string line;
 
-    //Skip first 5 example lines
-    for(int i = 0; i < 6; ++i)
+    //Skip first 7 example lines
+    for(int i = 0; i < 7; ++i)
         std::getline(data,line);
 
     //Parse data file
     while(std::getline(data,line,','))
     {
+        //Check for thruster
+        bool is_thruster = false;
+
         //Temp vectors for bound and attachment loading
         std::vector<float> x_bounds,y_bounds,x_attachments,y_attachments,angle_attachments;
-
-        //Block user defined type. For use as map key
+        std::vector<int> thruster_attachment;
+        //Block name. Mainyl used to determine if thruster
         std::string block_name = line;
+        if(block_name == "Thruster"){
+            is_thruster = true;
+        }
 
         //Load block number
         std::getline(data,line,',');
@@ -64,7 +70,12 @@ bool BlockManager::loadBlockData(std::string file_name)
         int32_t block_selection_weight = std::stoi(line);
 
         //Load bound and attachment information
-        for(int i = 0; i < 5; ++ i)
+        //If statement for thruster logic
+        int limit = 5;
+        if(is_thruster)
+            limit = 6;
+
+        for(int i = 0; i < limit; ++ i)
         {
             std::getline(data,line);
 
@@ -95,6 +106,9 @@ bool BlockManager::loadBlockData(std::string file_name)
                         case 4:
                             angle_attachments.push_back(std::stof(value));
                             break;
+                        case 5:
+                            thruster_attachment.push_back(std::stof(value));
+                            break;
                         default:
                             break;
                     }
@@ -114,7 +128,12 @@ bool BlockManager::loadBlockData(std::string file_name)
             Attachment new_attachment;
             new_attachment.position = sf::Vector2f(x_attachments[i],y_attachments[i]);
             new_attachment.angle = angle_attachments[i];
-
+            if(is_thruster){
+                new_attachment.is_thruster_attachment = thruster_attachment[i];
+            }
+            else{
+                new_attachment.is_thruster_attachment = false;
+            }
             attachments.push_back(new_attachment);
         }
 
