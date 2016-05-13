@@ -79,7 +79,6 @@ bool BlockManager::loadBlockData(std::string file_name)
             m_all_blocks[block_faction];
 
         //add to vector
-
         m_all_blocks[block_faction].push_back( Block(block_number,block_points,block_selection_weight,block_mirror_number,SM.getShape(shape_name)));
     }
 

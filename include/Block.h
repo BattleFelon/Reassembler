@@ -14,6 +14,7 @@
 #include <random>
 
 #include "Shape.h"
+#include "Vector2D.h"
 
 class Block
 {
@@ -32,7 +33,7 @@ class Block
         virtual ~Block();
 
         //Moves all relevant points to a new location
-        void translate(sf::Vector2f new_position);
+        void translate(Vector2D new_position);
 
         //Rotate the block points and angle data.
         void rotateBlock(float angle);
@@ -40,7 +41,7 @@ class Block
         //Remove an attachment point. true if successful. false if outside of range
         bool removeAttachment(int32_t index);
 
-        std::vector<sf::Vector2f>& getBounds(){return m_bounds;}
+        std::vector<Vector2D>& getBounds(){return m_bounds;}
 
         //get normals and position of attachments
         std::vector<Attachment>& getAttachments(){return m_attachments;}
@@ -55,7 +56,7 @@ class Block
 
         float getRotation(){return m_block_rotation;}
 
-        sf::Vector2f getPosition(){return m_position;}
+        Vector2D getPosition(){return m_position;}
 
         //Needs to pass index so the builder knows which attachment it is using
         Attachment getRandomAttachment(int32_t &index){index = rand() % m_attachments.size(); return(m_attachments[index]);}
@@ -84,10 +85,10 @@ class Block
         const int32_t m_mirror_number;
 
         //Block center position
-        sf::Vector2f m_position;
+        Vector2D m_position;
 
         //vector containing the position of the vertex of the block. Used for collision
-        std::vector<sf::Vector2f> m_bounds;
+        std::vector<Vector2D> m_bounds;
 
         //Position of the attachment points
         std::vector<Attachment> m_attachments;
@@ -97,7 +98,6 @@ class Block
 
         //rotation to write to file. Kept in radians
         float m_block_rotation;
-
 };
 
 #endif // BLOCK_H

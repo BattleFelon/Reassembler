@@ -10,6 +10,7 @@
 
 #include "Block.h"
 #include "Ship.h"
+#include "Vector2D.h"
 
 class CollisionCheck
 {
@@ -26,7 +27,7 @@ class CollisionCheck
         bool blockCollisionCheck(Block& b1, Block& b2);
 
         //Checks for a point in a polygon collision
-        bool pointInPolygon(sf::Vector2f point, std::vector<sf::Vector2f> polygon);
+        bool pointInPolygon(Vector2D point, std::vector<Vector2D> polygon);
 
         //TODO - std::vector<Block> and std::vector<block> collision check for eventual chunk combining effort
 };

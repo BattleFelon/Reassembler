@@ -1,0 +1,14 @@
+#Settings File Alpha
+
+#number of ships to create
+number_of_ships = 10;
+
+#Point value limit
+p_value_target = 900;
+
+#Max number of blocks a ship can have
+block_count_limit = 1000;
+
+#faction of ships
+faction = 8;
+

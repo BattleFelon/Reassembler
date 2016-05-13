@@ -15,8 +15,6 @@
 #include "CollisionCheck.h"
 
 #include <SFML/Graphics.hpp>
-#include <vector>
-
 
 class ShipBuilder
 {

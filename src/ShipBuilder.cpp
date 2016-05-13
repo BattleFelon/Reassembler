@@ -4,6 +4,7 @@
 #include "ShipBuilder.h"
 #include "BlockManager.h"
 #include "Ship.h"
+#include "Vector2D.h"
 
 #define TRY_LIMIT 10000000
 
@@ -30,7 +31,7 @@ Ship ShipBuilder::createShip(int32_t target_point_value, int32_t faction, int32_
         new_ship.addBlock(bm.getCommandBlock(faction));
 
         //Implement block limit
-        for(int i = 0; i < TRY_LIMIT && new_ship.getTotalValue() < target_point_value && (int)new_ship.getBlocks().size() < block_limit; ++i){
+        for(int i = 0; i < TRY_LIMIT && new_ship.getTotalValue() <= target_point_value && (int)new_ship.getBlocks().size() <= block_limit; ++i){
             tryNewBlock(new_ship,faction,is_symmetric);
         }
         if(is_symmetric){
@@ -46,7 +47,7 @@ Ship ShipBuilder::createShip(int32_t target_point_value, int32_t faction, int32_
     else{
         std::cout << "Faction not found. Please look at faction number \n";
     }
-    std::cout << new_ship.getTotalValue() << "\n";
+    std::cout <<"Ship Value= " << new_ship.getTotalValue() << "    Number of Blocks= " << new_ship.getBlocks().size() << "\n";
     return(new_ship);
 }
 
@@ -93,7 +94,7 @@ bool ShipBuilder::tryNewBlock(Ship& new_ship, int32_t faction, bool is_symmetric
                 new_block.rotateBlock(target_angle - new_block_attachment.angle);
 
                 //attachment position difference
-                sf::Vector2f diff(new_ship_attachment.position - new_block.getAttachments()[new_block_attachment_index].position);
+                Vector2D diff(new_ship_attachment.position - new_block.getAttachments()[new_block_attachment_index].position);
 
                 new_block.translate(diff);
 

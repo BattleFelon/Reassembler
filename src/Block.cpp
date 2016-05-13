@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <iostream>
+#include "Vector2D.h"
 
 #define ROUNDING_ERROR .00001
 
@@ -49,7 +50,7 @@ Block::~Block()
 }
 
 //translate all block data to new position
-void Block::translate(sf::Vector2f new_position)
+void Block::translate(Vector2D new_position)
 {
     m_position += new_position;
 
