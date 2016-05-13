@@ -29,7 +29,7 @@ if(SFGUI_FOUND)
 	target_link_libraries(Reassembler ${SFGUI_LIBRARY})
 endif()
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/data/block_data.csv DESTINATION ${CMAKE_BINARY_DIR}/data)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/data DESTINATION ${CMAKE_BINARY_DIR}/data)
 
 
 

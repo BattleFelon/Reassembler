@@ -2,6 +2,8 @@
 #include "CollisionCheck.h"
 #include <iostream>
 
+
+
 CollisionCheck::CollisionCheck()
 {
 
@@ -24,7 +26,7 @@ bool CollisionCheck::checkCollision(Block& b1, Ship& new_ship)
         //Simple bounding radius check
         float distance = std::sqrt(std::pow(b1.getPosition().x - ship_block.getPosition().x,2.0)+ std::pow(b1.getPosition().y - ship_block.getPosition().y,2.0f));
 
-        if(distance <= b1.getRadius() + ship_block.getRadius()){
+        if(distance  <= b1.getRadius() + ship_block.getRadius()){
             //std::cout << "In Range ";
             //More advanced collison check
             if(blockCollisionCheck(b1,ship_block)){
@@ -61,6 +63,13 @@ bool CollisionCheck::blockCollisionCheck(Block& b1, Block& b2)
     //Check for point int polygon
     for(int i = 0; i < (int)vec1.size(); ++i){
         if(pointInPolygon(vec1[i],vec2)){
+            //std::cout<< " Point in polygon ";
+            return true;
+            }
+    }
+
+    for(int i = 0; i < (int)vec2.size(); ++i){
+        if(pointInPolygon(vec2[i],vec1)){
             //std::cout<< " Point in polygon ";
             return true;
             }

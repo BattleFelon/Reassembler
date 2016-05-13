@@ -7,9 +7,11 @@
 #include "BlockManager.h"
 #include "CollisionCheck.h"
 #include "ShipBuilder.h"
+#include "ShapeManager.h"
 
 int main()
 {
+
    // ShipBuilder SB;
    // std::vector<Ship> ships;
     //ships.push_back(SB.createShip(10000,8));

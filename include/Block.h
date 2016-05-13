@@ -12,15 +12,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <random>
-#include <ctime>
 
-//USed to keep position and normals
-struct Attachment
-{
-    sf::Vector2f position;
-    float angle;
-    bool is_thruster_attachment;
-};
+#include "Shape.h"
 
 class Block
 {
@@ -29,9 +22,8 @@ class Block
         Block(int32_t number,
             int32_t points,
             int32_t selection_weight,
-            sf::Vector2f position,
-            std::vector<sf::Vector2f> bounds,
-            std::vector<Attachment> attachments
+            int32_t mirror_number,
+            Shape block_shape
             );
 
         //For sending a null block as a return value
@@ -68,8 +60,8 @@ class Block
         //Needs to pass index so the builder knows which attachment it is using
         Attachment getRandomAttachment(int32_t &index){index = rand() % m_attachments.size(); return(m_attachments[index]);}
 
-        //Mirror the block
-        void mirror();
+        //get the mirror block number
+        int32_t getMirror(){return m_mirror_number;}
 
         bool hasThrustAttachment(){for(auto attachment : m_attachments) if(attachment.is_thruster_attachment) return(true); return(false);}
 
@@ -88,6 +80,8 @@ class Block
 
         //The chance a block is selected. Normalized out of 100
         const int32_t m_selection_weight;
+
+        const int32_t m_mirror_number;
 
         //Block center position
         sf::Vector2f m_position;
