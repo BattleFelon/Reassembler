@@ -8,17 +8,20 @@
 Block::Block(int32_t number,
     int32_t points,
     int32_t selection_weight,
-    sf::Vector2f position,
-    std::vector<sf::Vector2f> bounds,
-    std::vector<Attachment> attachments):
+    int32_t mirror_number,
+    Shape block_shape):
     m_number(number),
     m_points(points),
     m_selection_weight(selection_weight),
-    m_position(position),
-    m_bounds(bounds),
-    m_attachments(attachments),
+    m_mirror_number(mirror_number),
     m_block_rotation(0.0f)
 {
+    //Pass shape data
+    m_bounds = block_shape.getBounds();
+    m_attachments = block_shape.getAttachments();
+    m_position = block_shape.getPosition();
+    m_collision_raduis = block_shape.getRadius();
+    m_block_rotation = block_shape.getRotation();
 
     //Set the collision radius
     m_collision_raduis = 0.0;
@@ -34,7 +37,8 @@ Block::Block(int32_t number,
 Block::Block(int32_t block_number):
     m_number(block_number),
     m_points(0),
-    m_selection_weight(0)
+    m_selection_weight(0),
+    m_mirror_number(0)
 {
 
 }
@@ -135,23 +139,6 @@ bool Block::removeAttachment(int32_t index)
         return(true);
     }
     return(false);
-}
-
-void Block::mirror()
-{
-    for(auto& bound : m_bounds){
-        bound.y *= -1.0;
-    }
-    for(auto& attachment : m_attachments){
-        attachment.position.y *= -1.0;
-    }
-    m_position.y *= -1.0;
-
-    //Add 180 to rotation
-    m_block_rotation += M_PI;
-
-    if(m_block_rotation-.0001 > M_PI)
-        m_block_rotation -= 2 * M_PI;
 }
 
 void Block::debugBlock(){
