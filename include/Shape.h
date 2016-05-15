@@ -8,7 +8,6 @@
 #ifndef SHAPE_H
 #define SHAPE_H
 
-#include <SFML/Graphics.hpp>
 #include <random>
 
 #include "Vector2D.h"

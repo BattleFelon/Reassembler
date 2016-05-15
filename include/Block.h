@@ -10,7 +10,6 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
-#include <SFML/Graphics.hpp>
 #include <random>
 
 #include "Shape.h"

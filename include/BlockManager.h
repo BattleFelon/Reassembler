@@ -9,8 +9,7 @@
 #ifndef BLOCKMANAGER_H
 #define BLOCKMANAGER_H
 
-#include <SFML/Graphics.hpp>
-
+#include <map>
 #include "Block.h"
 
 class BlockManager
@@ -36,7 +35,7 @@ class BlockManager
 
         //All defined block information. First block in vector should be command
         //Make sure data file has command block first for each faction data
-        std::map<int32_t, std::vector<Block>> m_all_blocks;
+        std::map<int32_t , std::vector<Block>> m_all_blocks;
 
         //Block to return if not found
         Block null_block;

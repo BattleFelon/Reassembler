@@ -14,8 +14,6 @@
 #include "Ship.h"
 #include "CollisionCheck.h"
 
-#include <SFML/Graphics.hpp>
-
 class ShipBuilder
 {
     public:
