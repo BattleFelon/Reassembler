@@ -23,7 +23,7 @@ ShipBuilder::~ShipBuilder()
 
 }
 
-Ship ShipBuilder::createShip(int32_t target_point_value, int32_t faction, int32_t block_limit, bool is_symmetric)
+Ship ShipBuilder::createShip(int target_point_value, int faction, int block_limit, bool is_symmetric)
 {
     Ship new_ship(faction);
 
@@ -51,7 +51,7 @@ Ship ShipBuilder::createShip(int32_t target_point_value, int32_t faction, int32_
     return(new_ship);
 }
 
-void ShipBuilder::addBlock(Ship& new_ship, int32_t faction, bool is_symmetric)
+void ShipBuilder::addBlock(Ship& new_ship, int faction, bool is_symmetric)
 {
     if(new_ship.getBlocks().size() == 0)
         new_ship.addBlock(bm.getCommandBlock(faction));
@@ -59,15 +59,15 @@ void ShipBuilder::addBlock(Ship& new_ship, int32_t faction, bool is_symmetric)
         while(!tryNewBlock(new_ship,faction, is_symmetric));
 }
 
-bool ShipBuilder::tryNewBlock(Ship& new_ship, int32_t faction, bool is_symmetric)
+bool ShipBuilder::tryNewBlock(Ship& new_ship, int faction, bool is_symmetric)
 {
     //New block for fitting
     Block new_block = bm.getBlock(faction);
 
     //Indexs for the random attachment points
-    int32_t ship_block_index;
-    int32_t ship_block_attachment_index;
-    int32_t new_block_attachment_index;
+    int ship_block_index;
+    int ship_block_attachment_index;
+    int new_block_attachment_index;
 
     //Get random attachments
     Attachment new_block_attachment = new_block.getRandomAttachment(new_block_attachment_index);

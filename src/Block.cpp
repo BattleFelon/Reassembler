@@ -6,10 +6,10 @@
 
 #define ROUNDING_ERROR .00001
 
-Block::Block(int32_t number,
-    int32_t points,
-    int32_t selection_weight,
-    int32_t mirror_number,
+Block::Block(int number,
+    int points,
+    int selection_weight,
+    int mirror_number,
     Shape block_shape):
     m_number(number),
     m_points(points),
@@ -35,7 +35,7 @@ Block::Block(int32_t number,
 }
 
 //Null block creation
-Block::Block(int32_t block_number):
+Block::Block(int block_number):
     m_number(block_number),
     m_points(0),
     m_selection_weight(0),
@@ -132,7 +132,7 @@ void Block::rotateBlock(float angle)
 }
 
 //Remove an attachment point. true if successful. false if outside of range
-bool Block::removeAttachment(int32_t index)
+bool Block::removeAttachment(int index)
 {
     if(index < (int)m_attachments.size())
     {

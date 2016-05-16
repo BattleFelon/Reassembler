@@ -4,9 +4,9 @@
 #include "Ship.h"
 
 struct Result{
-    int32_t winner;
-    int32_t time_taken;
-    int32_t score;
+    int winner;
+    int time_taken;
+    int score;
 };
 
 class TournamentManager

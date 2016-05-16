@@ -36,7 +36,7 @@ class Shape
         virtual ~Shape();
 
         //Remove an attachment point. true if successful. false if outside of range
-        bool removeAttachment(int32_t index);
+        bool removeAttachment(int index);
 
         std::vector<Vector2D> getBounds(){return m_bounds;}
 

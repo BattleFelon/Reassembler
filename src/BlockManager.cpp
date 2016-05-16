@@ -55,24 +55,24 @@ bool BlockManager::loadBlockData(std::string file_name)
 
         //Load block number
         std::getline(data,line,',');
-        int32_t block_number = std::stoi(line);
+        int block_number = std::stoi(line);
 
         //Load block points
         std::getline(data,line,',');
-        int32_t block_points = std::stoi(line);
+        int block_points = std::stoi(line);
 
         //Load block faction
         std::getline(data,line,',');
-        int32_t block_faction = std::stoi(line);
+        int block_faction = std::stoi(line);
 
         //Load block weight
         std::getline(data,line,',');
-        int32_t block_selection_weight = std::stoi(line);
+        int block_selection_weight = std::stoi(line);
 
         //Load block mirror number. Used for symmetric builds
         std::getline(data,line);
 
-        int32_t block_mirror_number = std::stoi(line);
+        int block_mirror_number = std::stoi(line);
 
         //If new faction, create new spot in map
         if(m_all_blocks.find(block_faction) == m_all_blocks.end())
@@ -86,7 +86,7 @@ bool BlockManager::loadBlockData(std::string file_name)
     return(true);
 }
 
-Block BlockManager::getBlock(int32_t faction)
+Block BlockManager::getBlock(int faction)
 {
     if(m_all_blocks.find(faction) == m_all_blocks.end()){
         std::cout << "Block faction not found \n";
@@ -95,8 +95,8 @@ Block BlockManager::getBlock(int32_t faction)
         //Could be optimized....TODO
         while(true){
             //Generate random index that is not the command module
-            int32_t random_block_index = rand() % (m_all_blocks[faction].size()-1) + 1;
-            int32_t weight_compare = rand() % 100 + 1;
+            int random_block_index = rand() % (m_all_blocks[faction].size()-1) + 1;
+            int weight_compare = rand() % 100 + 1;
             if(m_all_blocks[faction][random_block_index].getSelectionWeight() >= weight_compare)
             {
                 return(m_all_blocks[faction][random_block_index]);
@@ -107,7 +107,7 @@ Block BlockManager::getBlock(int32_t faction)
     return(null_block);
 }
 
-Block BlockManager::getBlock(int32_t faction, int32_t block_number)
+Block BlockManager::getBlock(int faction, int block_number)
 {
     if(m_all_blocks.find(faction) == m_all_blocks.end()){
         std::cout << "Block faction not found \n";
@@ -123,7 +123,7 @@ Block BlockManager::getBlock(int32_t faction, int32_t block_number)
     return(null_block);
 }
 
-Block BlockManager::getCommandBlock(int32_t faction)
+Block BlockManager::getCommandBlock(int faction)
 {
     if(m_all_blocks.find(faction) == m_all_blocks.end()){
         std::cout << "Block faction not found \n";
