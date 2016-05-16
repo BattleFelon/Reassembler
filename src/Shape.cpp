@@ -4,10 +4,11 @@
 #include <iostream>
 
 #define ROUNDING_ERROR .00001
+#include "Vector2D.h"
 
 Shape::Shape(
-    sf::Vector2f position,
-    std::vector<sf::Vector2f> bounds,
+    Vector2D position,
+    std::vector<Vector2D> bounds,
     std::vector<Attachment> attachments):
     m_position(position),
     m_bounds(bounds),

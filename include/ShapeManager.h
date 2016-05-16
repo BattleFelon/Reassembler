@@ -7,10 +7,9 @@
 
 #ifndef SHAPEMANAGER_H
 #define SHAPEMANAGER_H
-
-#include <SFML/Graphics.hpp>
-
+#include <map>
 #include "Shape.h"
+
 
 class ShapeManager
 {

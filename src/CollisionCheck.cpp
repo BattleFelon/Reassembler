@@ -1,8 +1,7 @@
 
 #include "CollisionCheck.h"
+#include "Vector2D.h"
 #include <iostream>
-
-
 
 CollisionCheck::CollisionCheck()
 {
@@ -44,8 +43,8 @@ bool CollisionCheck::checkCollision(Block& b1, Ship& new_ship)
 
 bool CollisionCheck::blockCollisionCheck(Block& b1, Block& b2)
 {
-    std::vector<sf::Vector2f> vec1= b1.getBounds();
-    std::vector<sf::Vector2f> vec2= b2.getBounds();
+    std::vector<Vector2D> vec1= b1.getBounds();
+    std::vector<Vector2D> vec2= b2.getBounds();
 
     //To complete the polygon
     vec1.push_back(vec1[0]);
@@ -102,7 +101,7 @@ bool CollisionCheck::blockCollisionCheck(Block& b1, Block& b2)
     return false;
 }
 
-bool CollisionCheck::pointInPolygon(sf::Vector2f point, std::vector<sf::Vector2f> polygon)
+bool CollisionCheck::pointInPolygon(Vector2D point, std::vector<Vector2D> polygon)
 {
     for(int i = 0; i < (int)polygon.size(); ++i){
         if(polygon[i].x == point.x || polygon[i].y == point.y){

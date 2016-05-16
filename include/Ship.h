@@ -8,19 +8,18 @@
 #ifndef SHIP_H
 #define SHIP_H
 
-#include<SFML/Graphics.hpp>
 #include "Block.h"
 
 class Ship
 {
     public:
 
-        Ship(int32_t faction);
+        Ship(int faction);
         virtual ~Ship();
 
-        int32_t getTotalValue(){int32_t total = 0; for(auto& block : m_blocks) total += block.getPointValue(); return total;}
+        int getTotalValue(){int total = 0; for(auto& block : m_blocks) total += block.getPointValue(); return total;}
 
-        Attachment getAttachmentPoint(int32_t &block_index,int32_t &attachment_index);
+        Attachment getAttachmentPoint(int &block_index,int &attachment_index);
 
         void writeShip(std::string file_name,std::string ship_name,std::string author_name);
 
@@ -28,7 +27,7 @@ class Ship
 
         void addBlock(Block new_block){m_blocks.push_back(new_block);}
 
-        bool removeBlock(int32_t index);
+        bool removeBlock(int index);
 
         std::vector<Block>& getBlocks(){return m_blocks;}
 
@@ -38,7 +37,7 @@ class Ship
         void clearAttachments();
 
     private:
-        int32_t m_faction;
+        int m_faction;
 
         //The blocks that make up the ship
         std::vector<Block> m_blocks;

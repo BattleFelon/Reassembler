@@ -7,6 +7,7 @@
 
 #include "ShapeManager.h"
 #include "Shape.h"
+#include "Vector2D.h"
 
 ShapeManager::ShapeManager()
 {
@@ -92,17 +93,17 @@ bool ShapeManager::loadShapeData(std::string file_name)
             }// End of the line
         }// End of block data
         //Create pair vectors
-        std::vector<sf::Vector2f> bounds;
+        std::vector<Vector2D> bounds;
         //Attachment vector
         std::vector<Attachment> attachments;
         for(int i = 0; i < (int)x_bounds.size(); i++)
         {
-            bounds.push_back(sf::Vector2f(x_bounds[i],y_bounds[i]));
+            bounds.push_back(Vector2D(x_bounds[i],y_bounds[i]));
         }
         for(int i = 0; i < (int)x_attachments.size(); i++)
         {
             Attachment new_attachment;
-            new_attachment.position = sf::Vector2f(x_attachments[i],y_attachments[i]);
+            new_attachment.position = Vector2D(x_attachments[i],y_attachments[i]);
             new_attachment.angle = angle_attachments[i];
             new_attachment.is_thruster_attachment = thruster_attachment[i];
 
@@ -115,7 +116,7 @@ bool ShapeManager::loadShapeData(std::string file_name)
         }
 
         //add to map
-        m_all_shapes[shape_name] =  Shape(sf::Vector2f(0.0,0.0),bounds,attachments);
+        m_all_shapes[shape_name] =  Shape(Vector2D(0.0,0.0),bounds,attachments);
     }
 
     //return Success

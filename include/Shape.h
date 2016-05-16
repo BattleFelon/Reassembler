@@ -8,14 +8,14 @@
 #ifndef SHAPE_H
 #define SHAPE_H
 
-#include <SFML/Graphics.hpp>
 #include <random>
-#include <ctime>
+
+#include "Vector2D.h"
 
 //USed to keep position and normals
 struct Attachment
 {
-    sf::Vector2f position;
+    Vector2D position;
     float angle;
     bool is_thruster_attachment;
 };
@@ -25,8 +25,8 @@ class Shape
     public:
 
         Shape(
-            sf::Vector2f position,
-            std::vector<sf::Vector2f> bounds,
+            Vector2D position,
+            std::vector<Vector2D> bounds,
             std::vector<Attachment> attachments
             );
 
@@ -36,9 +36,9 @@ class Shape
         virtual ~Shape();
 
         //Remove an attachment point. true if successful. false if outside of range
-        bool removeAttachment(int32_t index);
+        bool removeAttachment(int index);
 
-        std::vector<sf::Vector2f> getBounds(){return m_bounds;}
+        std::vector<Vector2D> getBounds(){return m_bounds;}
 
         //get normals and position of attachments
         std::vector<Attachment> getAttachments(){return m_attachments;}
@@ -47,7 +47,7 @@ class Shape
 
         float getRotation(){return m_block_rotation;}
 
-        sf::Vector2f getPosition(){return m_position;}
+        Vector2D getPosition(){return m_position;}
 
 
     private:
@@ -55,10 +55,10 @@ class Shape
         float distance(float x1, float y1, float x2, float y2){return(std::sqrt(std::pow(x1-x2,2.0) + std::pow(y1-y2,2.0)));}
 
         //Block center position
-        sf::Vector2f m_position;
+        Vector2D m_position;
 
         //vector containing the position of the vertex of the block. Used for collision
-        std::vector<sf::Vector2f> m_bounds;
+        std::vector<Vector2D> m_bounds;
 
         //Position of the attachment points
         std::vector<Attachment> m_attachments;

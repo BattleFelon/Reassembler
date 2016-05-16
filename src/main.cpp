@@ -1,8 +1,7 @@
 #include <iostream>
-#include <SFML/Graphics.hpp>
-#include <numeric>
+#include <sstream>
 
-#include "Display.h"
+#include "SettingsParser.h"
 #include "Block.h"
 #include "BlockManager.h"
 #include "CollisionCheck.h"
@@ -11,30 +10,58 @@
 
 int main()
 {
+    //Settings Parser Class call
+    SettingsParser SP;
+    SP.loadFromFile("data/config.txt");
 
-   // ShipBuilder SB;
-   // std::vector<Ship> ships;
-    //ships.push_back(SB.createShip(10000,8));
+    //Settings to get
+    int32_t number_of_ships, p_value_target, block_count_limit, faction;
 
-    //ships[0].writeShip("blarg.lua", "one", "Rob");
+    //Settings get
+    SP.get("number_of_ships",number_of_ships);
+    SP.get("p_value_target",p_value_target);
+    SP.get("block_count_limit",block_count_limit);
+    SP.get("faction",faction);
 
-/*
-    BlockManager bm;
-    bm.loadBlockData("block_data.csv");
+    //Output the settings
+    std::cout <<"Number of ships to create= " <<
+        number_of_ships << "\nP Value Target= " <<
+        p_value_target << "\nFaction= " <<
+        faction <<
+        "\nBlock Limit= " <<
+        block_count_limit <<
+        "\n\n";
 
-    Block b1 = bm.getBlock(8,802);
-    Block b2 = bm.getBlock(8,801);
-    b1.translate(sf::Vector2f(3.75,3.75));
+    //vector to contain ships
+    std::vector<Ship> new_ships;
 
-    Ship new_ship(8);
-    new_ship.addBlock(b2);
+    //fileName for the ship
+    std::ostringstream file_name;
 
-    CollisionCheck CC;
-    CC.checkCollision(b1,new_ship);
-*/
-    Display reassem;
-    reassem.run();
+    //name for the ship
+    std::ostringstream ship_name;
 
+    //Ship Builder Class
+    ShipBuilder SB;
+
+    //Loop For building
+    for(int i = 0; i < number_of_ships; ++i){
+        //Create the ships
+        new_ships.push_back(SB.createShip(p_value_target,faction,block_count_limit,0));
+
+        //Make the names
+        ship_name << "Ship_" << i;
+        file_name << "ships/Ship_" << i << ".lua";
+
+        //Write the ship to file
+        new_ships[i].writeShip(file_name.str(),ship_name.str(),ship_name.str());
+
+        //Clear the naming streams
+        file_name.str("");
+        file_name.clear();
+        ship_name.str("");
+        ship_name.clear();
+    }
 
     return EXIT_SUCCESS;
 }

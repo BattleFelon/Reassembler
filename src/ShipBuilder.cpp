@@ -4,6 +4,7 @@
 #include "ShipBuilder.h"
 #include "BlockManager.h"
 #include "Ship.h"
+#include "Vector2D.h"
 
 #define TRY_LIMIT 10000000
 
@@ -22,7 +23,7 @@ ShipBuilder::~ShipBuilder()
 
 }
 
-Ship ShipBuilder::createShip(int32_t target_point_value, int32_t faction, int32_t block_limit, bool is_symmetric)
+Ship ShipBuilder::createShip(int target_point_value, int faction, int block_limit, bool is_symmetric)
 {
     Ship new_ship(faction);
 
@@ -30,7 +31,7 @@ Ship ShipBuilder::createShip(int32_t target_point_value, int32_t faction, int32_
         new_ship.addBlock(bm.getCommandBlock(faction));
 
         //Implement block limit
-        for(int i = 0; i < TRY_LIMIT && new_ship.getTotalValue() < target_point_value && (int)new_ship.getBlocks().size() < block_limit; ++i){
+        for(int i = 0; i < TRY_LIMIT && new_ship.getTotalValue() <= target_point_value && (int)new_ship.getBlocks().size() <= block_limit; ++i){
             tryNewBlock(new_ship,faction,is_symmetric);
         }
         if(is_symmetric){
@@ -46,11 +47,11 @@ Ship ShipBuilder::createShip(int32_t target_point_value, int32_t faction, int32_
     else{
         std::cout << "Faction not found. Please look at faction number \n";
     }
-    std::cout << new_ship.getTotalValue() << "\n";
+    std::cout <<"Ship Value= " << new_ship.getTotalValue() << "    Number of Blocks= " << new_ship.getBlocks().size() << "\n";
     return(new_ship);
 }
 
-void ShipBuilder::addBlock(Ship& new_ship, int32_t faction, bool is_symmetric)
+void ShipBuilder::addBlock(Ship& new_ship, int faction, bool is_symmetric)
 {
     if(new_ship.getBlocks().size() == 0)
         new_ship.addBlock(bm.getCommandBlock(faction));
@@ -58,15 +59,15 @@ void ShipBuilder::addBlock(Ship& new_ship, int32_t faction, bool is_symmetric)
         while(!tryNewBlock(new_ship,faction, is_symmetric));
 }
 
-bool ShipBuilder::tryNewBlock(Ship& new_ship, int32_t faction, bool is_symmetric)
+bool ShipBuilder::tryNewBlock(Ship& new_ship, int faction, bool is_symmetric)
 {
     //New block for fitting
     Block new_block = bm.getBlock(faction);
 
     //Indexs for the random attachment points
-    int32_t ship_block_index;
-    int32_t ship_block_attachment_index;
-    int32_t new_block_attachment_index;
+    int ship_block_index;
+    int ship_block_attachment_index;
+    int new_block_attachment_index;
 
     //Get random attachments
     Attachment new_block_attachment = new_block.getRandomAttachment(new_block_attachment_index);
@@ -93,7 +94,7 @@ bool ShipBuilder::tryNewBlock(Ship& new_ship, int32_t faction, bool is_symmetric
                 new_block.rotateBlock(target_angle - new_block_attachment.angle);
 
                 //attachment position difference
-                sf::Vector2f diff(new_ship_attachment.position - new_block.getAttachments()[new_block_attachment_index].position);
+                Vector2D diff(new_ship_attachment.position - new_block.getAttachments()[new_block_attachment_index].position);
 
                 new_block.translate(diff);
 

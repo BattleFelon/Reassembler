@@ -3,7 +3,7 @@
 #include <iomanip>
 #include "Ship.h"
 
-Ship::Ship(int32_t faction):
+Ship::Ship(int faction):
     m_faction(faction)
 {
 
@@ -14,7 +14,7 @@ Ship::~Ship()
 
 }
 
-Attachment Ship::getAttachmentPoint(int32_t &block_index,int32_t &attachment_index)
+Attachment Ship::getAttachmentPoint(int &block_index,int &attachment_index)
 {
     Attachment null_attachment;
     block_index = attachment_index = -1;
