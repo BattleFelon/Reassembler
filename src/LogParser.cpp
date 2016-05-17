@@ -17,7 +17,7 @@ LogParser::~LogParser()
 }
 
 //False if ship 1, true if ship 2
-bool LogParser::getWinner(Ship& ship_1, Ship& ship_2)
+int LogParser::getWinner(Ship& ship_1, Ship& ship_2)
 {
     std::string ship_1_wins = "(";
     ship_1_wins.append(ship_1.getShipName());
@@ -29,6 +29,8 @@ bool LogParser::getWinner(Ship& ship_1, Ship& ship_2)
 
     std::string line;
     std::ifstream logFile (log_path);
+    if(!logFile.good())
+        std::cout << "Log File Path Not Correct !";
 
     int one_win_count = 0;
     int two_win_count = 0;
@@ -40,8 +42,15 @@ bool LogParser::getWinner(Ship& ship_1, Ship& ship_2)
             two_win_count++;
         }
     }
+    int result = 0;
+    if(one_win_count < two_win_count)
+        result = 1;
 
-    return(one_win_count < two_win_count);
+    //check if paths are off
+    if(one_win_count == two_win_count)
+        result = 2;
+
+    return(result);
     //Close it up
     logFile.close();
 }

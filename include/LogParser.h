@@ -11,7 +11,7 @@ class LogParser
         virtual ~LogParser();
 
         //false if first ship win, true second ship win
-        bool getWinner(Ship& ship_1, Ship& ship_2);
+        int getWinner(Ship& ship_1, Ship& ship_2);
 
     private:
 

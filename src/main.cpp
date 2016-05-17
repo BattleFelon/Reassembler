@@ -85,14 +85,19 @@ int main()
             for(int j = i + 1; j < new_ships.size();++j){
 
                 TM.startArena(new_ships[i],new_ships[j]);
-                if(LP.getWinner(new_ships[i], new_ships[j])){
+                int result = LP.getWinner(new_ships[i], new_ships[j]);
+                if(result == 1){
                     std::cout << new_ships[j].getShipName() <<  " Wins!\n";
                     wins[j]++;
                 }
-                else
+                else if(result == 0)
                 {
                     std::cout << new_ships[i].getShipName() <<  " Wins!\n";
                     wins[i]++;
+                }
+                else if (result == 2){
+                    std::cout << "One of your path values is incorrect\n";
+                    return(-1);
                 }
             }
         }
