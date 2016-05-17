@@ -76,26 +76,66 @@ int main()
         ship_name.str("");
         ship_name.clear();
     }
-    std::vector<int> wins(10);
 
-    for(int i = 0; i < new_ships.size(); ++i){
-        for(int j = i; j < new_ships.size();++j){
-            if(i!=j){
+    for(;;){
+
+        std::vector<int> wins(new_ships.size());
+
+        for(int i = 0; i < new_ships.size(); ++i){
+            for(int j = i + 1; j < new_ships.size();++j){
+
                 TM.startArena(new_ships[i],new_ships[j]);
                 if(LP.getWinner(new_ships[i], new_ships[j])){
-                    std::cout << new_ships[j].getShipName() << std::endl;
+                    std::cout << new_ships[j].getShipName() <<  " Wins!\n";
                     wins[j]++;
                 }
                 else
                 {
-                    std::cout << new_ships[i].getShipName() << std::endl;
+                    std::cout << new_ships[i].getShipName() <<  " Wins!\n";
                     wins[i]++;
                 }
             }
         }
+
+        int winner_index = 0;
+        int winning_kills = 0;
+        for(int i = 0; i < wins.size(); ++i){
+            if(wins[i] > winning_kills){
+                winning_kills = wins[i];
+                winner_index = i;
+            }
+        }
+
+        std::cout << "\n Generation over. " << new_ships[winner_index].getShipName() <<" Has won with " << winning_kills << " victories, it shall live on!!!\n\n";
+
+        //Loop For rebuilding
+        Ship winning_ship = new_ships[winner_index];
+        winning_ship.writeShip("ships/Winning_Ship.lua", "Winner", "Rob");
+        new_ships.clear();
+
+        for(int i = 0; i < number_of_ships; ++i){
+
+            //Create the ships and keep last winner
+            if(i != winner_index){
+                new_ships.push_back(SB.createShip(p_value_target,faction,block_count_limit,0));
+            }
+            else{
+                new_ships.push_back(winning_ship);
+            }
+
+            //Make the names
+            ship_name << "Ship_" << i;
+            file_name << "ships/Ship_" << i << ".lua";
+
+            //Write the ship to file
+            new_ships[i].writeShip(file_name.str(),ship_name.str(),ship_name.str());
+
+            //Clear the naming streams
+            file_name.str("");
+            file_name.clear();
+            ship_name.str("");
+            ship_name.clear();
+        }
     }
-
-
-
     return EXIT_SUCCESS;
 }

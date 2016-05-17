@@ -32,6 +32,8 @@ class Ship
         std::vector<Block>& getBlocks(){return m_blocks;}
 
         std::string getShipName(){return(m_ship_name);}
+
+        int getFaction(){return m_faction;};
         //Gets rid of all touching attachments
         //Works really slow. Not in use
         //TODO optimize or get rid of
