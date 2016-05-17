@@ -31,6 +31,7 @@ class Ship
 
         std::vector<Block>& getBlocks(){return m_blocks;}
 
+        std::string getShipName(){return(m_ship_name);}
         //Gets rid of all touching attachments
         //Works really slow. Not in use
         //TODO optimize or get rid of
@@ -38,7 +39,7 @@ class Ship
 
     private:
         int m_faction;
-
+        std::string m_ship_name;
         //The blocks that make up the ship
         std::vector<Block> m_blocks;
 };

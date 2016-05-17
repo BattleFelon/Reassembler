@@ -32,6 +32,7 @@ Attachment Ship::getAttachmentPoint(int &block_index,int &attachment_index)
 
 }
 
+//Works super slow and doesnt speed anything up
 void Ship::clearAttachments()
 {
     //Remove attachment that share the same position
@@ -63,13 +64,18 @@ void Ship::clearAttachments()
 void Ship::writeShip(std::string file_name,std::string ship_name,std::string author_name)
 {
     std::ofstream file;
+    m_ship_name = ship_name;
+
     file.open(file_name);
 
     if(file.good()){
         //Set to 3 decimal place precision
         file.precision(3);
         file.setf(std::ios::fixed);
-        //File header
+        //Fleet header
+        file << "{\n  color0=0x410101,\n  color1=34182,\n  faction=" << m_faction << ",\n  name=\"TODOFACTION\",\n  blueprints={\n    " ;
+
+        //Ship header
         file << "{data={name=\""<<ship_name<<"\", author=\""<<author_name<<"\", color0=0xc96f20, color1=0x796bff,\n";
 
         //group line
@@ -93,6 +99,9 @@ void Ship::writeShip(std::string file_name,std::string ship_name,std::string aut
             file << ", " << m_blocks.back().getRotation() << "}}}"; // Reason for this closing line
         else
             file << "}}}"; //Other reason for the closing line
+
+            //Close the faction brackets
+            file << "}}";
     }
     else{
         std::cout << "Could not write file for some reason\n";

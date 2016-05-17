@@ -3,23 +3,18 @@
 
 #include "Ship.h"
 
-struct Result{
-    int winner;
-    int time_taken;
-    int score;
-};
 
 class TournamentManager
 {
     public:
-        TournamentManager();
+        TournamentManager(std::string path_to_exe, std::string path_to_ships);
         virtual ~TournamentManager();
 
-        std::vector<Result> startTournament(std::vector<Ship>& ships);
+        void startArena(Ship& ship_1, Ship& ship_2);
 
     private:
-
-        Result startFight(Ship& ship_1, Ship& ship_2);
+        std::string exe_path;
+        std::string ships_path;
 };
 
 #endif // TOURNAMENTMANAGER_H

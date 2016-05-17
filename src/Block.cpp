@@ -5,6 +5,7 @@
 #include "Vector2D.h"
 
 #define ROUNDING_ERROR .00001
+#define M_PI 3.14159265359
 
 Block::Block(int number,
     int points,
