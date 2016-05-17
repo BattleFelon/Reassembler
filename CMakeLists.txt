@@ -14,3 +14,4 @@ file(GLOB Reassembler_SRCS
 add_executable(Reassembler ${Reassembler_SRCS})
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/data DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/ships DESTINATION ${CMAKE_BINARY_DIR})
