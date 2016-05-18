@@ -2,12 +2,12 @@ block_name,block_shape_scale,block_number,block_points,block_faction,block_selec
 Command,Command_1,800,12,8,0,800
 Generator,Square_1,801,20,8,5,801
 Hull,Triangle_1,802,0,8,20,802
-Hull,Square_1,826,0,8,100,826
+Hull,Square_1,826,0,8,20,826
 Flak Cannon,Square_1,851,22,8,20,851
 Thruster Mini,Thruster_1,803,3,8,0,803
 Plasma Cannon,Octagon_1,831,17,8,20,831
 Thruster Small,Thruster_2,804,4,8,0,804
-Thruster Mega,Thruster_3,805,8,8,100,805
+Thruster Mega,Thruster_3,805,8,8,20,805
 Railgun,Octagon_2,842,59,8,20,842
 Shield,Square_2,850,80,8,20,850
 Burst Laser,Square_1,845,76,8,20,845
@@ -16,4 +16,4 @@ Proton Sword,Square_2,841,90,8,20,841
 Plasma Cannon,Octagon_2,881,72,8,20,881
 Proton Beam,Beam_1,836,90,8,20,836
 Rocket Launcher,Launcher_1,855,37,8,20,855
-Drone Launcher,Launcher_1,835,36,8,100,835
+Drone Launcher,Launcher_1,835,36,8,20,835

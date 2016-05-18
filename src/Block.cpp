@@ -144,13 +144,14 @@ bool Block::removeAttachment(int index)
 }
 
 void Block::debugBlock(){
-    std::cout << "Position= " << m_position.x << " " << m_position.y << "\n";
-    /*for(auto bound : m_bounds)
-        std::cout <<"X=" << bound.x << " Y=" << bound.y << "   ";
-    std::cout << "\n";
+    std::cout << "\nPosition= " << m_position.x << " " << m_position.y << "\n";
+
+    for(auto bound : m_bounds)
+        std::cout <<"X=" << bound.x << " Y=" << bound.y << " ";
+    std::cout << "\n Attachments ";
 
     for(auto attachments : m_attachments)
-        std::cout <<"X=" << attachments.position.x << " Y=" << attachments.position.y  << " angle=" << attachments.angle << "   ";
+        std::cout <<" X=" << attachments.position.x << " Y=" << attachments.position.y  << " angle=" << attachments.angle << " ";
     std::cout << "\n";
-    */
+
 }

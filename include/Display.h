@@ -36,10 +36,17 @@ class Display
         //Setup Gui Enviroment
         void createGui();
 
-        void createNewShip(){ships.push_back(SB.createShip(1000,8,1000,0));}
-        void addBlock(){SB.addBlock(ships.back(),8,0);}
+        void createNewShip();
+
+        void addBlock(){int is_symm  = m_ship_symmetry; if(m_ship_symmetry == 2) is_symm = rand() %2 ;SB.addBlock(ships.back(),8,is_symm);}
+
+        void addThrust(){int is_symm  = m_ship_symmetry; if(m_ship_symmetry == 2) is_symm = rand() %2 ;SB.addThrust(ships.back(),8,is_symm);}
+
         void saveShip(){ships.back().writeShip("ships/test.lua","Test-Ship","Debug"); std::cout << "Ship Saved \n";}
+
         void debugBlock(){ships.back().getBlocks().back().debugBlock();}
+
+        void symmSelect(){if (m_symm_1->IsActive()){m_ship_symmetry = 0;}else if(m_symm_2->IsActive()){m_ship_symmetry = 1;}else if(m_symm_3->IsActive()){m_ship_symmetry = 2;}}
 
         //Gui Object
         sfg::SFGUI m_sfgui;
@@ -47,6 +54,16 @@ class Display
         //SFGui varibles
         sfg::Desktop m_desktop;
         sfg::Window::Ptr m_window;
+
+        //Entry boxes
+        sfg::Entry::Ptr m_point_entry;
+        sfg::Entry::Ptr m_block_entry;
+        sfg::Entry::Ptr m_thrust_entry;
+
+        //Symm radio buttons
+        sfg::RadioButton::Ptr m_symm_1;
+        sfg::RadioButton::Ptr m_symm_2;
+        sfg::RadioButton::Ptr m_symm_3;
 
         //SFML varibles
         sf::RenderWindow m_renderWindow;
@@ -61,6 +78,12 @@ class Display
         sf::CircleShape attachment_point;
 
         std::vector<Ship> ships;
+
+        int m_p_value_target;
+        int m_faction;
+        int m_block_count_limit;
+        int m_ship_symmetry;
+
 
         ShipBuilder SB;
 };

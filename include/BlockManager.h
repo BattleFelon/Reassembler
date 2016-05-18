@@ -23,6 +23,9 @@ class BlockManager
         //Random Block Getting
         Block getBlock(int faction);
 
+        //Random weighted thruster getting
+        Block getThruster(int faction);
+
         //Specific Block getting
         Block getBlock(int faction, int block_number);
 
