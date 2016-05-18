@@ -36,9 +36,9 @@ class Display
         //Setup Gui Enviroment
         void createGui();
 
-        void createNewShip(){ships.push_back(SB.createShip(100,8,1000,0));}
+        void createNewShip(){ships.push_back(SB.createShip(1000,8,1000,0));}
         void addBlock(){SB.addBlock(ships.back(),8,0);}
-        void saveShip(){ships.back().writeShip("ships/test.lua","Test-Ship","Debug");}
+        void saveShip(){ships.back().writeShip("ships/test.lua","Test-Ship","Debug"); std::cout << "Ship Saved \n";}
         void debugBlock(){ships.back().getBlocks().back().debugBlock();}
 
         //Gui Object

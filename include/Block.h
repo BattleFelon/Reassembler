@@ -73,15 +73,15 @@ class Block
         float distance(float x1, float y1, float x2, float y2){return(std::sqrt(std::pow(x1-x2,2.0) + std::pow(y1-y2,2.0)));}
 
         //Number of the block via the block.lua
-        const int m_number;
+        int m_number;
 
         //Blocks value in P
-        const int m_points;
+        int m_points;
 
         //The chance a block is selected. Normalized out of 100
-        const int m_selection_weight;
+        int m_selection_weight;
 
-        const int m_mirror_number;
+        int m_mirror_number;
 
         //Block center position
         Vector2D m_position;

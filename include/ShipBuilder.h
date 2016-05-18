@@ -32,11 +32,14 @@ class ShipBuilder
         BlockManager bm;
         CollisionCheck cc;
 
-        // fits a new random block onto the ship
+        //fits a new random block onto the ship
         //May collide. Collision check is done after attempt
         bool tryNewBlock(Ship& new_ship, int faction);
 
         bool tryNewBlock(Ship& new_ship, int faction, bool is_symmetric);
+
+        //Force the fits to ensure weights are correct
+        bool forceFitNewBlock(Ship& new_ship, int faction, bool is_symmetric);
 
 
 };

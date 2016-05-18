@@ -25,8 +25,8 @@ bool CollisionCheck::checkCollision(Block& b1, Ship& new_ship)
         //Simple bounding radius check
         float distance = std::sqrt(std::pow(b1.getPosition().x - ship_block.getPosition().x,2.0)+ std::pow(b1.getPosition().y - ship_block.getPosition().y,2.0f));
 
-        if(distance  <= b1.getRadius() + ship_block.getRadius()){
-            //std::cout << "In Range ";
+        if(distance  <= b1.getRadius() + ship_block.getRadius() + 10.0){
+            //std::cout << "\n In Range ";
             //More advanced collison check
             if(blockCollisionCheck(b1,ship_block)){
                 return true;
@@ -49,11 +49,13 @@ bool CollisionCheck::blockCollisionCheck(Block& b1, Block& b2)
     //To complete the polygon
     vec1.push_back(vec1[0]);
     vec2.push_back(vec2[0]);
+
     //Check to see if center is in polygon, but not same pos
     if(pointInPolygon(b1.getPosition(),vec2)){
         //std::cout << "Center in polygon ";
         return true;
     }
+
     if(pointInPolygon(b2.getPosition(),vec1)){
         //std::cout << "Center2 in polygon \n ";
         return true;
@@ -62,34 +64,35 @@ bool CollisionCheck::blockCollisionCheck(Block& b1, Block& b2)
     //Check for point int polygon
     for(int i = 0; i < (int)vec1.size(); ++i){
         if(pointInPolygon(vec1[i],vec2)){
-            //std::cout<< " Point in polygon ";
+            //std::cout<< " Point in polygon 1";
             return true;
             }
     }
 
     for(int i = 0; i < (int)vec2.size(); ++i){
         if(pointInPolygon(vec2[i],vec1)){
-            //std::cout<< " Point in polygon ";
+            //std::cout<< " Point in polygon 2";
             return true;
             }
     }
 
+    //This doesnt really work right
     //Check for line intersection
-    for(int i = 0; i < (int)vec1.size()-1; ++i){
-        for(int j = 0; j < (int)vec1.size()-1; ++j){
+    for(int i = 0; i < (int)vec1.size(); ++i){
+        for(int j = 0; j < (int)vec2.size(); ++j){
             //Make values readable
-            float XA1 = vec1[i].x;float YA1 = vec1[i].y;float XA2 = vec1[i+1].x;float YA2 = vec1[i+1].y;
-            float XB1 = vec2[i].x;float YB1 = vec2[i].y;float XB2 = vec2[i+1].x;float YB2 = vec2[i+1].y;
+            float X1 = vec1[i].x;float Y1 = vec1[i].y;float X2 = vec1[i+1].x;float Y2 = vec1[i+1].y;
+            float X3 = vec2[j].x;float Y3 = vec2[j].y;float X4 = vec2[j+1].x;float Y4 = vec2[j+1].y;
 
-            float denominator = (YB2 - YB1)*(XA2 - XA1) - (XB2 - XB1)*(YA2 - YA1);
-            if(denominator == 0){
+            float denominator = (Y4 - Y3)*(X2 - X1) - (X4 - X3)*(Y2 - Y1);
+            if(denominator <.001 && denominator > -.001){
                 //Parallel condition
             }
             else{
-            float ua = ((XB2 - XB1)*(YA1 - YB1) - (YB2 - YB1)*(XA1 - XB1)) / denominator;
-            float ub = ((XA2-XA1)*(YA1-YB1)-(YA2-YA1)*(XA1-XB1))/ denominator;
+            float ua = ((X4 - X3)*(Y1 - Y3) - (Y4 - Y3)*(X1 - X3)) / denominator;
+            float ub = ((X2-X1)*(Y1-Y3)-(Y2-Y1)*(X1-X3)) / denominator;
 
-            if((ua < 1 && ua > 0) || (ub < 1 && ub > 0)){
+            if(ua > .01 && ua < .99 && ub > 0.01 && ub < .99){
                 //std::cout << "Ua UB collision "<< ua << " " << ub << " ";
                 return true;
                 }

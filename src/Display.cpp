@@ -16,7 +16,7 @@ Display::Display():
 	m_view = m_renderWindow.getDefaultView();
 	m_renderWindow.setFramerateLimit(60);
 
-    ships.push_back(SB.createShip(1300,8,1000,0));
+    ships.push_back(SB.createShip(1000,8,1000,0));
 	createGui();
 
 	attachment_point.setOrigin(5,5);
