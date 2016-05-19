@@ -42,7 +42,7 @@ class Display
 
         void addThrust(){int is_symm  = m_ship_symmetry; if(m_ship_symmetry == 2) is_symm = rand() %2 ;SB.addThrust(ships.back(),8,is_symm);}
 
-        void saveShip(){ships.back().writeShip("ships/test.lua","Test-Ship","Debug"); std::cout << "Ship Saved \n";}
+        void saveShip(){ships.back().writeShip("ships/test.lua","Test-Ship","Debug","Debug"); std::cout << "Ship Saved \n";}
 
         void debugBlock(){ships.back().getBlocks().back().debugBlock();}
 

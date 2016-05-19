@@ -24,8 +24,13 @@ ShipBuilder::~ShipBuilder()
 
 }
 
-Ship ShipBuilder::createShip(int target_point_value, int faction, int block_limit,int target_thruster_points, bool is_symmetric)
+Ship ShipBuilder::createShip(int target_point_value, int faction, int block_limit,int target_thruster_points, int is_symmetric)
 {
+    //Cast to random bool
+    int is_symm = is_symmetric;
+    if(is_symmetric == 2)
+        is_symm = rand() % 2;
+
     //Init new ship
     Ship new_ship(faction);
 
@@ -34,13 +39,13 @@ Ship ShipBuilder::createShip(int target_point_value, int faction, int block_limi
         new_ship.addBlock(bm.getCommandBlock(faction));
         //Loop for main building
         for(int i = 0; i < TRY_LIMIT && new_ship.getTotalValue() <= (target_point_value - target_thruster_points) && (int)new_ship.getBlocks().size() <= block_limit; ++i){
-            forceFitNewBlock(new_ship,faction,is_symmetric,0);
+            forceFitNewBlock(new_ship,faction,is_symm,0);
         }
         //Loop for thruster building
         for(int i = 0; i < TRY_LIMIT && new_ship.getTotalValue() <= target_point_value && (int)new_ship.getBlocks().size() <= block_limit; ++i){
-            forceFitNewBlock(new_ship,faction,is_symmetric,1);
+            forceFitNewBlock(new_ship,faction,is_symm,1);
         }
-        if(is_symmetric){
+        if(is_symm){
             //Remove last two blocks to keep it under target value
             new_ship.getBlocks().pop_back();
             new_ship.getBlocks().pop_back();
@@ -59,20 +64,31 @@ Ship ShipBuilder::createShip(int target_point_value, int faction, int block_limi
     return(new_ship);
 }
 
-void ShipBuilder::addBlock(Ship& new_ship, int faction, bool is_symmetric)
+void ShipBuilder::addBlock(Ship& new_ship, int faction, int is_symmetric)
 {
+
+    //Cast to random bool
+    int is_symm = is_symmetric;
+    if(is_symmetric == 2)
+        is_symm = rand() % 2;
+
     if(new_ship.getBlocks().size() == 0)
         new_ship.addBlock(bm.getCommandBlock(faction));
     else
-        while(!tryNewBlock(new_ship,faction, false, is_symmetric));
+        while(!tryNewBlock(new_ship,faction, false, is_symm));
 }
 
-void ShipBuilder::addThrust(Ship& new_ship, int faction, bool is_symmetric)
+void ShipBuilder::addThrust(Ship& new_ship, int faction, int is_symmetric)
 {
+    //Cast to random bool
+    int is_symm = is_symmetric;
+    if(is_symmetric == 2)
+        is_symm = rand() % 2;
+
      if(new_ship.getBlocks().size() == 0)
         new_ship.addBlock(bm.getCommandBlock(faction));
     else
-        while(!tryNewBlock(new_ship,faction, true , is_symmetric));
+        while(!tryNewBlock(new_ship,faction, true , is_symm));
         //tryNewBlock(new_ship,faction, true , is_symmetric);
 }
 

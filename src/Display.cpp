@@ -18,7 +18,7 @@ Display::Display():
 	m_renderWindow.setFramerateLimit(60);
 
 	SettingsParser SP;
-	SP.loadFromFile("data/config.txt");
+	SP.loadFromFile("config.txt");
 
     SP.get("p_value_target",m_p_value_target);
     SP.get("faction",m_faction);
@@ -26,10 +26,7 @@ Display::Display():
     SP.get("ship_symmetry",m_ship_symmetry);
 
     //Cast to bool
-    int is_symm = m_ship_symmetry;
-    if(m_ship_symmetry == 2)
-        is_symm = rand() % 2;
-    ships.push_back(SB.createShip(m_p_value_target,8,1000,0,is_symm));
+    ships.push_back(SB.createShip(m_p_value_target,8,1000,0,m_ship_symmetry));
 	createGui();
 
 	attachment_point.setOrigin(5,5);

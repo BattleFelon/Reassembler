@@ -22,12 +22,12 @@ class ShipBuilder
         virtual ~ShipBuilder();
 
         //Symmetric builder... not working yet
-        Ship createShip(int target_point_value, int faction, int block_limit,int min_thruster_points, bool is_symmetric);
+        Ship createShip(int target_point_value, int faction, int block_limit,int min_thruster_points, int is_symmetric);
 
 
         //Adds a block to an existing ship. Debug mainly. Could be useful during evolve
-        void addBlock(Ship& new_ship, int faction, bool is_symmetric);
-        void addThrust(Ship& new_ship, int faction, bool is_symmetric);
+        void addBlock(Ship& new_ship, int faction, int is_symmetric);
+        void addThrust(Ship& new_ship, int faction, int is_symmetric);
 
     private:
         //Uses these classes

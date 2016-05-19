@@ -5,10 +5,9 @@
 #include "LogParser.h"
 #include "Ship.h"
 
-LogParser::LogParser(std::string path_to_log):
-    log_path(path_to_log)
+LogParser::LogParser()
 {
-    log_path.append("\\log.txt");
+
 }
 
 LogParser::~LogParser()
