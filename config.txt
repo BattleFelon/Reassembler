@@ -8,6 +8,9 @@ number_of_ships = 10;
 #Point value limit
 p_value_target = 900;
 
+#Thruster value target
+p_value_target = 200;
+
 #Max number of blocks a ship can have
 block_count_limit = 1000;
 
