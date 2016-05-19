@@ -26,15 +26,16 @@ ShipBuilder::~ShipBuilder()
 
 Ship ShipBuilder::createShip(int target_point_value, int faction, int block_limit,int target_thruster_points, bool is_symmetric)
 {
+    //Init new ship
     Ship new_ship(faction);
 
+    //Check to ensure it can be found in the faction database
     if(bm.hasFaction(faction)){
         new_ship.addBlock(bm.getCommandBlock(faction));
         //Loop for main building
         for(int i = 0; i < TRY_LIMIT && new_ship.getTotalValue() <= (target_point_value - target_thruster_points) && (int)new_ship.getBlocks().size() <= block_limit; ++i){
             forceFitNewBlock(new_ship,faction,is_symmetric,0);
         }
-
         //Loop for thruster building
         for(int i = 0; i < TRY_LIMIT && new_ship.getTotalValue() <= target_point_value && (int)new_ship.getBlocks().size() <= block_limit; ++i){
             forceFitNewBlock(new_ship,faction,is_symmetric,1);
@@ -48,12 +49,13 @@ Ship ShipBuilder::createShip(int target_point_value, int faction, int block_limi
             //Remove only one if totally random non-symmetry
             new_ship.getBlocks().pop_back();
         }
-
     }
     else{
         std::cout << "Faction not found. Please look at faction number \n";
     }
-    std::cout <<"Ship Value= " << new_ship.getTotalValue() << "    Number of Blocks= " << new_ship.getBlocks().size() << "\n";
+
+    //std::cout <<"Ship Value= " << new_ship.getTotalValue() << "    Number of Blocks= " << new_ship.getBlocks().size() << "\n";
+
     return(new_ship);
 }
 
@@ -232,13 +234,7 @@ bool ShipBuilder::tryNewBlock(Ship& new_ship, int faction,bool is_thrust, bool i
                     }
                     new_block =  Block(bm.getBlock(faction,new_block.getBlockNum()));
                 }
-                else{
-                    std::cout << "No attachments \n";
-                }
             }
-        }
-        else{
-            std::cout << "Thruster Attachment \n";
         }
     }
 
@@ -306,9 +302,9 @@ bool ShipBuilder::forceFitNewBlock(Ship& new_ship, int faction, bool is_symmetri
                                     symm_works = false;
 
                                 //Check for a rare case where it crosses zero, but is also above 5. Leads to disconnected blocks
-                                if(bound.y < 0.0f){
+                                if(bound.y < -0.5f){
                                     for(auto bound_2 : new_block.getBounds()){
-                                        if(bound_2.y > 5.0f)
+                                        if(bound_2.y > 5.5f)
                                             symm_works = false;
                                     }
                                 }
@@ -330,7 +326,7 @@ bool ShipBuilder::forceFitNewBlock(Ship& new_ship, int faction, bool is_symmetri
                             if(is_symmetric && symm_works){
                                 //check to make sure the bound is above y = 0.0
                                 for(auto bound : new_block.getBounds()){
-                                    if(bound.y <= 0.0 )
+                                    if(bound.y <= -0.5 )
                                         symm_works = false;
                                 }
 

@@ -29,7 +29,7 @@ Display::Display():
     int is_symm = m_ship_symmetry;
     if(m_ship_symmetry == 2)
         is_symm = rand() % 2;
-    ships.push_back(SB.createShip(m_p_value_target,8,1000,300,is_symm));
+    ships.push_back(SB.createShip(m_p_value_target,8,1000,0,is_symm));
 	createGui();
 
 	attachment_point.setOrigin(5,5);
@@ -84,6 +84,7 @@ void Display::displayShip(Ship& display_ship, float scale, sf::Vector2f position
             }
             //Complete the shape
             draw_block[block.getBounds().size()].position = sf::Vector2f(block.getBounds()[0].x * scale + position.x,block.getBounds()[0].y * -scale + position.y);
+
             //Draw it
             m_renderWindow.draw(draw_block);
 
@@ -170,13 +171,13 @@ void Display::createGui()
 	auto print_block = sfg::Button::Create("Debug Block");
 
 	auto p_label = sfg::Label::Create("Target P Value");
-	m_point_entry = sfg::Entry::Create("1000");
+	m_point_entry = sfg::Entry::Create("12");
 
 	auto b_label = sfg::Label::Create("Target Block Limit");
 	m_block_entry = sfg::Entry::Create("1000");
 
 	auto t_label = sfg::Label::Create("Target Thruster Value");
-	m_thrust_entry = sfg::Entry::Create("300");
+	m_thrust_entry = sfg::Entry::Create("0");
 
 	m_symm_1 = sfg::RadioButton::Create( "No Symmetry" );
 	m_symm_2 = sfg::RadioButton::Create( "Symmetric", m_symm_1->GetGroup() );
