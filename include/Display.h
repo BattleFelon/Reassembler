@@ -13,7 +13,10 @@
 #include <SFGUI/Widgets.hpp>
 #include <SFML/Graphics.hpp>
 
+#include <thread>
+
 #include "ShipBuilder.h"
+#include "Mutator.h"
 
 class Display
 {
@@ -47,6 +50,11 @@ class Display
         void debugBlock(){ships.back().getBlocks().back().debugBlock();}
 
         void symmSelect(){if (m_symm_1->IsActive()){m_ship_symmetry = 0;}else if(m_symm_2->IsActive()){m_ship_symmetry = 1;}else if(m_symm_3->IsActive()){m_ship_symmetry = 2;}}
+
+        //void startPool(){std::thread t1 (&Mutator::poolMutator,&mutate,10);}
+
+        //Mutator object
+        //Mutator mutate;
 
         //Gui Object
         sfg::SFGUI m_sfgui;
@@ -86,6 +94,7 @@ class Display
 
 
         ShipBuilder SB;
+
 };
 
 #endif // DISPLAY_H

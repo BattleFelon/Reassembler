@@ -57,6 +57,7 @@ void Display::run()
         //draw the sip to screen
         displayShip(ships.back(),10, sf::Vector2f(400,300));
 
+
 		//Show render windows
 		m_sfgui.Display(m_renderWindow);
 		m_renderWindow.display();
@@ -160,6 +161,7 @@ void Display::createGui()
 	// We have to do this because we don't use SFML to draw.
 	m_renderWindow.resetGLStates();
 
+    //General debug buttons
 	m_desktop.SetProperty( "Button#Button", "FontSize", 18.f );
 	auto create_ship = sfg::Button::Create("Create New Ship");
 	auto add_block = sfg::Button::Create("Add Block");
@@ -167,14 +169,17 @@ void Display::createGui()
 	auto save_ship = sfg::Button::Create("Save the Ship");
 	auto print_block = sfg::Button::Create("Debug Block");
 
+	//Mutator buttons
+	auto start_pool = sfg::Button::Create("Start Pool");
+
 	auto p_label = sfg::Label::Create("Target P Value");
-	m_point_entry = sfg::Entry::Create("12");
+	m_point_entry = sfg::Entry::Create("900");
 
 	auto b_label = sfg::Label::Create("Target Block Limit");
 	m_block_entry = sfg::Entry::Create("1000");
 
 	auto t_label = sfg::Label::Create("Target Thruster Value");
-	m_thrust_entry = sfg::Entry::Create("0");
+	m_thrust_entry = sfg::Entry::Create("200");
 
 	m_symm_1 = sfg::RadioButton::Create( "No Symmetry" );
 	m_symm_2 = sfg::RadioButton::Create( "Symmetric", m_symm_1->GetGroup() );
@@ -186,16 +191,18 @@ void Display::createGui()
 	m_window = sfg::Window::Create();
 	m_window->SetTitle( "Reassembler" );
 
+    //Bind functions
 	create_ship->GetSignal( sfg::Widget::OnLeftClick ).Connect( std::bind( &Display::createNewShip, this ) );
     add_block->GetSignal( sfg::Widget::OnLeftClick ).Connect( std::bind( &Display::addBlock, this ) );
 	save_ship->GetSignal( sfg::Widget::OnLeftClick ).Connect( std::bind( &Display::saveShip, this ) );
 	print_block->GetSignal( sfg::Widget::OnLeftClick ).Connect( std::bind( &Display::debugBlock, this ) );
 	add_thrust->GetSignal( sfg::Widget::OnLeftClick ).Connect( std::bind( &Display::addThrust, this ) );
-
+    //Radio buttons
     m_symm_1->GetSignal( sfg::ToggleButton::OnToggle ).Connect( std::bind( &Display::symmSelect, this ) );
 	m_symm_2->GetSignal( sfg::ToggleButton::OnToggle ).Connect( std::bind( &Display::symmSelect, this ) );
 	m_symm_3->GetSignal( sfg::ToggleButton::OnToggle ).Connect( std::bind( &Display::symmSelect, this ) );
-
+	//Threaded and mutator
+    //start_pool->GetSignal( sfg::Widget::OnLeftClick ).Connect( std::bind( &Display::startPool, this ) );
 
     auto table = sfg::Table::Create();
     float x_spacing = 5.f;
@@ -219,6 +226,8 @@ void Display::createGui()
 
 	table->Attach( t_label, sf::Rect<sf::Uint32>( 1, 4, 1, 1 ), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f( x_spacing, y_spacing ) );
 	table->Attach( m_thrust_entry, sf::Rect<sf::Uint32>( 2, 4, 1, 1 ), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f( x_spacing, y_spacing ) );
+
+	//table->Attach( start_pool, sf::Rect<sf::Uint32>( 1, 5, 1, 1 ), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f( x_spacing, y_spacing ) );
 
 
 	m_window->Add(table);
