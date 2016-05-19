@@ -17,18 +17,14 @@ bool CollisionCheck::checkCollision(Block& b1, Ship& new_ship)
 {
     for(auto& ship_block : new_ship.getBlocks()){
 
-        //Same position check
-        if(ship_block.getPosition() == b1.getPosition()){
-            //std::cout << " Same Position ";
-            return true;
-            }
         //Simple bounding radius check
         float distance = std::sqrt(std::pow(b1.getPosition().x - ship_block.getPosition().x,2.0)+ std::pow(b1.getPosition().y - ship_block.getPosition().y,2.0f));
 
-        if(distance  <= b1.getRadius() + ship_block.getRadius()){
-            //std::cout << "In Range ";
+        if(distance  <= b1.getRadius() + ship_block.getRadius() + 10.0){
+                //std::cout << "in range";
             //More advanced collison check
             if(blockCollisionCheck(b1,ship_block)){
+                //std::cout << "Collided \n";
                 return true;
             }
         }
@@ -36,63 +32,63 @@ bool CollisionCheck::checkCollision(Block& b1, Ship& new_ship)
             //std::cout << "Out of range ";
         }
     }
-    //std::cout << "No collidey ";
+    //std::cout << "\n No collidey \n";
     //No collidey
     return false;
 }
 
 bool CollisionCheck::blockCollisionCheck(Block& b1, Block& b2)
 {
+    //std::cout << "Doing collision check \n";
+    //std::cout << b2.getBlockNum() << " " << b2.getPosition().x << " " << b2.getPosition().y << "\n";
+
     std::vector<Vector2D> vec1= b1.getBounds();
     std::vector<Vector2D> vec2= b2.getBounds();
 
     //To complete the polygon
     vec1.push_back(vec1[0]);
     vec2.push_back(vec2[0]);
-    //Check to see if center is in polygon, but not same pos
-    if(pointInPolygon(b1.getPosition(),vec2)){
-        //std::cout << "Center in polygon ";
-        return true;
-    }
-    if(pointInPolygon(b2.getPosition(),vec1)){
-        //std::cout << "Center2 in polygon \n ";
-        return true;
-    }
 
-    //Check for point int polygon
+    //Imperfect collision checking. ohhhh welll
+    //Check for point int polygon with slight offset towards center point because screw floating point math.
+    //b1 points in b2
     for(int i = 0; i < (int)vec1.size(); ++i){
-        if(pointInPolygon(vec1[i],vec2)){
-            //std::cout<< " Point in polygon ";
-            return true;
-            }
-    }
+        Vector2D temp_vec(vec1[i].x,vec1[i].y);
 
-    for(int i = 0; i < (int)vec2.size(); ++i){
-        if(pointInPolygon(vec2[i],vec1)){
-            //std::cout<< " Point in polygon ";
-            return true;
-            }
-    }
+        float diff_x = temp_vec.x - b1.getPosition().x;
+        float diff_y = temp_vec.y - b1.getPosition().y;
+        float distance = std::sqrt(std::pow(diff_x,2)+ std::pow(diff_y,2));
+        float angle = std::atan2(diff_y,diff_x);
+        float x_change = std::cos(angle) * distance * .05;
+        float y_change = std::sin(angle) * distance * .05;
 
-    //Check for line intersection
-    for(int i = 0; i < (int)vec1.size()-1; ++i){
-        for(int j = 0; j < (int)vec1.size()-1; ++j){
-            //Make values readable
-            float XA1 = vec1[i].x;float YA1 = vec1[i].y;float XA2 = vec1[i+1].x;float YA2 = vec1[i+1].y;
-            float XB1 = vec2[i].x;float YB1 = vec2[i].y;float XB2 = vec2[i+1].x;float YB2 = vec2[i+1].y;
-
-            float denominator = (YB2 - YB1)*(XA2 - XA1) - (XB2 - XB1)*(YA2 - YA1);
-            if(denominator == 0){
-                //Parallel condition
-            }
-            else{
-            float ua = ((XB2 - XB1)*(YA1 - YB1) - (YB2 - YB1)*(XA1 - XB1)) / denominator;
-            float ub = ((XA2-XA1)*(YA1-YB1)-(YA2-YA1)*(XA1-XB1))/ denominator;
-
-            if((ua < 1 && ua > 0) || (ub < 1 && ub > 0)){
-                //std::cout << "Ua UB collision "<< ua << " " << ub << " ";
+        for(int j = 0; j < 10; ++j){
+            temp_vec.x -= x_change;
+            temp_vec.y -= y_change;
+            if(pointInPolygon(temp_vec,vec2)){
+                //std::cout<< " Point in polygon 2" << std::endl;
                 return true;
-                }
+            }
+        }
+    }
+
+    //b2 points in b1
+    for(int i = 0; i < (int)vec2.size(); ++i){
+        Vector2D temp_vec(vec2[i].x,vec2[i].y);
+
+        float diff_x = temp_vec.x - b2.getPosition().x;
+        float diff_y = temp_vec.y - b2.getPosition().y;
+        float distance = std::sqrt(std::pow(diff_x,2)+ std::pow(diff_y,2));
+        float angle = std::atan2(diff_y,diff_x);
+        float x_change = std::cos(angle) * distance * .05;
+        float y_change = std::sin(angle) * distance * .05;
+
+        for(int j = 0; j < 10; ++j){
+            temp_vec.x -= x_change;
+            temp_vec.y -= y_change;
+            if(pointInPolygon(temp_vec,vec1)){
+                //std::cout<< " Point in polygon 1" << std::endl;
+                return true;
             }
         }
     }

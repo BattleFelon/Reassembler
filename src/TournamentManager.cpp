@@ -3,9 +3,7 @@
 
 #include "TournamentManager.h"
 
-TournamentManager::TournamentManager(std::string path_to_exe, std::string path_to_ships):
-    exe_path(path_to_exe),
-    ships_path(path_to_ships)
+TournamentManager::TournamentManager()
 {
 
 }

@@ -97,7 +97,7 @@ Block BlockManager::getBlock(int faction)
             //Generate random index that is not the command module
             int random_block_index = rand() % (m_all_blocks[faction].size()-1) + 1;
             int weight_compare = rand() % 100 + 1;
-            if(m_all_blocks[faction][random_block_index].getSelectionWeight() >= weight_compare)
+            if(m_all_blocks[faction][random_block_index].getSelectionWeight() >= weight_compare && !m_all_blocks[faction][random_block_index].hasThrustAttachment())
             {
                 return(m_all_blocks[faction][random_block_index]);
             }
@@ -130,6 +130,28 @@ Block BlockManager::getCommandBlock(int faction)
     }
     else{
         return(m_all_blocks[faction][0]);
+    }
+
+    return(null_block);
+}
+
+Block BlockManager::getThruster(int faction)
+{
+
+    if(m_all_blocks.find(faction) == m_all_blocks.end()){
+        std::cout << "Block faction not found \n";
+    }
+    else{
+        //Could be optimized....TODO
+        while(true){
+            //Generate random index that is not the command module
+            int random_block_index = rand() % (m_all_blocks[faction].size()-1) + 1;
+            int weight_compare = rand() % 100 + 1;
+            if(m_all_blocks[faction][random_block_index].getSelectionWeight() >= weight_compare && m_all_blocks[faction][random_block_index].hasThrustAttachment())
+            {
+                return(m_all_blocks[faction][random_block_index]);
+            }
+        }
     }
 
     return(null_block);

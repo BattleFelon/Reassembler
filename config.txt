@@ -1,0 +1,37 @@
+#Settings File Alpha
+
+#Debug mode on = 1; off = 0;
+debug_mode = 0;
+
+#number of ships to create. This is the population size.
+#They fight in a poll style match where the each ship fights
+# all of the others in an arena match
+number_of_ships = 10;
+
+#Point value limit
+p_value_target = 900;
+
+#Thruster value target
+thruster_value_target = 200;
+
+#Max number of blocks a ship can have
+block_count_limit = 1000;
+
+#faction of ships, currently only 8
+faction = 8;
+
+#Ship Symmetry, 0 = No symmetry, 1 = All will be symmetric, 2 = Random Symmetry
+ship_symmetry = 1
+
+#System Call Path Stirngs, just to the folder. Make it look like the ones below.
+path_to_log_folder = C:\Users\Rob\Saved Games\Reassembly\data
+path_to_reassembly_exe = C:\Program Files (x86)\Steam\steamapps\common\Reassembly\win32
+path_to_ships_folder = C:\Users\Rob\Desktop\Reassembler-build\ships
+
+#Mutator settings
+
+#Number of generations
+num_generations = 10;
+
+#Mutator type 1 = pool, 2 = bracket
+mutator_type = 2;

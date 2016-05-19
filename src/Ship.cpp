@@ -4,7 +4,8 @@
 #include "Ship.h"
 
 Ship::Ship(int faction):
-    m_faction(faction)
+    m_faction(faction),
+    m_lifetime_wins(0)
 {
 
 }
@@ -61,7 +62,7 @@ void Ship::clearAttachments()
 
 //Reassembly corrects for the command block not actually being the center after it loads the file
 //TODO - center of gravity finding and proper file writing.
-void Ship::writeShip(std::string file_name,std::string ship_name,std::string author_name)
+void Ship::writeShip(std::string file_name,std::string ship_name,std::string author_name, std::string faction_name)
 {
     std::ofstream file;
     m_ship_name = ship_name;
@@ -73,7 +74,7 @@ void Ship::writeShip(std::string file_name,std::string ship_name,std::string aut
         file.precision(3);
         file.setf(std::ios::fixed);
         //Fleet header
-        file << "{\n  color0=0x410101,\n  color1=34182,\n  faction=" << m_faction << ",\n  name=\"TODOFACTION\",\n  blueprints={\n    " ;
+        file << "{\n  color0=0x410101,\n  color1=34182,\n  faction=" << m_faction << ",\n  name=\"" << faction_name << "\",\n  blueprints={\n    " ;
 
         //Ship header
         file << "{data={name=\""<<ship_name<<"\", author=\""<<author_name<<"\", color0=0xc96f20, color1=0x796bff,\n";

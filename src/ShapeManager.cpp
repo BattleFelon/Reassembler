@@ -66,6 +66,7 @@ bool ShapeManager::loadShapeData(std::string file_name)
                 //Check for empty value. Csv files format some null value ,,,, for some reason
                 if((int)value[0] != 0){
                     // Sort the values into the proper vector
+
                     switch(i)
                     {
                         case 0:

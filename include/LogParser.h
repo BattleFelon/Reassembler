@@ -7,11 +7,14 @@
 class LogParser
 {
     public:
-        LogParser(std::string path_to_log);
+        LogParser();
+
         virtual ~LogParser();
 
+        void init(std::string path_to_log){log_path = path_to_log;log_path.append("\\log.txt");}
+
         //false if first ship win, true second ship win
-        int getWinner(Ship& ship_1, Ship& ship_2);
+        bool getWinner(Ship& ship_1, Ship& ship_2);
 
     private:
 

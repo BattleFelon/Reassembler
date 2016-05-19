@@ -19,9 +19,13 @@ class Ship
 
         int getTotalValue(){int total = 0; for(auto& block : m_blocks) total += block.getPointValue(); return total;}
 
+        int getLifetimeWins(){return m_lifetime_wins;}
+
+        void wins(){m_lifetime_wins++;}
+
         Attachment getAttachmentPoint(int &block_index,int &attachment_index);
 
-        void writeShip(std::string file_name,std::string ship_name,std::string author_name);
+        void writeShip(std::string file_name,std::string ship_name,std::string author_name, std::string faction_name);
 
         Ship readShip();
 
@@ -41,6 +45,7 @@ class Ship
 
     private:
         int m_faction;
+        int m_lifetime_wins;
         std::string m_ship_name;
         //The blocks that make up the ship
         std::vector<Block> m_blocks;

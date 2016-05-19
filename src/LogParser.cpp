@@ -5,10 +5,9 @@
 #include "LogParser.h"
 #include "Ship.h"
 
-LogParser::LogParser(std::string path_to_log):
-    log_path(path_to_log)
+LogParser::LogParser()
 {
-    log_path.append("\\log.txt");
+
 }
 
 LogParser::~LogParser()
@@ -17,7 +16,7 @@ LogParser::~LogParser()
 }
 
 //False if ship 1, true if ship 2
-int LogParser::getWinner(Ship& ship_1, Ship& ship_2)
+bool LogParser::getWinner(Ship& ship_1, Ship& ship_2)
 {
     std::string ship_1_wins = "(";
     ship_1_wins.append(ship_1.getShipName());
@@ -29,8 +28,6 @@ int LogParser::getWinner(Ship& ship_1, Ship& ship_2)
 
     std::string line;
     std::ifstream logFile (log_path);
-    if(!logFile.good())
-        std::cout << "Log File Path Not Correct !";
 
     int one_win_count = 0;
     int two_win_count = 0;
@@ -42,15 +39,8 @@ int LogParser::getWinner(Ship& ship_1, Ship& ship_2)
             two_win_count++;
         }
     }
-    int result = 0;
-    if(one_win_count < two_win_count)
-        result = 1;
 
-    //check if paths are off
-    if(one_win_count == two_win_count)
-        result = 2;
-
-    return(result);
+    return(one_win_count < two_win_count);
     //Close it up
     logFile.close();
 }
