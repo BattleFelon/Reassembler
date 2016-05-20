@@ -4,8 +4,7 @@
 #include "Mutator.h"
 
 //Null block creation
-Mutator::Mutator():
-    winner(8)
+Mutator::Mutator()
 {
 
     //Load settings file
@@ -47,12 +46,12 @@ Mutator::Mutator():
     std::cout << "\nSeeding initial population \n\n";
     for(int i = 0; i < number_of_ships; ++i){
         //Seed the population
-        population.push_back(SB.createShip(p_value_target,faction,block_count_limit,thruster_value_target,ship_symmetry));
+        population.push_back(SB.createShip(p_value_target,faction,block_count_limit,thruster_value_target,ship_symmetry,names[i]));
         std::string file_name = "ships/";
         file_name.append(names[i]);
         file_name.append(".lua");
         //Write the ships to file
-        population[i].writeShip(file_name,names[i],names[i],names[i]);
+        population[i].writeShip(file_name,names[i],names[i]);
     }
 
 }
@@ -137,6 +136,8 @@ void Mutator::poolMutator(int generations){
 
         //Save the winner
         winner = population[winner_index];
+        winner.setName("Winner");
+
         std::string winner_file_name = "ships/Winner_";
         std::string faction_name = "Winner";
         faction_name.append(std::to_string(winner_index));
@@ -145,7 +146,7 @@ void Mutator::poolMutator(int generations){
 
         std::string num_wins = "NumWins";
         num_wins.append(std::to_string(winner.getLifetimeWins()));
-        winner.writeShip(winner_file_name,"Winner",num_wins,faction_name);
+        winner.writeShip(winner_file_name,num_wins,faction_name);
 
         //Seed next population
         population.clear();
@@ -153,7 +154,7 @@ void Mutator::poolMutator(int generations){
         for(int i = 0; i < number_of_ships; ++i){
             //Seed the population and keep winner
             if(i != winner_index)
-            population.push_back(SB.createShip(p_value_target,faction,block_count_limit,thruster_value_target,ship_symmetry));
+            population.push_back(SB.createShip(p_value_target,faction,block_count_limit,thruster_value_target,ship_symmetry,names[i]));
             else
             population.push_back(winner);
 
@@ -162,7 +163,7 @@ void Mutator::poolMutator(int generations){
             file_name.append(".lua");
 
             //Write the ships to file
-            population[i].writeShip(file_name,names[i],names[i],names[i]);
+            population[i].writeShip(file_name,names[i],names[i]);
         }
 
     }//End of all generations
@@ -265,6 +266,7 @@ void Mutator::bracketMutator(int generations)
 
         //Save the winner
         winner = population[winner_index];
+        winner.setName("Winner");
         std::string winner_file_name = "ships/Winner_";
         std::string faction_name = "Winner";
         faction_name.append(std::to_string(winner_index));
@@ -273,7 +275,7 @@ void Mutator::bracketMutator(int generations)
 
         std::string num_wins = "NumWins";
         num_wins.append(std::to_string(winner.getLifetimeWins()));
-        winner.writeShip(winner_file_name,"Winner",num_wins,faction_name);
+        winner.writeShip(winner_file_name,num_wins,faction_name);
 
         //Seed next population
         population.clear();
@@ -281,7 +283,7 @@ void Mutator::bracketMutator(int generations)
         for(int i = 0; i < number_of_ships; ++i){
             //Seed the population and keep winner
             if(i != winner_index)
-            population.push_back(SB.createShip(p_value_target,faction,block_count_limit,thruster_value_target,ship_symmetry));
+            population.push_back(SB.createShip(p_value_target,faction,block_count_limit,thruster_value_target,ship_symmetry,names[i]));
             else
             population.push_back(winner);
 
@@ -290,9 +292,7 @@ void Mutator::bracketMutator(int generations)
             file_name.append(".lua");
 
             //Write the ships to file
-            population[i].writeShip(file_name,names[i],names[i],names[i]);
+            population[i].writeShip(file_name,names[i],names[i]);
         }
-
     }//End of all generations
-
 }

@@ -1,7 +1,7 @@
 #Settings File Alpha
 
 #Debug mode on = 1; off = 0;
-debug_mode = 0;
+debug_mode = 1;
 
 #number of ships to create. This is the population size.
 #They fight in a poll style match where the each ship fights

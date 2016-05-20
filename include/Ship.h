@@ -14,36 +14,36 @@ class Ship
 {
     public:
 
-        Ship(int faction);
+        Ship();
         virtual ~Ship();
 
+        //Ship Information
         int getTotalValue(){int total = 0; for(auto& block : m_blocks) total += block.getPointValue(); return total;}
-
         int getLifetimeWins(){return m_lifetime_wins;}
+        std::string getShipName(){return(m_ship_name);}
+        int getFaction(){return m_faction;};
 
+        //Used by mutator for lifetime win tracking
         void wins(){m_lifetime_wins++;}
 
+        //Used by shipbuilder to get a random attachment point
         Attachment getAttachmentPoint(int &block_index,int &attachment_index);
 
-        void writeShip(std::string file_name,std::string ship_name,std::string author_name, std::string faction_name);
-
+        //Read and write
+        void writeShip(std::string file_name,std::string author_name, std::string faction_name);
         Ship readShip();
 
+        //Block functions
         void addBlock(Block new_block){m_blocks.push_back(new_block);}
-
         bool removeBlock(int index);
-
         std::vector<Block>& getBlocks(){return m_blocks;}
 
-        std::string getShipName(){return(m_ship_name);}
-
-        int getFaction(){return m_faction;};
-        //Gets rid of all touching attachments
-        //Works really slow. Not in use
-        //TODO optimize or get rid of
-        void clearAttachments();
+        //Setters
+        void setFaction(int faction){m_faction = faction;}
+        void setName(std::string ship_name){m_ship_name = ship_name;}
 
     private:
+
         int m_faction;
         int m_lifetime_wins;
         std::string m_ship_name;

@@ -8,9 +8,7 @@
 #include "Vector2D.h"
 #include "SettingsParser.h"
 
-Display::Display():
-    debug_ship(8),
-    attachment_point(5)
+Display::Display()
 {
     //Set Window and View varibles
 	m_renderWindow.create(sf::VideoMode(800, 600), "Reassembler");
@@ -26,7 +24,7 @@ Display::Display():
     SP.get("ship_symmetry",m_ship_symmetry);
 
     //Cast to bool
-    ships.push_back(SB.createShip(m_p_value_target,8,1000,0,m_ship_symmetry));
+    ships.push_back(SB.createShip(m_p_value_target,8,1000,0,m_ship_symmetry,"Debug"));
 	createGui();
 
 	attachment_point.setOrigin(5,5);
@@ -246,7 +244,8 @@ void Display::createNewShip()
                                   8,
                                   std::stoi(m_block_entry->GetText().toAnsiString()),
                                   std::stoi(m_thrust_entry->GetText().toAnsiString()),
-                                  is_symm
+                                  is_symm,
+                                  "Debug"
                                   )
                     );
 

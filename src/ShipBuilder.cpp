@@ -24,7 +24,7 @@ ShipBuilder::~ShipBuilder()
 
 }
 
-Ship ShipBuilder::createShip(int target_point_value, int faction, int block_limit,int target_thruster_points, int is_symmetric)
+Ship ShipBuilder::createShip(int target_point_value, int faction, int block_limit,int target_thruster_points, int is_symmetric, std::string ship_name)
 {
     //Cast to random bool
     int is_symm = is_symmetric;
@@ -32,7 +32,9 @@ Ship ShipBuilder::createShip(int target_point_value, int faction, int block_limi
         is_symm = rand() % 2;
 
     //Init new ship
-    Ship new_ship(faction);
+    Ship new_ship;
+    new_ship.setFaction(faction);
+    new_ship.setName(ship_name);
 
     //Check to ensure it can be found in the faction database
     if(bm.hasFaction(faction)){
