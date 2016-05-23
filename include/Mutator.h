@@ -10,6 +10,7 @@
 
 #include <random>
 #include <thread>
+#include <mutex>
 
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
@@ -33,6 +34,7 @@ class Mutator
 
         void bracketMutator(int generations);
 
+        Ship* getWinner(){return(&winner);}
 
 
     private:
@@ -60,6 +62,9 @@ class Mutator
         std::vector<Ship> population;
         std::vector<std::string> names;
         Ship winner;
+
+        //Lock on the thread
+        std::mutex mtx;
 
 };
 

@@ -1,5 +1,7 @@
 #include <cmath>
 #include <iostream>
+#include <unistd.h>
+#include <thread>
 
 #include "Mutator.h"
 
@@ -135,6 +137,7 @@ void Mutator::poolMutator(int generations){
         }
 
         //Save the winner
+        mtx.lock();
         winner = population[winner_index];
         winner.setName("Winner");
 
@@ -147,7 +150,7 @@ void Mutator::poolMutator(int generations){
         std::string num_wins = "NumWins";
         num_wins.append(std::to_string(winner.getLifetimeWins()));
         winner.writeShip(winner_file_name,num_wins,faction_name);
-
+        mtx.unlock();
         //Seed next population
         population.clear();
         std::cout << "\nSeeding next population \n";
@@ -155,8 +158,12 @@ void Mutator::poolMutator(int generations){
             //Seed the population and keep winner
             if(i != winner_index)
             population.push_back(SB.createShip(p_value_target,faction,block_count_limit,thruster_value_target,ship_symmetry,names[i]));
-            else
+            else{
+            mtx.lock();
             population.push_back(winner);
+            population.back().setName(names[i]);
+            mtx.unlock();
+            }
 
             std::string file_name = "ships/";
             file_name.append(names[i]);
@@ -173,9 +180,6 @@ void Mutator::poolMutator(int generations){
 
 void Mutator::bracketMutator(int generations)
 {
-
-
-
     //The index of the winning ship
     int winner_index = 0;
 
@@ -185,8 +189,10 @@ void Mutator::bracketMutator(int generations)
         //win tracking and odd man out logic
         std::vector<int> wins;
         std::vector<bool> got_to_fight;
+        std::vector<bool> did_lose;
         for(int i = 0; i < population.size(); ++i){
             got_to_fight.push_back(false);
+            did_lose.push_back(false);
             wins.push_back(0);
         }
 
@@ -205,7 +211,7 @@ void Mutator::bracketMutator(int generations)
 
             for(int i = 0; i < population.size(); ++i){
                 for(int j = i+1; j < population.size(); ++j){
-                    if(wins[i] >= round && wins[i] == wins[j]){
+                    if(wins[i] >= round && wins[i] == wins[j] && !did_lose[i] && !did_lose[j]){
                         //Fighter got to fight
                         got_to_fight[i] = true;
                         got_to_fight[j] = true;
@@ -215,6 +221,7 @@ void Mutator::bracketMutator(int generations)
                         //Match begin
                         std::cout << "Arena " << population[i].getShipName() << " and " << population[j].getShipName() << "...";
                         std::cout.flush();
+
                         //TM.startArena(population[i],population[j]);
                         //0 means first ship wins, 1 means second, and 2 means something went wrong
                         int result = rand() % 2;//LP.getWinner(population[i], population[j]);
@@ -222,12 +229,14 @@ void Mutator::bracketMutator(int generations)
                             std::cout << population[j].getShipName() <<  " Wins!" << std::endl;
                             population[j].wins();
                             wins[j]++;
+                            did_lose[i] = true;
                         }
                         else if(result == 0)
                         {
                             std::cout << population[i].getShipName() <<  " Wins!" << std::endl;
                             population[i].wins();
                             wins[i]++;
+                            did_lose[j] = true;
                         }
                         else if (result == 2){
                             std::cout << "One of your path values is incorrect\n";
@@ -242,11 +251,30 @@ void Mutator::bracketMutator(int generations)
                 }
             }//End of round
 
-            //Check to see for odd man out
+            //Check to see for odd man out, make him fight a random loser for a comeback!
             for(int k = 0; k < got_to_fight.size(); ++k){
                 if(!got_to_fight[k] && wins[k] >= round && was_a_battle){
-                        std::cout<< "Ship_" << k << " gets a pass round \n";
-                    wins[k]++;
+                    for(int w = 0; w < population.size();++w){
+                        if(wins[k] == wins[w] && w != k){
+                            std::cout<< "Ship_" << k << " has to fight loser Ship_" << w << " for a spot in the next round...";
+                            //TM.startArena(population[i],population[j]);
+                            //0 means first ship wins, 1 means second, and 2 means something went wrong
+                            int result = rand() % 2;//LP.getWinner(population[k], population[w]);
+
+                            if(result == 1){
+                                std::cout<< " Ship_" << w  << " Wins \n";
+                                wins[w]++;
+                                w=population.size();
+                                k=w;
+                            }
+                            else if(result == 0){
+                                std::cout<< " Ship_" << k  << " Wins \n";
+                                 wins[k]++;
+                                 w=population.size();
+                                 k=w;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -265,6 +293,7 @@ void Mutator::bracketMutator(int generations)
         "\n\n    ******** It shall live on!!!  ********  \n\n";
 
         //Save the winner
+        mtx.lock();
         winner = population[winner_index];
         winner.setName("Winner");
         std::string winner_file_name = "ships/Winner_";
@@ -276,7 +305,7 @@ void Mutator::bracketMutator(int generations)
         std::string num_wins = "NumWins";
         num_wins.append(std::to_string(winner.getLifetimeWins()));
         winner.writeShip(winner_file_name,num_wins,faction_name);
-
+        mtx.unlock();
         //Seed next population
         population.clear();
         std::cout << "\nSeeding next population \n";
@@ -284,8 +313,11 @@ void Mutator::bracketMutator(int generations)
             //Seed the population and keep winner
             if(i != winner_index)
             population.push_back(SB.createShip(p_value_target,faction,block_count_limit,thruster_value_target,ship_symmetry,names[i]));
-            else
+            else{
+            mtx.lock();
             population.push_back(winner);
+            mtx.unlock();
+            }
 
             std::string file_name = "ships/";
             file_name.append(names[i]);

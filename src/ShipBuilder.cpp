@@ -43,6 +43,15 @@ Ship ShipBuilder::createShip(int target_point_value, int faction, int block_limi
         for(int i = 0; i < TRY_LIMIT && new_ship.getTotalValue() <= (target_point_value - target_thruster_points) && (int)new_ship.getBlocks().size() <= block_limit; ++i){
             forceFitNewBlock(new_ship,faction,is_symm,0);
         }
+        if(is_symm){
+            //Remove last two blocks to keep it under target value
+            new_ship.getBlocks().pop_back();
+            new_ship.getBlocks().pop_back();
+        }
+        else{
+            //Remove only one if totally random non-symmetry
+            new_ship.getBlocks().pop_back();
+        }
         //Loop for thruster building
         for(int i = 0; i < TRY_LIMIT && new_ship.getTotalValue() <= target_point_value && (int)new_ship.getBlocks().size() <= block_limit; ++i){
             forceFitNewBlock(new_ship,faction,is_symm,1);

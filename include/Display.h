@@ -29,6 +29,7 @@ class Display
     private:
         //Display the ship selected
         void displayShip(Ship& display_ship, float scale, sf::Vector2f position);
+        void displayShip(Ship* display_ship, float scale, sf::Vector2f position);
 
         //View Moving code
         void moveView();
@@ -51,10 +52,10 @@ class Display
 
         void symmSelect(){if (m_symm_1->IsActive()){m_ship_symmetry = 0;}else if(m_symm_2->IsActive()){m_ship_symmetry = 1;}else if(m_symm_3->IsActive()){m_ship_symmetry = 2;}}
 
-        //void startPool(){std::thread t1 (&Mutator::poolMutator,&mutate,10);}
+        void startPool(){std::thread t1 (&Mutator::poolMutator,&mutate,10); t1.detach();}
 
         //Mutator object
-        //Mutator mutate;
+        Mutator mutate;
 
         //Gui Object
         sfg::SFGUI m_sfgui;

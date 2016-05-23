@@ -53,7 +53,8 @@ void Display::run()
 		m_renderWindow.clear();
 
         //draw the sip to screen
-        displayShip(ships.back(),10, sf::Vector2f(400,300));
+        //displayShip(ships.back(),10, sf::Vector2f(400,300));
+        displayShip(mutate.getWinner(),10,sf::Vector2f(400,300));
 
 
 		//Show render windows
@@ -66,7 +67,6 @@ void Display::run()
 
 void Display::displayShip(Ship& display_ship, float scale, sf::Vector2f position)
 {
-
     if(display_ship.getBlocks().size() > 0){
         for(auto block : display_ship.getBlocks()){
 
@@ -91,7 +91,34 @@ void Display::displayShip(Ship& display_ship, float scale, sf::Vector2f position
             }
         }
     }
+}
 
+void Display::displayShip(Ship* display_ship, float scale, sf::Vector2f position)
+{
+    if(display_ship->getBlocks().size() > 0){
+        for(auto block : display_ship->getBlocks()){
+
+            sf::VertexArray draw_block(sf::LinesStrip, block.getBounds().size() + 1);
+
+            //Draw the bounds
+            int i = 0;
+            for(auto bound : block.getBounds()){
+                draw_block[i].position = sf::Vector2f(bound.x * scale + position.x,bound.y * -scale + position.y);
+                i++;
+            }
+            //Complete the shape
+            draw_block[block.getBounds().size()].position = sf::Vector2f(block.getBounds()[0].x * scale + position.x,block.getBounds()[0].y * -scale + position.y);
+
+            //Draw it
+            m_renderWindow.draw(draw_block);
+
+            //Draw the attachments
+            for(auto attachment : block.getAttachments()){
+                attachment_point.setPosition(sf::Vector2f(attachment.position.x * scale + position.x, attachment.position.y * -scale + position.y));
+                m_renderWindow.draw(attachment_point);
+            }
+        }
+    }
 }
 
 void Display::moveView()
@@ -185,7 +212,7 @@ void Display::createGui()
 
 	m_symm_1->SetActive(true);
 
-		//Create Settings Window
+    //Create Settings Window
 	m_window = sfg::Window::Create();
 	m_window->SetTitle( "Reassembler" );
 
@@ -200,7 +227,7 @@ void Display::createGui()
 	m_symm_2->GetSignal( sfg::ToggleButton::OnToggle ).Connect( std::bind( &Display::symmSelect, this ) );
 	m_symm_3->GetSignal( sfg::ToggleButton::OnToggle ).Connect( std::bind( &Display::symmSelect, this ) );
 	//Threaded and mutator
-    //start_pool->GetSignal( sfg::Widget::OnLeftClick ).Connect( std::bind( &Display::startPool, this ) );
+    start_pool->GetSignal( sfg::Widget::OnLeftClick ).Connect( std::bind( &Display::startPool, this ) );
 
     auto table = sfg::Table::Create();
     float x_spacing = 5.f;
@@ -225,7 +252,7 @@ void Display::createGui()
 	table->Attach( t_label, sf::Rect<sf::Uint32>( 1, 4, 1, 1 ), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f( x_spacing, y_spacing ) );
 	table->Attach( m_thrust_entry, sf::Rect<sf::Uint32>( 2, 4, 1, 1 ), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f( x_spacing, y_spacing ) );
 
-	//table->Attach( start_pool, sf::Rect<sf::Uint32>( 1, 5, 1, 1 ), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f( x_spacing, y_spacing ) );
+	table->Attach( start_pool, sf::Rect<sf::Uint32>( 1, 5, 1, 1 ), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f( x_spacing, y_spacing ) );
 
 
 	m_window->Add(table);
