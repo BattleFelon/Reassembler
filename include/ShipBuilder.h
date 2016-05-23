@@ -21,8 +21,11 @@ class ShipBuilder
         ShipBuilder();
         virtual ~ShipBuilder();
 
-        //Symmetric builder... not working yet
+        //General ship building function
         Ship createShip(int target_point_value, int faction, int block_limit,int min_thruster_points, int is_symmetric, std::string name);
+
+        //Actual genetic code!!!
+        Ship breedShips(Ship& father, Ship& mother, int ship_symmetry, int mutation_blocks);
 
 
         //Adds a block to an existing ship. Debug mainly. Could be useful during evolve
@@ -40,6 +43,8 @@ class ShipBuilder
 
         //Force the fits to ensure weights are correct
         bool forceFitNewBlock(Ship& new_ship, int faction, bool is_symmetric, bool is_thruster);
+        //Specific block
+        bool forceFitNewBlock(Ship& new_ship,Block new_block,bool is_symmetric);
 
 
 

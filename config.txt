@@ -31,7 +31,10 @@ path_to_ships_folder = C:\Users\Rob\Desktop\Reassembler-build\ships
 #Mutator settings
 
 #Number of generations
-num_generations = 10;
+num_generations = 1;
 
 #Mutator type 1 = pool, 2 = bracket
 mutator_type = 2;
+
+#Number of mutation blocks. Number of random blocks to attach to child
+mutation_blocks = 5;

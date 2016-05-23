@@ -53,8 +53,8 @@ void Display::run()
 		m_renderWindow.clear();
 
         //draw the sip to screen
-        //displayShip(ships.back(),10, sf::Vector2f(400,300));
-        displayShip(mutate.getWinner(),10,sf::Vector2f(400,300));
+        displayShip(ships.back(),10, sf::Vector2f(400,300));
+        //displayShip(mutate.getWinner(),10,sf::Vector2f(400,300));
 
 
 		//Show render windows
@@ -196,6 +196,7 @@ void Display::createGui()
 
 	//Mutator buttons
 	auto start_pool = sfg::Button::Create("Start Pool");
+	auto breed_two = sfg::Button::Create("Breed Last Two");
 
 	auto p_label = sfg::Label::Create("Target P Value");
 	m_point_entry = sfg::Entry::Create("900");
@@ -228,6 +229,7 @@ void Display::createGui()
 	m_symm_3->GetSignal( sfg::ToggleButton::OnToggle ).Connect( std::bind( &Display::symmSelect, this ) );
 	//Threaded and mutator
     start_pool->GetSignal( sfg::Widget::OnLeftClick ).Connect( std::bind( &Display::startPool, this ) );
+    breed_two->GetSignal( sfg::Widget::OnLeftClick ).Connect( std::bind( &Display::breedLastTwo, this ) );
 
     auto table = sfg::Table::Create();
     float x_spacing = 5.f;
@@ -253,7 +255,7 @@ void Display::createGui()
 	table->Attach( m_thrust_entry, sf::Rect<sf::Uint32>( 2, 4, 1, 1 ), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f( x_spacing, y_spacing ) );
 
 	table->Attach( start_pool, sf::Rect<sf::Uint32>( 1, 5, 1, 1 ), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f( x_spacing, y_spacing ) );
-
+    table->Attach( breed_two, sf::Rect<sf::Uint32>( 2, 5, 1, 1 ), sfg::Table::FILL | sfg::Table::EXPAND, sfg::Table::FILL, sf::Vector2f( x_spacing, y_spacing ) );
 
 	m_window->Add(table);
 	m_desktop.Add(m_window);

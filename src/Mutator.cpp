@@ -22,6 +22,7 @@ Mutator::Mutator()
     SP.get("path_to_log_folder",path_to_log);
     SP.get("path_to_ships_folder",path_to_ships);
     SP.get("ship_symmetry",ship_symmetry);
+    SP.get("mutation_blocks",mutation_blocks);
 
      //Output the settings
     std::cout <<"Number of ships to create= " <<
@@ -124,9 +125,19 @@ void Mutator::poolMutator(int generations){
             }
         }
 
+        //Select mate
+        int win_diff = 1000;
+        int mate_index = 0;
+        for(int i = 0; i < wins.size(); ++i){
+            if(wins[winner_index] - wins[i] < win_diff && i != winner_index){
+                win_diff = wins[winner_index] - wins[i];
+                mate_index = i;
+            }
+        }
+
         std::cout << "\nGeneration " << generation << " over. \n\n" <<
-        population[winner_index].getShipName() <<" Has won with " << number_of_wins << " wins and " << population[winner_index].getLifetimeWins() << " life time wins." <<
-        "\n\n    ******** It shall live on!!!  ********  \n\n";
+        population[winner_index].getShipName() <<" Has won with " << number_of_wins << " wins and " << population[winner_index].getLifetimeWins() << " life time wins.\n" <<
+        "The winner has chosen a mate, Ship_" << mate_index << ".\nTheir children will be in the next generation\n\n";
 
         std::cout << "--Overall Results--\n";
         for(int i = 0; i < number_of_ships; ++i){
@@ -136,9 +147,10 @@ void Mutator::poolMutator(int generations){
                     std::cout << population[i].getShipName() << " had " << wins[i] << " wins **** \n";
         }
 
-        //Save the winner
+        //Save the winner and mate
         mtx.lock();
         winner = population[winner_index];
+        Ship mate = population[mate_index];
         winner.setName("Winner");
 
         std::string winner_file_name = "ships/Winner_";
@@ -151,19 +163,30 @@ void Mutator::poolMutator(int generations){
         num_wins.append(std::to_string(winner.getLifetimeWins()));
         winner.writeShip(winner_file_name,num_wins,faction_name);
         mtx.unlock();
+
         //Seed next population
         population.clear();
         std::cout << "\nSeeding next population \n";
         for(int i = 0; i < number_of_ships; ++i){
-            //Seed the population and keep winner
-            if(i != winner_index)
-            population.push_back(SB.createShip(p_value_target,faction,block_count_limit,thruster_value_target,ship_symmetry,names[i]));
-            else{
+            //Seed the population and keep winner, mate, and breed children
+            if(i == winner_index){
             mtx.lock();
             population.push_back(winner);
             population.back().setName(names[i]);
             mtx.unlock();
             }
+            else if(i == mate_index){
+                population.push_back(mate);
+                population.back().setName(names[i]);
+            }
+            else if(i <= number_of_ships/2)
+                population.push_back(SB.createShip(p_value_target,faction,block_count_limit,thruster_value_target,ship_symmetry,names[i]));
+            else if(i >number_of_ships/2){
+                std::cout << "Child of " << winner_index << " and " << mate_index << " \n";;
+                population.push_back(SB.breedShips(winner,mate,ship_symmetry,mutation_blocks));
+                population.back().setName(names[i]);
+            }
+
 
             std::string file_name = "ships/";
             file_name.append(names[i]);
@@ -288,13 +311,24 @@ void Mutator::bracketMutator(int generations)
             }
         }
 
+        //Select mate
+        int win_diff = 1000;
+        int mate_index = 0;
+        for(int i = 0; i < wins.size(); ++i){
+            if(wins[winner_index] - wins[i] < win_diff && i != winner_index){
+                win_diff = wins[winner_index] - wins[i];
+                mate_index = i;
+            }
+        }
+
         std::cout << "\nGeneration " << generation << " over. \n\n" <<
-        population[winner_index].getShipName() <<" Has won with " << number_of_wins << " and has " << population[winner_index].getLifetimeWins() << " life time wins." <<
-        "\n\n    ******** It shall live on!!!  ********  \n\n";
+        population[winner_index].getShipName() <<" Has won with " << number_of_wins << " wins and " << population[winner_index].getLifetimeWins() << " life time wins.\n" <<
+        "The winner has chosen a mate, Ship_" << mate_index << ".\nTheir children will be in the next generation\n\n";
 
         //Save the winner
         mtx.lock();
         winner = population[winner_index];
+        Ship mate = population[mate_index];
         winner.setName("Winner");
         std::string winner_file_name = "ships/Winner_";
         std::string faction_name = "Winner";
@@ -310,13 +344,23 @@ void Mutator::bracketMutator(int generations)
         population.clear();
         std::cout << "\nSeeding next population \n";
         for(int i = 0; i < number_of_ships; ++i){
-            //Seed the population and keep winner
-            if(i != winner_index)
-            population.push_back(SB.createShip(p_value_target,faction,block_count_limit,thruster_value_target,ship_symmetry,names[i]));
-            else{
+            //Make children, keep mate and winner, seed new population
+            if(i == winner_index){
             mtx.lock();
             population.push_back(winner);
+            population.back().setName(names[i]);
             mtx.unlock();
+            }
+            else if(i == mate_index){
+                population.push_back(mate);
+                population.back().setName(names[i]);
+            }
+            else if(i <= number_of_ships/2)
+                population.push_back(SB.createShip(p_value_target,faction,block_count_limit,thruster_value_target,ship_symmetry,names[i]));
+            else if(i >number_of_ships/2){
+                std::cout << "Child of " << winner_index << " and " << mate_index << " \n";;
+                population.push_back(SB.breedShips(winner,mate,ship_symmetry,mutation_blocks));
+                population.back().setName(names[i]);
             }
 
             std::string file_name = "ships/";

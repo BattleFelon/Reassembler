@@ -57,6 +57,7 @@ class Mutator
         int block_count_limit;
         int faction;
         int ship_symmetry;
+        int mutation_blocks;
 
         //Ship data
         std::vector<Ship> population;

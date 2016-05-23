@@ -52,10 +52,12 @@ class Display
 
         void symmSelect(){if (m_symm_1->IsActive()){m_ship_symmetry = 0;}else if(m_symm_2->IsActive()){m_ship_symmetry = 1;}else if(m_symm_3->IsActive()){m_ship_symmetry = 2;}}
 
-        void startPool(){std::thread t1 (&Mutator::poolMutator,&mutate,10); t1.detach();}
+        void startPool(){}//std::thread t1 (&Mutator::poolMutator,&mutate,10); t1.detach();
+
+        void breedLastTwo(){if(ships.size() >= 2) ships.push_back(SB.breedShips(ships.back(),ships[ships.size()-2],m_ship_symmetry,5));}
 
         //Mutator object
-        Mutator mutate;
+        //Mutator mutate;
 
         //Gui Object
         sfg::SFGUI m_sfgui;
