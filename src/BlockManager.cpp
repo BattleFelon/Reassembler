@@ -96,7 +96,7 @@ Block BlockManager::getBlock(int faction)
         while(true){
             //Generate random index that is not the command module
             int random_block_index = rand() % (m_all_blocks[faction].size()-1) + 1;
-            int weight_compare = rand() % 100 + 1;
+            int weight_compare = rand() % 1000 + 1;
             if(m_all_blocks[faction][random_block_index].getSelectionWeight() >= weight_compare && !m_all_blocks[faction][random_block_index].hasThrustAttachment())
             {
                 return(m_all_blocks[faction][random_block_index]);
@@ -146,7 +146,7 @@ Block BlockManager::getThruster(int faction)
         while(true){
             //Generate random index that is not the command module
             int random_block_index = rand() % (m_all_blocks[faction].size()-1) + 1;
-            int weight_compare = rand() % 100 + 1;
+            int weight_compare = rand() % 1000 + 1;
             if(m_all_blocks[faction][random_block_index].getSelectionWeight() >= weight_compare && m_all_blocks[faction][random_block_index].hasThrustAttachment())
             {
                 return(m_all_blocks[faction][random_block_index]);

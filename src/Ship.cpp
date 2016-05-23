@@ -3,8 +3,7 @@
 #include <iomanip>
 #include "Ship.h"
 
-Ship::Ship(int faction):
-    m_faction(faction),
+Ship::Ship():
     m_lifetime_wins(0)
 {
 
@@ -33,39 +32,11 @@ Attachment Ship::getAttachmentPoint(int &block_index,int &attachment_index)
 
 }
 
-//Works super slow and doesnt speed anything up
-void Ship::clearAttachments()
-{
-    //Remove attachment that share the same position
-    for(int i = 0; i < (int)m_blocks.size(); ++i){
-        for(int j = 0; j < (int)m_blocks.size(); ++j){
-            if(i != j){ // Not the same block
-                //See if they are even close
-                float distance =
-                std::sqrt(std::pow(m_blocks[i].getPosition().x - m_blocks[j].getPosition().x,2.0)+
-                          std::pow(m_blocks[i].getPosition().y - m_blocks[j].getPosition().y,2.0f));
-                if(distance <= m_blocks[i].getRadius() + m_blocks[j].getRadius() + 5.0) {// 5 just to be conservative
-                    //This means they are near each other
-                    for(int w = 0; w < (int)m_blocks[i].getAttachments().size(); ++w){
-                        for(int k = 0; k < (int)m_blocks[j].getAttachments().size(); ++k){
-                            if(m_blocks[i].getAttachments()[w].position == m_blocks[j].getAttachments()[k].position){
-                                m_blocks[i].removeAttachment(w);
-                                m_blocks[j].removeAttachment(k);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
 //Reassembly corrects for the command block not actually being the center after it loads the file
 //TODO - center of gravity finding and proper file writing.
-void Ship::writeShip(std::string file_name,std::string ship_name,std::string author_name, std::string faction_name)
+void Ship::writeShip(std::string file_name,std::string author_name, std::string faction_name)
 {
     std::ofstream file;
-    m_ship_name = ship_name;
 
     file.open(file_name);
 
@@ -77,7 +48,7 @@ void Ship::writeShip(std::string file_name,std::string ship_name,std::string aut
         file << "{\n  color0=0x410101,\n  color1=34182,\n  faction=" << m_faction << ",\n  name=\"" << faction_name << "\",\n  blueprints={\n    " ;
 
         //Ship header
-        file << "{data={name=\""<<ship_name<<"\", author=\""<<author_name<<"\", color0=0xc96f20, color1=0x796bff,\n";
+        file << "{data={name=\""<<m_ship_name<<"\", author=\""<<author_name<<"\", color0=0xc96f20, color1=0x796bff,\n";
 
         //group line
         file << "    wgroup={0, 0, 2, 0}}, blocks={\n";

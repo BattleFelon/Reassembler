@@ -1,7 +1,7 @@
 #Settings File Alpha
 
 #Debug mode on = 1; off = 0;
-debug_mode = 0;
+debug_mode = 1;
 
 #number of ships to create. This is the population size.
 #They fight in a poll style match where the each ship fights
@@ -31,7 +31,10 @@ path_to_ships_folder = C:\Users\Rob\Desktop\Reassembler-build\ships
 #Mutator settings
 
 #Number of generations
-num_generations = 10;
+num_generations = 1;
 
 #Mutator type 1 = pool, 2 = bracket
 mutator_type = 2;
+
+#Number of mutation blocks. Number of random blocks to attach to child
+mutation_blocks = 5;

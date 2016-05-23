@@ -4,10 +4,21 @@
 #include <mutex>
 
 #include "SettingsParser.h"
+#include "ShipBuilder.h"
+#include "Ship.h"
+#include "TournamentManager.h"
+#include "LogParser.h"
+#include "Fleet.h"
 #include "Mutator.h"
 
 int main()
 {
+
+    //ShipBuilder SB;
+    //Fleet f1;
+    //f1.readFleet("blarg.lua");
+
+
     SettingsParser SP;
     SP.loadFromFile("config.txt");
     int debug_mode;
@@ -19,7 +30,8 @@ int main()
     SP.get("mutator_type",mutator_type);
 
     if(debug_mode){
-
+        //Display disp;
+       // disp.run();
     }
     else{
         //Mutate class init
@@ -40,8 +52,6 @@ int main()
         }
 
     }
-
-
 
 
     return EXIT_SUCCESS;
