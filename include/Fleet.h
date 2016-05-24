@@ -29,6 +29,8 @@ class Fleet
         Ship getShip(int index){if(index < m_ships.size()) return(m_ships[index]);}
     private:
 
+        int bracketCount(std::string line);
+
         int m_faction;
         std::string m_fleet_name;
         std::vector<Ship> m_ships;

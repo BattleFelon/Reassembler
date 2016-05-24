@@ -12,12 +12,10 @@
 
 int main()
 {
+    Fleet f1;
+    f1.readFleet("blarg.lua");
 
-    //ShipBuilder SB;
-    //Fleet f1;
-    //f1.readFleet("blarg.lua");
-
-
+/*
     SettingsParser SP;
     SP.loadFromFile("config.txt");
     int debug_mode;
@@ -57,7 +55,7 @@ int main()
         }
 
     }
-
+*/
 
     return EXIT_SUCCESS;
 }

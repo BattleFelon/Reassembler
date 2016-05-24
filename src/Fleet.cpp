@@ -5,6 +5,10 @@
 
 #include "Ship.h"
 #include "Fleet.h"
+#include "BlockManager.h"
+#include "Block.h"
+
+#define M_PI 3.14159265359
 
 Fleet::Fleet()
 {
@@ -85,7 +89,14 @@ void Fleet::writeFleet(std::string file_name,std::string author_name, std::strin
 
 void Fleet::readFleet(std::string file_name)
 {
+    //Block manager for block data access
+    BlockManager BM;
+    BM.loadBlockData("data/block_data.csv");
+
+    //Input line
     std::string line;
+
+    //Open her up
     std::ifstream input (file_name);
     if(input.is_open()){
         for(int i = 0; i < 3; ++i)
@@ -93,15 +104,131 @@ void Fleet::readFleet(std::string file_name)
 
         std::getline(input,line); //Line contains faction number
         //Search for faction number
-        for(int i = 20; i > 0; i--){
+        for(int i = 100; i > 0; i--){
             if(line.find(std::to_string(i)) != std::string::npos){
                 m_faction = i;
                 i = 0;
             }
         }
 
+        //Faction name line
+        std::getline(input,line);
+        auto found = line.find("name=");
+        auto end_find = line.find('"',found + 6);
+        if(found != std::string::npos){
+            m_fleet_name = line.substr(found+6,end_find - found - 6);
+        }
+        //Used to track command block, shift positions for local coords
+        bool is_command = false;
+        Vector2D origin_offset(0,0);
+        float angle = 0;
+
+        //Main processing loop
+        while(input.good()){
+            std::getline(input,line); //Ship Header
+
+            //Count brackets to figure out what to do
+            int bracket_count = bracketCount(line);
+            //Process block data for ship
+            if(bracket_count == 0){
+                auto found = line.find('{');
+                auto end_find = line.find(',',found);
+                int block_number = std::atoi(line.substr(found+1,end_find-found-1).c_str());
+
+                if(block_number != 0){
+                    if(is_command){
+                    m_ships.back().addBlock(BM.getCommandBlock(m_faction));
+                    m_ships.back().setFaction(m_faction);
+                    found = line.find('{',end_find);
+                    end_find = line.find(',',found);
+                    origin_offset.x  = std::stof(line.substr(found+1,end_find-found-1).c_str());
+                    found = line.find('}',end_find);
+                    origin_offset.y = std::stof(line.substr(end_find +2, found - end_find -2).c_str());
+                    is_command = false;
+                    }
+                    else{
+                        //Load unaltered block
+                        Block new_block = BM.getBlock(m_faction,block_number);
+
+                        //Solve for position
+                        Vector2D new_position(0,0);
+                        //new_position.x -= origin_offset.x;
+                        //new_position.y -= origin_offset.y;
+
+                        found = line.find('{',end_find);
+                        end_find = line.find(',',found);
+                        new_position.x += std::stof(line.substr(found+1,end_find-found-1).c_str());
+                        found = line.find('}',end_find);
+                        new_position.y += std::stof(line.substr(end_find +2, found - end_find -2).c_str());
+
+                        //Rotation gathering
+                        if(line.find("binding") == std::string::npos){ //No binding id in line
+                            end_find = line.find('}',found+1);
+
+                            if(end_find - found > 3){ //Must be rotation
+                                angle = std::stof(line.substr(found+3,end_find-found-3).c_str());
+                               // std::cout << angle << "\n";
+                            }
+                        }
+                        else{ //Gotta handle binding id
+                            int bracket_pos = line.find('}',found+2);
+                            int comma_pos = line.find(',',found+2);
+
+                            if(comma_pos < bracket_pos) // rotation and binding
+                            {
+                                angle = std::stof(line.substr(found+3,comma_pos - found - 3).c_str());
+                            }
+                        }
+
+                        //Use gathered data
+                        new_block.rotateBlock(angle * 180.0 / M_PI);
+                        new_block.translate(new_position);
+
+                        m_ships.back().addBlock(new_block);
+                        angle = 0;
+                        new_position.x = 0;
+                        new_position.y = 0;
+                    }
+                }
+                //Block new_block = BM.loadBlockData()
+            }
+            //New ship
+            else if(bracket_count  == 2){
+                m_ships.push_back(Ship());
+                auto found = line.find("name=");
+                auto end_find = line.find('"',found + 6);
+                if(found != std::string::npos){
+                std::string name = line.substr(found+6,end_find - found - 6);
+                m_ships.back().setName(name);
+                is_command = true;
+            }
+            //End of current ship
+            else if(bracket_count == -2){
+
+            }
+            //End of file, save last block and exit
+            else if(bracket_count == -4){
+                    break;
+                }
+            }
+        }
     }
     else{
         std::cout << "Could not find fleet to load, Check to ensure proper path and file name. Make sure it is not compressed\n";
     }
+
+    m_ships.back().writeShip("Woop.lua","Woop","Woop");
+}
+
+int Fleet::bracketCount(std::string line)
+{
+    int counter = 0;
+    for(int i = 0; i < line.size(); ++i){
+        if(line[i] == '{')
+            counter++;
+        if(line[i] == '}')
+            counter--;
+    }
+
+    return(counter);
 }
