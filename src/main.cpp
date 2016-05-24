@@ -42,7 +42,7 @@ int main()
 
         switch(mutator_type){
         case 1:
-            mutate.poolMutator(num_generations);
+            mutate.threadedPoolMutator(num_generations);
             break;
 
         case 2:

@@ -1,9 +1,12 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-#include <windows.h>
-#include <tchar.h>
 #include <stdio.h>
+
+#ifdef WIN_32
+//#include <windows.h>
+//#include <tchar.h>
+#endif // WIN_32
 
 
 #include "LogParser.h"
@@ -88,6 +91,8 @@ int LogParser::getWinner(Ship& ship_1, std::string ship_2)
 
 std::vector<int> LogParser::getWinner(std::vector<std::string> ships)
 {
+
+    #ifdef WIN_32
 	//Vector to hold string names
 	std::vector<std::string> file_names;
 	//make search strings
@@ -137,7 +142,7 @@ std::vector<int> LogParser::getWinner(std::vector<std::string> ships)
 		for (unsigned int curLine = 0; getline(logFile, line) && !did_find; curLine++) {
 			for (int i = 0; i < serach_strings.size() && !did_find; ++i){
 				if (line.find(serach_strings[i]) != std::string::npos) {
-					did_win[i] = 1;
+					did_win[i]++;
 					did_find = true;
 				}
 			}
@@ -149,5 +154,12 @@ std::vector<int> LogParser::getWinner(std::vector<std::string> ships)
 	}
 
 	return(did_win);
+	#endif // WIN_32
+	#ifdef __linux__
+	std::vector<int> results(ships.size());
+	for(auto& result : results)
+        result = rand() % 10;
+    return(results);
+	#endif // __linux__
 }
 

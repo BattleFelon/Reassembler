@@ -29,6 +29,8 @@ class Mutator
 
         void poolMutator(int generations);
 
+        void threadedPoolMutator(int generations);
+
         void bracketMutator(int generations);
 
 		void singleTargetMutator(std::string target_name, std::string target_file_name);
@@ -57,14 +59,12 @@ class Mutator
         int faction;
         int ship_symmetry;
         int mutation_blocks;
+        int core_count;
 
         //Ship data
         std::vector<Ship> population;
         std::vector<std::string> names;
         Ship winner;
-
-        //Lock on the thread
-        std::mutex mtx;
 
 };
 
