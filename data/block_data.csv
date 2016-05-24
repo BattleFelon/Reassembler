@@ -27,8 +27,8 @@ Laser,Square_2,814,6,8,100,814
 Plasma Projector,Beam_1,839,18,8,100,839
 Hull Adapter,Adapter_1,829,0,8,100,829
 Command,Command_1,12000,10,12,0,12000
-Light Bodywork,Square_1,12003,0,12,900,12003
-Heavy Bodywork,Square_1,12004,0,12,900,12004
+Light Bodywork,Square_1,12003,0,12,300,12003
+Heavy Bodywork,Square_1,12004,0,12,300,12004
 Light Bodywork,Triangle_1,12027,0,12,300,12027
 Heavy Bodywork,Triangle_1,12028,0,12,300,12028
 Light Bodywork,Adapter_1,12043,0,12,300,12043
@@ -40,11 +40,11 @@ Impulse Thruster,Thruster_2,12037,6,12,900,12037
 Maneuver Thruster,Thruster_2,12038,9,12,900,12038
 Impulse Thruster,Thruster_3,12039,9,12,900,12039
 Maneuver Thruster,Thruster_3,12040,13,12,900,12040
-Quantum Doom Beam,Beam_1,12121,23,12,200,12121
-Quantum Doom Beam,Beam_2,12122,40,12,200,12122
-PD Subsystem,Square_1,12111,3,12,200,12111
-PD Subsystem,Square_2,12112,6,12,200,12112
-PD Subsystem,Square_3,12113,8,12,200,12113
-Shard Launcher,Launcher_1,12101,16,12,200,12101
-Laser Drone,Launcher_2,12106,121,12,200,12106
-Laser Drone,Launcher_4,12107,180,12,200,12107
+Quantum Doom Beam,Beam_1,12121,23,12,900,12121
+Quantum Doom Beam,Beam_2,12122,40,12,900,12122
+PD Subsystem,Square_1,12111,3,12,10,12111
+PD Subsystem,Square_2,12112,6,12,10,12112
+PD Subsystem,Square_3,12113,8,12,10,12113
+Shard Launcher,Launcher_1,12101,16,12,100,12101
+Laser Drone,Launcher_2,12106,121,12,50,12106
+Laser Drone,Launcher_4,12107,180,12,50,12107

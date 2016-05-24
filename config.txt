@@ -29,12 +29,14 @@ path_to_reassembly_exe = C:\Program Files (x86)\Steam\steamapps\common\Reassembl
 path_to_ships_folder = C:\Users\Rob\Desktop\Reassembler-build\ships
 
 #Mutator settings
+#number of cores your computer has
+core_count = 8
 
 #Number of generations
-num_generations = 1;
+num_generations = 10;
 
 #Mutator type 1 = pool, 2 = bracke, 3 = single ship target
-mutator_type = 3;
+mutator_type = 1;
 
 #Number of mutation blocks. Number of random blocks to attach to child
 mutation_blocks = 5;
