@@ -45,10 +45,10 @@ void Ship::writeShip(std::string file_name,std::string author_name, std::string 
         file.precision(3);
         file.setf(std::ios::fixed);
         //Fleet header
-        file << "{\n  color0=0x410101,\n  color1=34182,\n  faction=" << m_faction << ",\n  name=\"" << faction_name << "\",\n  blueprints={\n    " ;
+        file << "{\n  color0=0x410101,\n  color1=34182,\n  faction=" << m_faction << ",\n  name=\"" << faction_name.c_str() << "\",\n  blueprints={\n    " ;
 
         //Ship header
-        file << "{data={name=\""<<m_ship_name<<"\", author=\""<<author_name<<"\", color0=0xc96f20, color1=0x796bff,\n";
+        file << "{data={name=\""<<m_ship_name.c_str()<<"\", author=\""<<author_name.c_str()<<"\", color0=0xc96f20, color1=0x796bff,\n";
 
         //group line
         file << "    wgroup={0, 0, 2, 0}}, blocks={\n";
@@ -83,5 +83,6 @@ void Ship::writeShip(std::string file_name,std::string author_name, std::string 
 
 Ship Ship::readShip()
 {
- //TODO
+	Ship new_ship;
+	return(new_ship);
 }

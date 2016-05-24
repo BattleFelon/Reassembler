@@ -12,9 +12,6 @@
 #include <thread>
 #include <mutex>
 
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
-
 #include "SettingsParser.h"
 #include "ShipBuilder.h"
 #include "Ship.h"
@@ -33,6 +30,8 @@ class Mutator
         void poolMutator(int generations);
 
         void bracketMutator(int generations);
+
+		void singleTargetMutator(std::string target_name, std::string target_file_name);
 
         Ship* getWinner(){return(&winner);}
 
