@@ -54,7 +54,7 @@ class Display
 
         void startPool(){}//std::thread t1 (&Mutator::poolMutator,&mutate,10); t1.detach();
 
-        void breedLastTwo(){if(ships.size() >= 2) ships.push_back(SB.breedShips(ships.back(),ships[ships.size()-2],m_ship_symmetry,5));}
+        void breedLastTwo(){if(ships.size() >= 2) ships.push_back(SB.breedShips(ships.back(),ships[ships.size()-2],m_ship_symmetry,5,ships.back().getTotalValue()));}
 
         //Mutator object
         //Mutator mutate;

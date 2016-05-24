@@ -25,7 +25,7 @@ class ShipBuilder
         Ship createShip(int target_point_value, int faction, int block_limit,int min_thruster_points, int is_symmetric, std::string name);
 
         //Actual genetic code!!!
-        Ship breedShips(Ship& father, Ship& mother, int ship_symmetry, int mutation_blocks);
+		Ship breedShips(Ship& father, Ship& mother, int ship_symmetry, int mutation_blocks, int target_point_value);
 
 
         //Adds a block to an existing ship. Debug mainly. Could be useful during evolve

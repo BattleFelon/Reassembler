@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include <iomanip>
+#include <string>
 
 #include "Ship.h"
 #include "Fleet.h"

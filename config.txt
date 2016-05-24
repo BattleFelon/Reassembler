@@ -18,7 +18,7 @@ thruster_value_target = 200;
 block_count_limit = 1000;
 
 #faction of ships, currently only 8
-faction = 8;
+faction = 12;
 
 #Ship Symmetry, 0 = No symmetry, 1 = All will be symmetric, 2 = Random Symmetry
 ship_symmetry = 1
@@ -29,12 +29,18 @@ path_to_reassembly_exe = C:\Program Files (x86)\Steam\steamapps\common\Reassembl
 path_to_ships_folder = C:\Users\Rob\Desktop\Reassembler-build\ships
 
 #Mutator settings
+#number of cores your computer has
+core_count = 8
 
 #Number of generations
-num_generations = 1;
+num_generations = 10;
 
-#Mutator type 1 = pool, 2 = bracket
-mutator_type = 2;
+#Mutator type 1 = pool, 2 = bracke, 3 = single ship target
+mutator_type = 1;
 
 #Number of mutation blocks. Number of random blocks to attach to child
 mutation_blocks = 5;
+
+#Options for single ship target, no lua extension added
+target_file_name = blarg
+target_name = ship_name

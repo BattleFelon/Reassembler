@@ -24,7 +24,7 @@ Display::Display()
     SP.get("ship_symmetry",m_ship_symmetry);
 
     //Cast to bool
-    ships.push_back(SB.createShip(m_p_value_target,8,1000,0,m_ship_symmetry,"Debug"));
+    ships.push_back(SB.createShip(m_p_value_target,m_faction,1000,0,m_ship_symmetry,"Debug"));
 	createGui();
 
 	attachment_point.setOrigin(5,5);
@@ -270,7 +270,7 @@ void Display::createNewShip()
     ships.push_back(
                     SB.createShip(
                                   std::stoi(m_point_entry->GetText().toAnsiString()),
-                                  8,
+                                  m_faction,
                                   std::stoi(m_block_entry->GetText().toAnsiString()),
                                   std::stoi(m_thrust_entry->GetText().toAnsiString()),
                                   is_symm,

@@ -25,6 +25,7 @@ class Ship
 
         //Used by mutator for lifetime win tracking
         void wins(){m_lifetime_wins++;}
+        void addWins(int wins){m_lifetime_wins += wins;}
 
         //Used by shipbuilder to get a random attachment point
         Attachment getAttachmentPoint(int &block_index,int &attachment_index);

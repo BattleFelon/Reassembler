@@ -1,19 +1,50 @@
 block_name,block_shape_scale,block_number,block_points,block_faction,block_selection_weight,block_mirror_number
 Command,Command_1,800,12,8,0,800
 Generator,Square_1,801,20,8,100,801
-Hull,Triangle_1,802,0,8,0,802
-Hull,Square_1,826,0,8,1000,826
+Hull,Triangle_1,802,0,8,900,802
+Hull,Square_1,826,0,8,900,826
 Flak Cannon,Square_1,851,22,8,100,851
 Thruster Mini,Thruster_1,803,3,8,0,803
 Plasma Cannon,Octagon_1,831,17,8,100,831
-Thruster Small,Thruster_2,804,4,8,0,804
-Thruster Mega,Thruster_3,805,8,8,1000,805
-Railgun,Octagon_2,842,59,8,500,842
+Thruster Small,Thruster_2,804,4,8,100,804
+Thruster Mega,Thruster_3,805,8,8,100,805
+Railgun,Octagon_2,842,59,8,100,842
 Shield,Square_2,850,80,8,100,850
 Burst Laser,Square_1,845,76,8,100,845
 Hull ,Square_2,876,0,8,100,876
 Proton Sword,Square_2,841,90,8,100,841
 Plasma Cannon,Octagon_2,881,72,8,100,881
-Proton Beam,Beam_1,836,90,8,100,836
-Rocket Launcher,Launcher_1,855,37,8,100,855
-Drone Launcher,Launcher_1,835,36,8,100,835
+Proton Beam,Beam_2,836,90,8,100,836
+Rocket Launcher,Launcher_2,855,37,8,100,855
+Drone Launcher,Launcher_2,835,36,8,100,835
+Torpedo Launcher,Launcher_3,840,55,8,100,840
+Mine Layer,Launcher_4,849,79,8,100,849
+Blast Pulser,Octagon_2,844,28,8,100,844
+Missile Launcher,Launcher_1,832,31,8,100,832
+Defense Cannon,Triangle_1,837,6,8,100,837
+Huge Thruster,Thruster_4,806,18,8,0,806
+Laser,Square_2,814,6,8,100,814
+Plasma Projector,Beam_1,839,18,8,100,839
+Hull Adapter,Adapter_1,829,0,8,100,829
+Command,Command_1,12000,10,12,0,12000
+Light Bodywork,Square_1,12003,0,12,900,12003
+Heavy Bodywork,Square_1,12004,0,12,900,12004
+Light Bodywork,Triangle_1,12027,0,12,300,12027
+Heavy Bodywork,Triangle_1,12028,0,12,300,12028
+Light Bodywork,Adapter_1,12043,0,12,300,12043
+Heavy Bodywork,Adapter_1,12044,0,12,300,12044
+Light Bodywork,Launcher_1,12051,0,12,300,12051
+Impulse Thruster,Thruster_1,12035,3,12,900,12035
+Maneuver Thruster,Thruster_1,12036,5,12,900,12036
+Impulse Thruster,Thruster_2,12037,6,12,900,12037
+Maneuver Thruster,Thruster_2,12038,9,12,900,12038
+Impulse Thruster,Thruster_3,12039,9,12,900,12039
+Maneuver Thruster,Thruster_3,12040,13,12,900,12040
+Quantum Doom Beam,Beam_1,12121,23,12,200,12121
+Quantum Doom Beam,Beam_2,12122,40,12,200,12122
+PD Subsystem,Square_1,12111,3,12,200,12111
+PD Subsystem,Square_2,12112,6,12,200,12112
+PD Subsystem,Square_3,12113,8,12,200,12113
+Shard Launcher,Launcher_1,12101,16,12,200,12101
+Laser Drone,Launcher_2,12106,121,12,200,12106
+Laser Drone,Launcher_4,12107,180,12,200,12107
