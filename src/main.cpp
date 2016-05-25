@@ -9,12 +9,14 @@
 #include "LogParser.h"
 #include "Fleet.h"
 #include "Mutator.h"
+#include "FleetBuilder.h"
+#include "FleetMutator.h"
 
 int main()
 {
-    //Fleet f1;
-    //f1.readFleet("blarg.lua");
-
+   // FleetBuilder FB;
+   // Fleet f1 = FB.createFleet(16000,1000,100,1000,8,1);
+    //f1.writeFleet("New_fleet.lua","ME","name");
 
     SettingsParser SP;
     SP.loadFromFile("config.txt");
@@ -35,19 +37,24 @@ int main()
        // disp.run();
     }
     else{
-        //Mutate class init
-        Mutator mutate;
+
+        Mutator M;
+        FleetMutator FM;
 
         switch(mutator_type){
+
         case 1:
-            mutate.poolMutator(num_generations);
+            M.init();
+            M.poolMutator(num_generations);
             break;
 
         case 2:
-            mutate.bracketMutator(num_generations);
+            M.init();
+            M.bracketMutator(num_generations);
             break;
 		case 3:
-			mutate.singleTargetMutator(target_name,target_file_name);
+		    FM.init();
+		    FM.bruteForceFleetBeater();
 			break;
         default:
             std::cout << "Check settings file \n";
@@ -55,5 +62,6 @@ int main()
         }
 
     }
+
     return EXIT_SUCCESS;
 }

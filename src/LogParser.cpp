@@ -89,6 +89,45 @@ int LogParser::getWinner(Ship& ship_1, std::string ship_2)
 		return(one_win_count < two_win_count);
 }
 
+int LogParser::getWinner(std::string fleet_1, std::string fleet_2)
+{
+    //Start with error condition
+    int win = 2;
+
+    //Make search strings
+    std::string search_1 = fleet_1;
+    std::string search_2 = fleet_2;
+    search_1.append(" - ");
+    search_2.append(" - ");
+    search_1.append(fleet_1);
+    search_2.append(fleet_2);
+
+    #ifdef __linux__
+    std::cout<< search_1 << " " << search_2 << "\n";
+    return(rand()%2);
+    #endif // __linux__
+
+    #ifdef _WIN32
+    //Read it
+    std::string line;
+    std::ifstream logFile (log_path);
+
+    for (unsigned int curLine = 0; getline(logFile, line) && !did_find; curLine++) {
+        if (line.find(search_1) != std::string::npos) {
+            win = 0;
+        }
+        if (line.find(search_2) != std::string::npos) {
+            win = 1;
+        }
+    }
+
+    //Close it up
+	logFile.close();
+
+	return(win)
+	#endif // _WIN32
+}
+
 std::vector<int> LogParser::getWinner(std::vector<std::string> ships)
 {
 

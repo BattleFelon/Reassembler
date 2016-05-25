@@ -16,6 +16,8 @@ class LogParser
         //false if first ship win, true second ship win
         int getWinner(Ship& ship_1, Ship& ship_2);
 		int getWinner(Ship& ship_1, std::string ship_2);
+		int getWinner(std::string fleet_1, std::string fleet_2);
+
 		std::vector<int> getWinner(std::vector<std::string> ships);
 
     private:

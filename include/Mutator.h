@@ -27,13 +27,13 @@ class Mutator
 
         virtual ~Mutator();
 
+        void init();
+
         void poolMutator(int generations);
 
         void threadedPoolMutator(int generations);
 
         void bracketMutator(int generations);
-
-		void singleTargetMutator(std::string target_name, std::string target_file_name);
 
         Ship* getWinner(){return(&winner);}
 

@@ -8,6 +8,15 @@
 Mutator::Mutator()
 {
 
+}
+
+Mutator::~Mutator()
+{
+
+}
+
+void Mutator::init()
+{
     //Load settings file
     SP.loadFromFile("config.txt");
 
@@ -44,11 +53,6 @@ Mutator::Mutator()
         name.append(std::to_string(i));
         names.push_back(name);
     }
-}
-
-Mutator::~Mutator()
-{
-
 }
 
 void Mutator::poolMutator(int generations){
@@ -147,7 +151,7 @@ void Mutator::poolMutator(int generations){
 		int total = 0;
 		for (auto win : wins)
 			total += win;
-		
+
 		std::cout << "Total Wins " << total << "\n";
 
         //Select mate
@@ -271,7 +275,9 @@ void Mutator::threadedPoolMutator(int generations)
                     //Launch battle
 					std::cout << "Thread Started \n";
                     battles[thread_index] = std::thread(&TournamentManager::startString, TM, names[i], names[j]);
+                    #ifdef _WIN32
 					_sleep(1000);
+					#endif // _WIN32
                     thread_index++;
                 }
                 else{
@@ -569,74 +575,4 @@ void Mutator::bracketMutator(int generations)
             population[i].writeShip(file_name,names[i],names[i]);
         }
     }//End of all generations
-}
-
-void Mutator::singleTargetMutator(std::string target_name, std::string target_file_name){
-
-	//Core number for thread creation
-	int core_count = 8;
-
-	//Make vector
-    population.resize(core_count);
-
-    //win tracking
-    std::vector<int> wins(core_count,0);
-    int winner_index = 0;
-
-	for (bool did_win = false; !did_win;){
-		//thread vector
-		std::vector<std::thread> battles(core_count);
-		//name vector
-		std::vector<std::string> search_names(core_count);
-		//Population spawn
-		for (int i = 0; i < core_count; ++i){
-            if(wins[i] == 0)
-                population[i] = (SB.createShip(p_value_target, faction, block_count_limit, thruster_value_target, ship_symmetry, names[i]));
-            else if(wins[i] >= 2){
-                    did_win = true;
-                    winner_index = i;
-            }
-
-            //Write the ships to file
-            std::string file_name = "ships/";
-            file_name.append(names[i]);
-            file_name.append(".lua");
-            population[i].setName(names[i]);
-            population[i].writeShip(file_name,names[i],names[i]);
-
-			battles[i] = std::thread(&TournamentManager::startString, TM, names[i], target_name);
-			search_names[i] =names[i];
-		}
-
-
-        //wait for the battles to finish
-		for (auto& t : battles){
-            t.join();
-		}
-
-        //Get results from files and delete logs
-        std::vector<int> results(core_count,0);
-		#ifdef _WIN32
-		results = LP.getWinner(search_names);
-        #endif // WIN_32
-        #ifdef __linux__
-        for(int i = 0; i < core_count;++i){
-            rand() % 100 > 90 ? results[i] = 1 : results[i] = 0;
-            if(results[i] == 1)
-                std::cout << "WINNNN\n";
-        }
-        #endif // __linux__
-		for (int i = 0; i < results.size(); ++i){
-                        //See result, add to wins if won, kill loser if lost
-            			if(results[i])
-                            wins[i]++;
-                        else
-                            wins[i]=0;
-		}
-	}
-	//Write the ships to file
-	std::string new_file_name = "ships/Winner_";
-	new_file_name.append(names[winner_index]);
-
-    population[winner_index].writeShip(new_file_name,names[winner_index],names[winner_index]);
 }

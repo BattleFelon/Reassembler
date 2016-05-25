@@ -1,11 +1,53 @@
-#Settings File Alpha
+#Reassembler Settings
 
-#Debug mode on = 1; off = 0;
+#Global Settings	------------------------------------------------------------
+
+#Mutator type 1 = pool, 2 = bracket, 3 = Brute Force Fleet Beater
+mutator_type = 3;
+
+#Path Stirngs, just to the folder. Make it look like the ones below.
+path_to_log_folder = C:\Users\Rob\Saved Games\Reassembly\data
+path_to_reassembly_exe = C:\Program Files (x86)\Steam\steamapps\common\Reassembly\win32
+path_to_ships_folder = C:\Users\Rob\Desktop\Reassembler-build\ships
+
+#Faction to build, currently only 8 and 12
+faction = 8;
+
+#Ship Symmetry, 0 = No symmetry, 1 = All will be symmetric, 2 = Random Symmetry
+ship_symmetry = 1
+
+#Number of generations. Number of times it will loop through a given mutator
+num_generations = 10;
+
+#Debug mode 1 = on, 0 = off. Will not work for you
 debug_mode = 0;
 
+
+
+#Fleet Mutator Settings		-----------------------------------------------------------
+fleet_p_value = 16000;
+fleet_single_ship_p_value_max = 8000;
+fleet_single_ship_p_value_min = 100;
+
+#Options for targeted fleet beating
+target_fleet_file = blarg
+target_fleet_name = Rival
+
+
+
+#Single Mutator settings	------------------------------------------------------------
+
+#Number of mutation blocks. Number of random blocks to attach to child
+mutation_blocks = 5;
+
+#Options for single ship target, no lua extension added
+target_file_name = blarg
+target_name = ship_name
+
+
+
+#Single Ship Settings 	------------------------------------------------------------
 #number of ships to create. This is the population size.
-#They fight in a poll style match where the each ship fights
-# all of the others in an arena match
 number_of_ships = 10;
 
 #Point value limit
@@ -17,30 +59,10 @@ thruster_value_target = 200;
 #Max number of blocks a ship can have
 block_count_limit = 1000;
 
-#faction of ships, currently only 8
-faction = 8;
 
-#Ship Symmetry, 0 = No symmetry, 1 = All will be symmetric, 2 = Random Symmetry
-ship_symmetry = 1
 
-#System Call Path Stirngs, just to the folder. Make it look like the ones below.
-path_to_log_folder = C:\Users\Rob\Saved Games\Reassembly\data
-path_to_reassembly_exe = C:\Program Files (x86)\Steam\steamapps\common\Reassembly\win32
-path_to_ships_folder = C:\Users\Rob\Desktop\Reassembler-build\ships
-
-#Mutator settings
+#Experimental Settings/Not working yet	--------------------------------------------
 #number of cores your computer has
 core_count = 8
 
-#Number of generations
-num_generations = 10;
 
-#Mutator type 1 = pool, 2 = bracke, 3 = single ship target
-mutator_type = 1;
-
-#Number of mutation blocks. Number of random blocks to attach to child
-mutation_blocks = 5;
-
-#Options for single ship target, no lua extension added
-target_file_name = blarg
-target_name = ship_name

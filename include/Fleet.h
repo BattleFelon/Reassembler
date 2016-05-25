@@ -1,16 +1,13 @@
-//Borrowed from terathon.com
 
 #ifndef FLEET_H
 #define FLEET_H
 
 #include "Ship.h"
 
+
 class Fleet
 {
     public:
-        float   x;
-        float   y;
-
         Fleet();
         virtual ~Fleet();
 
@@ -25,8 +22,14 @@ class Fleet
 
         void addShip(Ship new_ship){m_ships.push_back(new_ship);}
         void removeShip(int index){if(index < m_ships.size()) m_ships.erase(m_ships.begin() + index);}
+        int getFleetSize(){return m_ships.size();}
 
         Ship getShip(int index){if(index < m_ships.size()) return(m_ships[index]);}
+        int getShipValue(int index){if (index < m_ships.size()) return(m_ships[index].getTotalValue());}
+
+        void setName(std::string name){m_fleet_name = name;}
+        std::string getName(){return(m_fleet_name);}
+
     private:
 
         int bracketCount(std::string line);
@@ -34,6 +37,8 @@ class Fleet
         int m_faction;
         std::string m_fleet_name;
         std::vector<Ship> m_ships;
+
+
 
 };
 

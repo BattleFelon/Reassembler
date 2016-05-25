@@ -12,7 +12,7 @@
 ShipBuilder::ShipBuilder()
 {
     if(bm.loadBlockData("data/block_data.csv")){
-        std::cout << "Block data loaded \n";
+        //std::cout << "Block data loaded \n";
     }
     else{
         std::cout << "Block data failed to load\n";
