@@ -43,12 +43,12 @@ Ship ShipBuilder::createShip(int target_point_value, int faction, int block_limi
         for(int i = 0; i < TRY_LIMIT && new_ship.getTotalValue() <= (target_point_value - target_thruster_points) && (int)new_ship.getBlocks().size() <= block_limit; ++i){
             forceFitNewBlock(new_ship,faction,is_symm,0);
         }
-        if(is_symm){
+		if (is_symm && new_ship.getBlocks().size() > 2){
             //Remove last two blocks to keep it under target value
             new_ship.getBlocks().pop_back();
             new_ship.getBlocks().pop_back();
         }
-        else{
+		else if (new_ship.getBlocks().size() > 1){
             //Remove only one if totally random non-symmetry
             new_ship.getBlocks().pop_back();
         }
@@ -56,12 +56,12 @@ Ship ShipBuilder::createShip(int target_point_value, int faction, int block_limi
         for(int i = 0; i < TRY_LIMIT && new_ship.getTotalValue() <= target_point_value && (int)new_ship.getBlocks().size() <= block_limit; ++i){
             forceFitNewBlock(new_ship,faction,is_symm,1);
         }
-        if(is_symm){
+		if (is_symm && new_ship.getBlocks().size() > 2){
             //Remove last two blocks to keep it under target value
             new_ship.getBlocks().pop_back();
             new_ship.getBlocks().pop_back();
         }
-        else{
+		else if (new_ship.getBlocks().size() > 1){
             //Remove only one if totally random non-symmetry
             new_ship.getBlocks().pop_back();
         }
@@ -120,7 +120,7 @@ Ship ShipBuilder::breedShips(Ship& father, Ship& mother, int ship_symmetry, int 
     for(int i = 0, n = father_genetics.size()/2; i < n;){
         bool is_new_code = true;
         //Select random non-command module index position
-        int index = rand() % father_genetics.size() + 1;
+        int index = rand() % (father_genetics.size()-1)+1;
 
         //Check to ensure no repeats
         for(int j = 0; j < repeated_code.size(); ++j)
@@ -139,7 +139,7 @@ Ship ShipBuilder::breedShips(Ship& father, Ship& mother, int ship_symmetry, int 
     for(int i = 0, n = mother_genetics.size()/2; i < n;){
         bool is_new_code = true;
         //Select random non-command module index position
-        int index = rand() % mother_genetics.size() + 1;
+        int index = rand() % (mother_genetics.size()-1)+1;
 
         //Check to ensure no repeats
         for(int j = 0; j < repeated_code.size(); ++j)
@@ -179,12 +179,12 @@ Ship ShipBuilder::breedShips(Ship& father, Ship& mother, int ship_symmetry, int 
         }
     }
     //Remove to keep under
-    if(is_symm){
+	if (is_symm && new_ship.getBlocks().size() > 2){
         //Remove last two blocks to keep it under target value
         new_ship.getBlocks().pop_back();
         new_ship.getBlocks().pop_back();
     }
-    else{
+	else if (new_ship.getBlocks().size() > 1){
         //Remove only one if totally random non-symmetry
         new_ship.getBlocks().pop_back();
     }

@@ -80,11 +80,11 @@ void Mutator::poolMutator(int generations){
 
                 //Wooooo ifdefs
                 int result = 0;
-                #ifdef WIN_32
+				#ifdef _WIN32
                 TM.startArena(population[i],population[j]);
                 //0 means first ship wins, 1 means second, and 2 means something went wrong
                 result = LP.getWinner(population[i], population[j]);
-                #endif // WIN_32
+                #endif // _WIN32
                 #ifdef __linux__
                 result = rand() % 2;
                 #endif // __linux__
@@ -102,9 +102,9 @@ void Mutator::poolMutator(int generations){
                 }
                 else if (result == 2){
                     std::cout << "One of your path values is incorrect\n";
-                    #ifdef WIN_32
+					#ifdef _WIN32
 					_sleep(1000);
-					#endif // WIN_32
+					#endif // _WIN32
                     exit(-1);
                     //return(-1);
                 }
@@ -124,10 +124,10 @@ void Mutator::poolMutator(int generations){
         for(int i = 0; i < wins.size(); ++i){
             if(wins[i] == number_of_wins && i != winner_index){
                 int result = 0;
-                #ifdef WIN_32
+				#ifdef _WIN32
                 TM.startArena(population[winner_index],population[i]);
                 result = LP.getWinner(population[winner_index],population[i]);
-                #endif // WIN_32
+                #endif // _WIN32
                 #ifdef __linux__
                 result = rand() % 2;
                 #endif // __linux__
@@ -144,6 +144,11 @@ void Mutator::poolMutator(int generations){
                 }
             }
         }
+		int total = 0;
+		for (auto win : wins)
+			total += win;
+		
+		std::cout << "Total Wins " << total << "\n";
 
         //Select mate
         int win_diff = 1000;
@@ -264,7 +269,9 @@ void Mutator::threadedPoolMutator(int generations)
             for(int j = i + 1; j < number_of_ships; ++j){
                 if(thread_index < core_count){
                     //Launch battle
+					std::cout << "Thread Started \n";
                     battles[thread_index] = std::thread(&TournamentManager::startString, TM, names[i], names[j]);
+					_sleep(1000);
                     thread_index++;
                 }
                 else{
@@ -283,7 +290,11 @@ void Mutator::threadedPoolMutator(int generations)
 
         //Parse Result files
         std::vector<int> wins = LP.getWinner(names);
+		int total = 0;
 
+		for (auto win : wins)
+			total += win;
+		std::cout << "Total wins " << total << "\n";
         //Add wins to lifetime
         for(int i = 0; i < wins.size();++i){
             population[i].addWins(wins[i]);
@@ -302,10 +313,10 @@ void Mutator::threadedPoolMutator(int generations)
         for(int i = 0; i < wins.size(); ++i){
             if(wins[i] == number_of_wins && i != winner_index){
                 int result = 0;
-                #ifdef WIN_32
+				#ifdef _WIN32
                 TM.startArena(population[winner_index],population[i]);
                 result = LP.getWinner(population[winner_index],population[i]);
-                #endif // WIN_32
+                #endif // _WIN32
                 #ifdef __linux__
                 result = rand() % 2;
                 #endif // __linux__
@@ -418,11 +429,11 @@ void Mutator::bracketMutator(int generations)
                         std::cout << "Arena " << population[i].getShipName() << " and " << population[j].getShipName() << "...";
                         std::cout.flush();
                         int result = 0;
-                        #ifdef WIN_32
+						#ifdef _WIN32
                         TM.startArena(population[i],population[j]);
                         //0 means first ship wins, 1 means second, and 2 means something went wrong
                         result = LP.getWinner(population[i], population[j]);
-                        #endif // WIN_32
+                        #endif // _WIN32
                         #ifdef __linux__
                         result =  rand() % 2;
                         #endif // __linux__
@@ -459,11 +470,11 @@ void Mutator::bracketMutator(int generations)
                         if(wins[k] == wins[w] && w != k){
                             std::cout<< "Ship_" << k << " has to fight loser Ship_" << w << " for a spot in the next round...";
                             int result = 0;
-                            #ifdef WIN_32
+							#ifdef _WIN32
                             TM.startArena(population[k],population[w]);
                             //0 means first ship wins, 1 means second, and 2 means something went wrong
                             result = LP.getWinner(population[k], population[w]);
-                            #endif // WIN_32
+                            #endif // _WIN32
                             #ifdef __linux__
                             result = rand() % 2;
                             #endif // __linux__
@@ -482,9 +493,9 @@ void Mutator::bracketMutator(int generations)
                             }
 							else if (result == 2){
 								std::cout << "One of your path values is incorrect\n";
-								#ifdef WIN_32
+								#ifdef _WIN32
                                 _sleep(1000);
-                                #endif // WIN_32
+                                #endif // _WIN32
 								exit(-1);
 								//return(-1);
 							}
@@ -605,8 +616,8 @@ void Mutator::singleTargetMutator(std::string target_name, std::string target_fi
 
         //Get results from files and delete logs
         std::vector<int> results(core_count,0);
-        #ifdef WIN_32
-		std::vector<int> results = LP.getWinner(search_names);
+		#ifdef _WIN32
+		results = LP.getWinner(search_names);
         #endif // WIN_32
         #ifdef __linux__
         for(int i = 0; i < core_count;++i){

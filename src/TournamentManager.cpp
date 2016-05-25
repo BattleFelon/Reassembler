@@ -38,18 +38,18 @@ void TournamentManager::startString(std::string ship_1, std::string ship_2)
 {
 
 	//This mess calls reassembly correctly. Damn this was hard
-    #ifdef WIN_32
+	#ifdef _WIN32
 	std::ostringstream command;
 	command << "\"\"";
 	command << exe_path;
 	command << "\\ReassemblyRelease.exe";
 	command << "\" ";
 	//Command line args
-	command << "--HeadlessMode=1 --NetworkEnable=0 --LoadSuperFast=1 --SteamEnable=0 --TimestampLog=0 --EnableDevBindings=1 --SandboxScript=\"arena \'";
+	command << "--HeadlessMode=1 --NetworkEnable=0 --LoadSuperFast=1 --SteamEnable=0 --TimestampLog=1 --EnableDevBindings=1 --SandboxScript=\"arena \'";
 	command << ships_path << "\\" << ship_1 << ".lua\' \'" << ships_path << "\\" << ship_2 << ".lua\'\"\"";
 
 	system(command.str().c_str());
-	#endif // WIN_32
+	#endif // _WIN32
 	#ifdef __linux__
 	//std::cout << ship_1 << " " << ship_2 << "\n";
 	#endif // __linux__

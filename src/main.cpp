@@ -12,10 +12,10 @@
 
 int main()
 {
-    Fleet f1;
-    f1.readFleet("blarg.lua");
+    //Fleet f1;
+    //f1.readFleet("blarg.lua");
 
-/*
+
     SettingsParser SP;
     SP.loadFromFile("config.txt");
     int debug_mode;
@@ -40,7 +40,7 @@ int main()
 
         switch(mutator_type){
         case 1:
-            mutate.threadedPoolMutator(num_generations);
+            mutate.poolMutator(num_generations);
             break;
 
         case 2:
@@ -55,7 +55,5 @@ int main()
         }
 
     }
-*/
-
     return EXIT_SUCCESS;
 }
