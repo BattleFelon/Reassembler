@@ -1,8 +1,9 @@
 block_name,block_shape_scale,block_number,block_points,block_faction,block_selection_weight,block_mirror_number
 Command,Command_1,800,12,8,0,800
 Generator,Square_1,801,20,8,100,801
-Hull,Triangle_1,802,0,8,900,802
-Hull,Square_1,826,0,8,900,826
+Generator 2,Square_2,834,135,8,100,834
+Hull,Triangle_1,802,0,8,1000,802
+Hull,Square_1,826,0,8,1000,826
 Flak Cannon,Square_1,851,22,8,100,851
 Thruster Mini,Thruster_1,803,3,8,0,803
 Plasma Cannon,Octagon_1,831,17,8,100,831
@@ -25,26 +26,84 @@ Defense Cannon,Triangle_1,837,6,8,100,837
 Huge Thruster,Thruster_4,806,18,8,0,806
 Laser,Square_2,814,6,8,100,814
 Plasma Projector,Beam_1,839,18,8,100,839
-Hull Adapter,Adapter_1,829,0,8,100,829
+Plasma Cannon,Octagon_3,891,176,8,100,891
+AntiMatter Cannon,Beam_3,853,494,8,100,853
+Plasma Mortor,Square_2,848,86,8,100,848
+Station Shield,Square_3,850,1250,8,100,850
+Hull Adapter,Adapter_1,829,0,8,0,829
 Command,Command_1,12000,10,12,0,12000
-Light Bodywork,Square_1,12003,0,12,300,12003
-Heavy Bodywork,Square_1,12004,0,12,300,12004
-Light Bodywork,Triangle_1,12027,0,12,300,12027
-Heavy Bodywork,Triangle_1,12028,0,12,300,12028
-Light Bodywork,Adapter_1,12043,0,12,300,12043
-Heavy Bodywork,Adapter_1,12044,0,12,300,12044
-Light Bodywork,Launcher_1,12051,0,12,300,12051
-Impulse Thruster,Thruster_1,12035,3,12,900,12035
-Maneuver Thruster,Thruster_1,12036,5,12,900,12036
-Impulse Thruster,Thruster_2,12037,6,12,900,12037
-Maneuver Thruster,Thruster_2,12038,9,12,900,12038
-Impulse Thruster,Thruster_3,12039,9,12,900,12039
-Maneuver Thruster,Thruster_3,12040,13,12,900,12040
-Quantum Doom Beam,Beam_1,12121,23,12,900,12121
-Quantum Doom Beam,Beam_2,12122,40,12,900,12122
-PD Subsystem,Square_1,12111,3,12,10,12111
-PD Subsystem,Square_2,12112,6,12,10,12112
-PD Subsystem,Square_3,12113,8,12,10,12113
+Light Bodywork,Square_1,12003,0,12,100,12003
+Heavy Bodywork,Square_1,12004,0,12,100,12004
+Light Bodywork,Triangle_1,12027,0,12,100,12027
+Heavy Bodywork,Triangle_1,12028,0,12,100,12028
+Light Bodywork,Adapter_1,12043,0,12,0,12043
+Heavy Bodywork,Adapter_1,12044,0,12,0,12044
+Light Bodywork,Launcher_1,12051,0,12,100,12051
+Impulse Thruster,Thruster_1,12035,3,12,100,12035
+Maneuver Thruster,Thruster_1,12036,5,12,100,12036
+Impulse Thruster,Thruster_2,12037,6,12,100,12037
+Maneuver Thruster,Thruster_2,12038,9,12,100,12038
+Impulse Thruster,Thruster_3,12039,9,12,100,12039
+Maneuver Thruster,Thruster_3,12040,13,12,100,12040
+Quantum Doom Beam,Beam_1,12121,23,12,100,12121
+Quantum Doom Beam,Beam_2,12122,40,12,100,12122
+PD Subsystem,Square_1,12111,3,12,100,12111
+PD Subsystem,Square_2,12112,6,12,100,12112
+PD Subsystem,Square_3,12113,8,12,100,12113
 Shard Launcher,Launcher_1,12101,16,12,100,12101
-Laser Drone,Launcher_2,12106,121,12,50,12106
-Laser Drone,Launcher_4,12107,180,12,50,12107
+Laser Drone,Launcher_2,12106,121,12,100,12106
+Laser Drone,Launcher_4,12107,180,12,100,12107
+Command,Command_1,200,10,2,0,200
+Adapter,Adapter_1,213,0,2,0,213
+Armor,Armor_Shape,217,0,2,100,217
+Hull,Square_1,219,0,2,100,219
+Hull,Triangle_1,248,0,2,100,248
+Small Thruster,Thruster_2,202,4,2,100,202
+Medium Thruster,Thruster_3,203,5,2,100,203
+Large Thruster,Thruster_4,204,7,2,100,204
+Generator,Square_1,205,36,2,100,205
+Scatter Gun,Scatter_Shape,226,17,2,100,226
+Mini Gun,Square_1,223,18,2,100,223
+MLS Anti Missle,Square_1,238,15,2,100,238
+Shield,Octagon_1,247,33,2,100,247
+ZLM Sparrow,Launcher_1,245,57,2,100,245
+Wall,Square_1,900,0,2,100,900
+Strut,Armor_Shape,903,0,2,100,903
+Mount,Adapter_1,908,0,2,0,908
+EXR-1 Railgun,Beam_4,228,29,2,100,228
+HC2,Square_3,227,31,2,100,227
+HC3,Square_3,234,58,2,100,234
+MGVD-4,Square_2,220,250,2,100,250
+Heavy Turret,Octagon_3,215,300,2,100,215
+Longbow,Beam_4,242,566,2,100,242
+PRP-1,Square_1,251,17,2,100,251
+PRP-2,Square_2,252,38,2,100,252
+PRP-3,Square_3,253,77,2,100,253
+MED Beam,Octagon_2,229,135,2,100,229
+Swatter,Square_1,224,5,2,100,224
+Phalanx,Square_1,231,7,2,100,231
+Station Defense,Square_1,263,25,2,100,263
+Station Battery,Square_3,262,35,2,100,262
+Shield,Octagon_2,254,80,2,100,254
+Shield,Octagon_3,255,455,2,100,255
+Seed Planter,Launcher_2,530,15,2,100,530
+MM1,Launcher_3,249,67,2,100,249
+HM1,Launcher_4,250,191,2,100,250
+U-strut,Armor_Shape,907,2,2,100,907
+Command,Penrose_1,300,10,3,0,300
+Generator,Penrose_1,311,30,3,100,311
+Hull,Penrose_1,302,0,3,1000,302
+Blaster,Penrose_1,303,6,3,100,303
+Thruster Small,Red_Thruster_1,304,4,3,100,304
+Hull,Penrose_0,301,0,3,1000,301
+Phaser,Pentagram_1,309,27,3,100,309
+Anti-Missle Laser,Pentagram_1,314,3,3,100,314
+Thruster Med,Red_Thruster_2,305,7,3,100,305
+Thruster Large,Red_Thruster_3,306,10,3,100,306
+Thruster Mini,Thruster_1,315,3,3,100,315
+Storage Pod,Penrose_2,317,0,3,0,317
+Laser,Pentagram_1,312,68,3,100,312
+Tempest,Pentagram_2,310,93,3,100,310
+Nano Assembler Beam,Pentagram_2,318,112,3,0,318
+Nano Drone Launcher,Launcher_1,319,39,3,0,319
+Drone Launcher,Launcher_1,313,82,3,100,313
