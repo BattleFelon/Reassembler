@@ -111,8 +111,10 @@ Ship ShipBuilder::breedShips(Ship& father, Ship& mother, int ship_symmetry, int 
     }
 
     //Make space for mutation
-    father_genetics.resize(father_genetics.size()-mutation_blocks);
-    mother_genetics.resize(mother_genetics.size()-mutation_blocks);
+	if (father_genetics.size() - mutation_blocks > 1 && mother_genetics.size() - mutation_blocks > 1){
+		father_genetics.resize(father_genetics.size() - mutation_blocks);
+		mother_genetics.resize(mother_genetics.size() - mutation_blocks);
+	}
 
     //50% random selection of both
     //Add father code
@@ -323,7 +325,7 @@ bool ShipBuilder::tryNewBlock(Ship& new_ship, int faction,bool is_thrust, bool i
                                 Block mirror_block = bm.getBlock(faction, new_block.getMirror());
 
                                 //Special case section. Non-symmetrical blocks that have no mirror block num. They are themselves but rotated.
-								if (mirror_block.getBlockNum() == 802 || mirror_block.getBlockNum() == 12028 || mirror_block.getBlockNum() == 12027)
+								if (mirror_block.getBlockNum() == 802 || mirror_block.getBlockNum() == 12028 || mirror_block.getBlockNum() == 12027 || mirror_block.getBlockNum() == 248)
                                     mirror_angle -= 90;
 
                                 mirror_block.rotateBlock(mirror_angle);
@@ -521,7 +523,7 @@ bool ShipBuilder::forceFitNewBlock(Ship& new_ship, int faction, bool is_symmetri
                                     Block mirror_block = bm.getBlock(faction, new_block.getMirror());
 
                                     //Special case section. Non-symmetrical blocks that have no mirror block num. They are themselves but rotated.
-									if (mirror_block.getBlockNum() == 802 || mirror_block.getBlockNum() == 12028 || mirror_block.getBlockNum() == 12027)
+									if (mirror_block.getBlockNum() == 802 || mirror_block.getBlockNum() == 12028 || mirror_block.getBlockNum() == 12027 || mirror_block.getBlockNum() == 248)
                                         mirror_angle -= 90;
 
                                     mirror_block.rotateBlock(mirror_angle);
@@ -715,7 +717,7 @@ bool ShipBuilder::forceFitNewBlock(Ship& new_ship,Block new_block, bool is_symme
                                     Block mirror_block = bm.getBlock(faction, new_block.getMirror());
 
                                     //Special case section. Non-symmetrical blocks that have no mirror block num. They are themselves but rotated.
-									if (mirror_block.getBlockNum() == 802 || mirror_block.getBlockNum() == 12028 || mirror_block.getBlockNum() == 12027)
+									if (mirror_block.getBlockNum() == 802 || mirror_block.getBlockNum() == 12028 || mirror_block.getBlockNum() == 12027 || mirror_block.getBlockNum() == 248)
                                         mirror_angle -= 90;
 
                                     mirror_block.rotateBlock(mirror_angle);

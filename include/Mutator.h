@@ -9,8 +9,6 @@
 #define MUTATOR_H
 
 #include <random>
-#include <thread>
-#include <mutex>
 
 #include "SettingsParser.h"
 #include "ShipBuilder.h"
@@ -29,13 +27,11 @@ class Mutator
 
         void init();
 
-        void poolMutator(int generations);
+		void singleTargetMutator();
 
-        void threadedPoolMutator(int generations);
+		void poolMutator();
 
-        void bracketMutator(int generations);
-
-        Ship* getWinner(){return(&winner);}
+		void seededMutator();
 
 
     private:
@@ -51,6 +47,13 @@ class Mutator
         std::string path_to_log;
         std::string path_to_ships;
 
+		//Target info
+		std::string target_name;
+		std::string target_file_name;
+
+		//Seed info
+		std::string seed_file_name;
+
         //Settings
         int number_of_ships;
         int p_value_target;
@@ -58,14 +61,18 @@ class Mutator
         int block_count_limit;
         int faction;
         int ship_symmetry;
-        int mutation_blocks;
-        int core_count;
+		int mutation_blocks;
 
-        //Ship data
-        std::vector<Ship> population;
-        std::vector<std::string> names;
-        Ship winner;
+		//Ship data
+		std::vector<Ship> population;
+		std::vector<std::string> names;
+		Ship winner;
 
+		//Possible Factions
+		int factions[3];
+
+		//Random Faction bool
+		bool is_random_faction;
 };
 
 #endif // MUTATOR_H

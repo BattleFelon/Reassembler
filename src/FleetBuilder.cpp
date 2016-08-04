@@ -1,5 +1,7 @@
 #include "FleetBuilder.h"
 #include "ShipBuilder.h"
+#include <string>
+#include <iostream>
 
 FleetBuilder::FleetBuilder()
 {
@@ -36,7 +38,7 @@ Fleet FleetBuilder::createFleet(int target_p_value, int max_ship_value, int min_
         //Some random p value
         int ship_p_value = rand() % (max_ship_value - min_ship_value) + min_ship_value;
         //Some random non-zero percent of p value
-        int min_thruster_points = ((rand() % 65 + 10) / 100.0) * ship_p_value;
+        int min_thruster_points = ((rand() %30 + 5) / 100.0) * ship_p_value;
 
         //Add the ship
         new_fleet.addShip(SB.createShip(ship_p_value,faction,block_limit,min_thruster_points,ship_symm,name));
@@ -57,6 +59,14 @@ Fleet FleetBuilder::createFleet(int target_p_value, int max_ship_value, int min_
     }
 
     new_fleet.removeShip(closest_index);
+	int ship_p_value = target_p_value - new_fleet.totalValue();
+	//Some random non-zero percent of p value
+	int min_thruster_points = ((rand() %30 + 5) / 100.0) * ship_p_value;
 
+	std::string name = "Ship_";
+	name.append(std::to_string(ship_name));
+
+	//Add the ship
+	new_fleet.addShip(SB.createShip(ship_p_value, faction, block_limit, min_thruster_points, ship_symm, name));
     return(new_fleet);
 }

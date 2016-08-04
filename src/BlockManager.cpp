@@ -91,6 +91,7 @@ Block BlockManager::getBlock(int faction)
 {
     if(m_all_blocks.find(faction) == m_all_blocks.end()){
         std::cout << "Block faction not found \n";
+		std::cout << " " << faction;
     }
     else{
         //Could be optimized....TODO
@@ -112,6 +113,7 @@ Block BlockManager::getBlock(int faction, int block_number)
 {
     if(m_all_blocks.find(faction) == m_all_blocks.end()){
         std::cout << "Block faction not found \n";
+		std::cout << block_number << " " << faction;
     }
     else{
         for(int i = 0; i < (int)m_all_blocks[faction].size(); ++i){
@@ -119,6 +121,7 @@ Block BlockManager::getBlock(int faction, int block_number)
                 return(m_all_blocks[faction][i]);
         }
         std::cout << "Block number not found \n";
+		std::cout << block_number << " " << faction;
     }
 
     return(null_block);
@@ -128,6 +131,7 @@ Block BlockManager::getCommandBlock(int faction)
 {
     if(m_all_blocks.find(faction) == m_all_blocks.end()){
         std::cout << "Block faction not found \n";
+		std::cout << " " << faction;
     }
     else{
         return(m_all_blocks[faction][0]);
@@ -141,6 +145,7 @@ Block BlockManager::getThruster(int faction)
 
     if(m_all_blocks.find(faction) == m_all_blocks.end()){
         std::cout << "Block faction not found \n";
+		std::cout << " " << faction;
     }
     else{
         //Could be optimized....TODO

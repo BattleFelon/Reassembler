@@ -20,22 +20,23 @@ void Mutator::init()
     //Load settings file
     SP.loadFromFile("config.txt");
 
-    //Settings get
-    SP.get("number_of_ships",number_of_ships);
-    SP.get("p_value_target",p_value_target);
-    SP.get("thruster_value_target",thruster_value_target);
-    SP.get("block_count_limit",block_count_limit);
-    SP.get("faction",faction);
-    SP.get("path_to_reassembly_exe",path_to_exe);
-    SP.get("path_to_log_folder",path_to_log);
-    SP.get("path_to_ships_folder",path_to_ships);
-    SP.get("ship_symmetry",ship_symmetry);
-    SP.get("mutation_blocks",mutation_blocks);
-    SP.get("core_count",core_count);
+	//Settings get
+	SP.get("number_of_ships", number_of_ships);
+	SP.get("mutation_blocks", mutation_blocks);
+	SP.get("p_value_target", p_value_target);
+	SP.get("thruster_value_target", thruster_value_target);
+	SP.get("block_count_limit", block_count_limit);
+	SP.get("faction", faction);
+	SP.get("path_to_reassembly_exe", path_to_exe);
+	SP.get("path_to_log_folder", path_to_log);
+	SP.get("path_to_ships_folder", path_to_ships);
+	SP.get("ship_symmetry", ship_symmetry);
+	SP.get("target_name", target_name);
+	SP.get("target_file_name", target_file_name);
+	SP.get("seed_file_name", seed_file_name);
 
      //Output the settings
-    std::cout <<"Number of ships to create= " <<
-        number_of_ships << "\nP Value Target= " <<
+    std::cout << "\nP Value Target= " <<
         p_value_target << "\nThruster Value= " <<
         thruster_value_target << "\nFaction= " <<
         faction <<
@@ -47,20 +48,128 @@ void Mutator::init()
     TM.init(path_to_exe, path_to_ships);
     LP.init(path_to_log);
 
-    //Set the names
-    for(int i = 0; i < number_of_ships; ++i){
-        std::string name = "Ship_";
-        name.append(std::to_string(i));
-        names.push_back(name);
-    }
+	//Set the names
+	for (int i = 0; i < number_of_ships; ++i){
+		std::string name = "Ship_";
+		name.append(std::to_string(i));
+		names.push_back(name);
+	}
+
+	//Set the posssible factions
+	factions[0] = 2;
+	factions[1] = 8;
+	factions[2] = 12;
+
+	if (faction == 0){
+		is_random_faction = true;
+		faction = factions[rand() % 3];
+	}
+	else{
+		is_random_faction = false;
+	}
 }
 
-void Mutator::poolMutator(int generations){
+void Mutator::singleTargetMutator(){
+
+	//total wins by target design;
+	int total_wins = 0;
+
+	//Naming
+	std::string ship_name = "rival_of_";
+	ship_name.append(target_name);
+
+	//Init ship 
+	if (is_random_faction)
+		faction = factions[rand() % 3];
+
+	Ship rival = SB.createShip(p_value_target, faction, block_count_limit, thruster_value_target, ship_symmetry, "rival");
+
+	std::cout << "Starting Battle \n";
+
+	//main loop
+	for (int wins = 0; wins < 3;){
+
+		//Make sure it is a loosing ship design
+		if (wins == 0){
+			//Try new design
+			if (is_random_faction)
+				faction = factions[rand() % 3];
+
+			rival = SB.createShip(p_value_target, faction, block_count_limit, thruster_value_target, ship_symmetry, "rival");
+		}
+
+		//Write the ships to file
+		std::string file_name = "ships/";
+		file_name.append(ship_name);
+		file_name.append(".lua");
+		rival.setName(ship_name);
+		rival.writeShip(file_name, ship_name, ship_name);
+
+		//Start battle
+		TM.startString(ship_name, target_file_name);
+		
+		//Parse Log
+		int result = 0;
+		std::cout << ".";
+		result = LP.getWinner(rival, target_name);
+
+		if (result == 0){
+			wins++;
+			std::cout << ship_name << " Wins! " << wins << "\n" << std::endl;
+		}
+		else if (result == 1)
+		{
+
+			if(total_wins%100 == 0)
+				std::cout << target_name << " Wins... again. " << total_wins << " total wins so far\n" << std::endl;
+
+			wins = 0;
+			total_wins++;
+		}
+		else if (result == 2){
+			std::cout << "One of your path values is incorrect\n";
+			std::cin >> wins;
+			exit(-1);
+		}
+
+		//Keep it if it wins two to save on processing time
+		if (wins == 2){
+			std::string two_win = "ships/";
+			two_win.append("two_win.lua");
+			rival.writeShip(two_win, ship_name, ship_name);
+		}
+
+		//Keep it if it wins two to save on processing time
+		if (wins == 1){
+			std::string one_win = "ships/";
+			one_win.append("one_win.lua");
+			rival.writeShip(one_win, ship_name, ship_name);
+		}
+	}
+
+	int a;
+	std::cout << "\n\n Target has been beaten! \n\n";
+	_beep(523, 500);
+	_sleep(500);
+	_beep(523, 500);
+	_sleep(500);
+	_beep(523, 500);
+	_sleep(500);
+	std::cin >> a;
+}
+
+void Mutator::poolMutator(){
+	int generations;
+	SP.get("num_generations", generations);
 
 	//Seed initial population
 	std::cout << "\nSeeding initial population \n\n";
 	for (int i = 0; i < number_of_ships; ++i){
 		//Seed the population
+
+		if (is_random_faction)
+			faction = factions[rand() % 3];
+
 		population.push_back(SB.createShip(p_value_target, faction, block_count_limit, thruster_value_target, ship_symmetry, names[i]));
 		std::string file_name = "ships/";
 		file_name.append(names[i]);
@@ -69,322 +178,180 @@ void Mutator::poolMutator(int generations){
 		population[i].writeShip(file_name, names[i], names[i]);
 	}
 
-    //The index of the winning ship
-    int winner_index = 0;
+	//The index of the winning ship
+	int winner_index = 0;
 
-    //Do this style of fighting until the target generations is reached
-    for(int generation = 0; generation < generations; ++ generation){
+	//Do this style of fighting until the target generations is reached
+	for (int generation = 0; generation < generations; ++generation){
 
-        std::vector<int> wins(population.size());
+		std::vector<int> wins(population.size());
 
-        for(int i = 0; i < population.size(); ++i){
-            for(int j = i + 1; j < population.size();++j){
-                std::cout << "Arena " << population[i].getShipName() << " and " << population[j].getShipName() << "...";
-                std::cout.flush();
+		for (int i = 0; i < population.size(); ++i){
+			for (int j = i + 1; j < population.size(); ++j){
+				std::cout << "Arena " << population[i].getShipName() << " and " << population[j].getShipName() << "...";
+				std::cout.flush();
 
-                //Wooooo ifdefs
-                int result = 0;
-				#ifdef _WIN32
-                TM.startArena(population[i],population[j]);
-                //0 means first ship wins, 1 means second, and 2 means something went wrong
-                result = LP.getWinner(population[i], population[j]);
-                #endif // _WIN32
-                #ifdef __linux__
-                result = rand() % 2;
-                #endif // __linux__
+				//Wooooo ifdefs
+				int result = 0;
+#ifdef _WIN32
+				TM.startArena(population[i], population[j]);
+				//0 means first ship wins, 1 means second, and 2 means something went wrong
+				result = LP.getWinner(population[i], population[j]);
+#endif // _WIN32
+#ifdef __linux__
+				result = rand() % 2;
+#endif // __linux__
 
-                if(result == 1){
-                    std::cout << population[j].getShipName() <<  " Wins!" << std::endl;
-                    population[j].wins();
-                    wins[j]++;
-                }
-                else if(result == 0)
-                {
-                    std::cout << population[i].getShipName() <<  " Wins!" << std::endl;
-                    population[i].wins();
-                    wins[i]++;
-                }
-                else if (result == 2){
-                    std::cout << "One of your path values is incorrect\n";
-					#ifdef _WIN32
+				if (result == 1){
+					std::cout << population[j].getShipName() << " Wins!" << std::endl;
+					population[j].wins();
+					wins[j]++;
+				}
+				else if (result == 0)
+				{
+					std::cout << population[i].getShipName() << " Wins!" << std::endl;
+					population[i].wins();
+					wins[i]++;
+				}
+				else if (result == 2){
+					std::cout << "One of your path values is incorrect\n";
+#ifdef _WIN32
 					_sleep(1000);
-					#endif // _WIN32
-                    exit(-1);
-                    //return(-1);
-                }
-            }
-        }//End of current generation
+#endif // _WIN32
+					exit(-1);
+				}
+			}
+		}//End of current generation
 
-        //Find winners
-        int number_of_wins = 0;
-        for(int i = 0; i < wins.size(); ++i){
-            if(wins[i] > number_of_wins){
-                number_of_wins = wins[i];
-                winner_index = i;
-            }
-        }
+		//Find winners
+		int number_of_wins = 0;
+		for (int i = 0; i < wins.size(); ++i){
+			if (wins[i] > number_of_wins){
+				number_of_wins = wins[i];
+				winner_index = i;
+			}
+		}
 
-        //Settle Ties
-        for(int i = 0; i < wins.size(); ++i){
-            if(wins[i] == number_of_wins && i != winner_index){
-                int result = 0;
-				#ifdef _WIN32
-                TM.startArena(population[winner_index],population[i]);
-                result = LP.getWinner(population[winner_index],population[i]);
-                #endif // _WIN32
-                #ifdef __linux__
-                result = rand() % 2;
-                #endif // __linux__
-                if(result == 0){
-                    //Winner index stays the same
-                    population[winner_index].wins();
+		//Settle Ties
+		for (int i = 0; i < wins.size(); ++i){
+			if (wins[i] == number_of_wins && i != winner_index){
+				int result = 0;
+#ifdef _WIN32
+				TM.startArena(population[winner_index], population[i]);
+				result = LP.getWinner(population[winner_index], population[i]);
+#endif // _WIN32
+#ifdef __linux__
+				result = rand() % 2;
+#endif // __linux__
+				if (result == 0){
+					//Winner index stays the same
+					population[winner_index].wins();
 					wins[winner_index]++;
-                }
-                else if(result == 1){
-                    //New winner, which will go settle more ties
-                    population[i].wins();
-                    winner_index = i;
+				}
+				else if (result == 1){
+					//New winner, which will go settle more ties
+					population[i].wins();
+					winner_index = i;
 					wins[winner_index]++;
-                }
-            }
-        }
+				}
+			}
+		}
+
 		int total = 0;
 		for (auto win : wins)
 			total += win;
 
 		std::cout << "Total Wins " << total << "\n";
 
-        //Select mate
-        int win_diff = 1000;
-        int mate_index = 0;
-        for(int i = 0; i < wins.size(); ++i){
-            if(wins[winner_index] - wins[i] < win_diff && i != winner_index){
-                win_diff = wins[winner_index] - wins[i];
-                mate_index = i;
-            }
-        }
+		//Select mate
+		//Asexual by default
+		int mate_index = winner_index;
+		for (int attempts = 0; attempts < 1000; ++attempts)
+		{
+			int possible_index = rand() % population.size();
+			if (population[possible_index].getFaction() == population[winner_index].getFaction()){
+				mate_index = possible_index;
+				attempts = 10000;
+			}
+		}
 
-        std::cout << "\nGeneration " << generation << " over. \n\n" <<
-        population[winner_index].getShipName() <<" Has won with " << number_of_wins << " wins and " << population[winner_index].getLifetimeWins() << " life time wins.\n" <<
-        "The winner has chosen a mate, Ship_" << mate_index << ".\nTheir children will be in the next generation\n\n";
+		std::cout << "\nGeneration " << generation << " over. \n\n" <<
+			population[winner_index].getShipName() << " Has won with " << number_of_wins << " wins and " << population[winner_index].getLifetimeWins() << " life time wins.\n" <<
+			"The winner has chosen a mate, Ship_" << mate_index << ".\nTheir children will be in the next generation\n\n";
 
-        std::cout << "--Overall Results--\n";
-        for(int i = 0; i < number_of_ships; ++i){
-                if(i != winner_index)
-                    std::cout << population[i].getShipName() << " had " << wins[i] << " wins \n";
-                else
-                    std::cout << population[i].getShipName() << " had " << wins[i] << " wins **** \n";
-        }
+		std::cout << "--Overall Results--\n";
+		for (int i = 0; i < number_of_ships; ++i){
+			if (i != winner_index)
+				std::cout << population[i].getShipName() << " had " << wins[i] << " wins \n";
+			else
+				std::cout << population[i].getShipName() << " had " << wins[i] << " wins **** \n";
+		}
 
-        //Save the winner and mate
+		//Save the winner and mate
 
-        winner = population[winner_index];
-        Ship mate = population[mate_index];
+		winner = population[winner_index];
+		Ship mate = population[mate_index];
 
-        std::string winner_file_name = "ships/Winner_";
-        std::string faction_name = "Winner";
-        faction_name.append(std::to_string(winner_index));
-        winner_file_name.append(winner.getShipName());
-        winner_file_name.append(".lua");
+		std::string winner_file_name = "ships/Winner_";
+		std::string faction_name = "Winner";
+		faction_name.append(std::to_string(winner_index));
+		winner_file_name.append(winner.getShipName());
+		winner_file_name.append(".lua");
 
-        std::string num_wins = "NumWins";
-        num_wins.append(std::to_string(winner.getLifetimeWins()));
-        winner.writeShip(winner_file_name,num_wins,faction_name);
+		std::string num_wins = "NumWins";
+		num_wins.append(std::to_string(winner.getLifetimeWins()));
+		winner.writeShip(winner_file_name, num_wins, faction_name);
 
-        //Seed next population
-        population.clear();
-        std::cout << "\nSeeding next population \n";
-        for(int i = 0; i < number_of_ships; ++i){
-            //Seed the population and keep winner, mate, and breed children
-            if(i == winner_index){
-            population.push_back(winner);
-            population.back().setName(names[i]);
-            }
-            else if(i == mate_index){
-                population.push_back(mate);
-                population.back().setName(names[i]);
-            }
-            else if(i <= number_of_ships/2)
-                population.push_back(SB.createShip(p_value_target,faction,block_count_limit,thruster_value_target,ship_symmetry,names[i]));
-            else if(i >number_of_ships/2){
-                population.push_back(SB.breedShips(winner,mate,ship_symmetry,mutation_blocks,p_value_target));
-                population.back().setName(names[i]);
-            }
+		//Seed next population
+		population.clear();
+		std::cout << "\nSeeding next population \n";
+		for (int i = 0; i < number_of_ships; ++i){
+			//Seed the population and keep winner, mate, and breed children
+			if (i == winner_index){
+				population.push_back(winner);
+				population.back().setName(names[i]);
+			}
+			else if (i == mate_index){
+				population.push_back(mate);
+				population.back().setName(names[i]);
+			}
+			else if (i <= number_of_ships / 2){
+				if (is_random_faction)
+					faction = factions[rand() % 3];
+
+				population.push_back(SB.createShip(p_value_target, faction, block_count_limit, thruster_value_target, ship_symmetry, names[i]));
+			}
+			else if (i >number_of_ships / 2){
+				population.push_back(SB.breedShips(winner, mate, ship_symmetry, mutation_blocks, p_value_target));
+				population.back().setName(names[i]);
+			}
 
 
-            std::string file_name = "ships/";
-            file_name.append(names[i]);
-            file_name.append(".lua");
+			std::string file_name = "ships/";
+			file_name.append(names[i]);
+			file_name.append(".lua");
 
-            //Write the ships to file
-            population[i].writeShip(file_name,names[i],names[i]);
-        }
+			//Write the ships to file
+			population[i].writeShip(file_name, names[i], names[i]);
+		}
 
-    }//End of all generations
+	}//End of all generations
 
-   // return(winner);
+	// return(winner);
 }
 
-void Mutator::threadedPoolMutator(int generations)
+void Mutator::seededMutator()
 {
-    //Set index values
-    int winner_index = -1;
-    int mate_index = -1;
-
-    population.resize(number_of_ships);
-    for(int generation = 0; generation < generations; ++ generation){
-        //Spawn ships initial if no winner
-        if(winner_index == -1){
-            for(int i = 0; i < number_of_ships; ++i){
-                population[i] = SB.createShip(p_value_target, faction, block_count_limit, thruster_value_target, ship_symmetry, names[i]);
-                std::string file_name = "ships/";
-                file_name.append(names[i]);
-                file_name.append(".lua");
-                //Write the ships to file
-                population[i].writeShip(file_name, names[i], names[i]);
-            }
-        }
-        else{
-            for(int i = 0; i < number_of_ships; ++i){
-                //Breeding loop because we have winner and mate
-                if(i == winner_index){
-                    //Save winner
-                }
-                else if(i == mate_index){
-                    //Save mate
-                }
-                else if(i <= number_of_ships/2)
-                    population[i] = SB.createShip(p_value_target,faction,block_count_limit,thruster_value_target,ship_symmetry,names[i]);
-                else if(i >number_of_ships/2){
-                    population[i] = SB.breedShips(population[winner_index],population[mate_index],ship_symmetry,mutation_blocks,p_value_target);
-                    population[i].setName(names[i]);
-                }
-                std::string file_name = "ships/";
-                file_name.append(names[i]);
-                file_name.append(".lua");
-                //Write the ships to file
-                population[i].writeShip(file_name,names[i],names[i]);
-            }
-        }
-        //Start battles
-        std::vector<std::thread> battles(core_count);
-        int thread_index = 0;
-        for(int i = 0; i < number_of_ships; ++i){
-            for(int j = i + 1; j < number_of_ships; ++j){
-                if(thread_index < core_count){
-                    //Launch battle
-					std::cout << "Thread Started \n";
-                    battles[thread_index] = std::thread(&TournamentManager::startString, TM, names[i], names[j]);
-                    #ifdef _WIN32
-					_sleep(1000);
-					#endif // _WIN32
-                    thread_index++;
-                }
-                else{
-                    j--;
-                    //Wait for threads to finish
-                    for(auto& t : battles)
-                        t.join();
-                    thread_index = 0;
-                }
-            }
-        }
-        //Catch lingering threads
-        for(auto& t : battles)
-            if(t.joinable())
-                t.join();
-
-        //Parse Result files
-        std::vector<int> wins = LP.getWinner(names);
-		int total = 0;
-
-		for (auto win : wins)
-			total += win;
-		std::cout << "Total wins " << total << "\n";
-        //Add wins to lifetime
-        for(int i = 0; i < wins.size();++i){
-            population[i].addWins(wins[i]);
-        }
-
-        //Find winners
-        int number_of_wins = 0;
-        for(int i = 0; i < wins.size(); ++i){
-            if(wins[i] > number_of_wins){
-                number_of_wins = wins[i];
-                winner_index = i;
-            }
-        }
-
-        //Settle Ties
-        for(int i = 0; i < wins.size(); ++i){
-            if(wins[i] == number_of_wins && i != winner_index){
-                int result = 0;
-				#ifdef _WIN32
-                TM.startArena(population[winner_index],population[i]);
-                result = LP.getWinner(population[winner_index],population[i]);
-                #endif // _WIN32
-                #ifdef __linux__
-                result = rand() % 2;
-                #endif // __linux__
-                if(result == 0){
-                    //Winner index stays the same
-                    population[winner_index].wins();
-					wins[winner_index]++;
-                }
-                else if(result == 1){
-                    //New winner, which will go settle more ties
-                    population[i].wins();
-                    winner_index = i;
-					wins[winner_index]++;
-                }
-            }
-        }
-
-        //Select mate
-        int win_diff = 1000;
-        mate_index = 0;
-        for(int i = 0; i < wins.size(); ++i){
-            if(wins[winner_index] - wins[i] < win_diff && i != winner_index){
-                win_diff = wins[winner_index] - wins[i];
-                mate_index = i;
-            }
-        }
-
-        std::cout << "\nGeneration " << generation << " over. \n\n" <<
-        population[winner_index].getShipName() <<" Has won with " << number_of_wins << " wins and " << population[winner_index].getLifetimeWins() << " life time wins.\n" <<
-        "The winner has chosen a mate, Ship_" << mate_index << ".\nTheir children will be in the next generation\n\n";
-
-        std::cout << "--Overall Results--\n";
-        for(int i = 0; i < number_of_ships; ++i){
-                if(i != winner_index)
-                    std::cout << population[i].getShipName() << " had " << wins[i] << " wins \n";
-                else
-                    std::cout << population[i].getShipName() << " had " << wins[i] << " wins **** \n";
-        }
-
-        //Save the winner and mate
-        winner = population[winner_index];
-        Ship mate = population[mate_index];
-
-        std::string winner_file_name = "ships/Winner_";
-        std::string faction_name = "Winner";
-        faction_name.append(std::to_string(winner_index));
-        winner_file_name.append(winner.getShipName());
-        winner_file_name.append(".lua");
-
-        std::string num_wins = "NumWins";
-        num_wins.append(std::to_string(winner.getLifetimeWins()));
-        winner.writeShip(winner_file_name,num_wins,faction_name);
-    }
-}
-
-void Mutator::bracketMutator(int generations)
-{
+	int generations;
+	SP.get("num_generations", generations);
 
 	//Seed initial population
 	std::cout << "\nSeeding initial population \n\n";
 	for (int i = 0; i < number_of_ships; ++i){
 		//Seed the population
+		if (is_random_faction)
+			faction = factions[rand() % 3];
+
 		population.push_back(SB.createShip(p_value_target, faction, block_count_limit, thruster_value_target, ship_symmetry, names[i]));
 		std::string file_name = "ships/";
 		file_name.append(names[i]);
@@ -393,186 +360,164 @@ void Mutator::bracketMutator(int generations)
 		population[i].writeShip(file_name, names[i], names[i]);
 	}
 
-    //The index of the winning ship
-    int winner_index = 0;
 
-    //Do this style of fighting until the target generations is reached
-    for(int generation = 0; generation < generations; ++ generation){
+	//The index of the winning ship
+	int winner_index = 0;
 
-        //win tracking and odd man out logic
-        std::vector<int> wins;
-        std::vector<bool> got_to_fight;
-        std::vector<bool> did_lose;
-        for(int i = 0; i < population.size(); ++i){
-            got_to_fight.push_back(false);
-            did_lose.push_back(false);
-            wins.push_back(0);
-        }
+	//Do this style of fighting until the target generations is reached
+	for (int generation = 0; generation < generations; ++generation){
 
-        //Check to see if battle happened. If not it is the end of the generation
-        bool was_a_battle = true;
+		std::vector<int> wins(population.size());
 
-        for(int round = 0; was_a_battle ; ++round){
-            //Reset end of bracket logic
-            was_a_battle = false;
+		for (int i = 0; i < population.size(); ++i){
+			for (int j = i + 1; j < population.size(); ++j){
+				std::cout << "Arena " << population[i].getShipName() << " and " << population[j].getShipName() << "...";
+				std::cout.flush();
 
-            std::cout << "\n----Round" << round << " started----\n\n";
+				//Wooooo ifdefs
+				int result = 0;
+#ifdef _WIN32
+				TM.startArena(population[i], population[j]);
+				//0 means first ship wins, 1 means second, and 2 means something went wrong
+				result = LP.getWinner(population[i], population[j]);
+#endif // _WIN32
+#ifdef __linux__
+				result = rand() % 2;
+#endif // __linux__
 
-            //Set whether or not they fought to zero
-            for(int k = 0; k < got_to_fight.size(); ++k)
-                got_to_fight[k] = false;
+				if (result == 1){
+					std::cout << population[j].getShipName() << " Wins!" << std::endl;
+					population[j].wins();
+					wins[j]++;
+				}
+				else if (result == 0)
+				{
+					std::cout << population[i].getShipName() << " Wins!" << std::endl;
+					population[i].wins();
+					wins[i]++;
+				}
+				else if (result == 2){
+					std::cout << "One of your path values is incorrect\n";
+#ifdef _WIN32
+					_sleep(1000);
+#endif // _WIN32
+					exit(-1);
+				}
+			}
+		}//End of current generation
 
-            for(int i = 0; i < population.size(); ++i){
-                for(int j = i+1; j < population.size(); ++j){
-                    if(wins[i] >= round && wins[i] == wins[j] && !did_lose[i] && !did_lose[j]){
-                        //Fighter got to fight
-                        got_to_fight[i] = true;
-                        got_to_fight[j] = true;
-                        //Arena happened
-                        was_a_battle = true;
+		//Find winners
+		int number_of_wins = 0;
+		for (int i = 0; i < wins.size(); ++i){
+			if (wins[i] > number_of_wins){
+				number_of_wins = wins[i];
+				winner_index = i;
+			}
+		}
 
-                        //Match begin
-                        std::cout << "Arena " << population[i].getShipName() << " and " << population[j].getShipName() << "...";
-                        std::cout.flush();
-                        int result = 0;
-						#ifdef _WIN32
-                        TM.startArena(population[i],population[j]);
-                        //0 means first ship wins, 1 means second, and 2 means something went wrong
-                        result = LP.getWinner(population[i], population[j]);
-                        #endif // _WIN32
-                        #ifdef __linux__
-                        result =  rand() % 2;
-                        #endif // __linux__
-                        if(result == 1){
-                            std::cout << population[j].getShipName() <<  " Wins!" << std::endl;
-                            population[j].wins();
-                            wins[j]++;
-                            did_lose[i] = true;
-                        }
-                        else if(result == 0)
-                        {
-                            std::cout << population[i].getShipName() <<  " Wins!" << std::endl;
-                            population[i].wins();
-                            wins[i]++;
-                            did_lose[j] = true;
-                        }
-                        else if (result == 2){
-                            std::cout << "One of your path values is incorrect\n";
-                            exit(-1);
-                            //return(-1);
-                        }
+		//Settle Ties
+		for (int i = 0; i < wins.size(); ++i){
+			if (wins[i] == number_of_wins && i != winner_index){
+				int result = 0;
+#ifdef _WIN32
+				TM.startArena(population[winner_index], population[i]);
+				result = LP.getWinner(population[winner_index], population[i]);
+#endif // _WIN32
+#ifdef __linux__
+				result = rand() % 2;
+#endif // __linux__
+				if (result == 0){
+					//Winner index stays the same
+					population[winner_index].wins();
+					wins[winner_index]++;
+				}
+				else if (result == 1){
+					//New winner, which will go settle more ties
+					population[i].wins();
+					winner_index = i;
+					wins[winner_index]++;
+				}
+			}
+		}
 
-                        //Exit inner loop
-                        j = population.size();
-                        i++;
-                    }
-                }
-            }//End of round
+		int total = 0;
+		for (auto win : wins)
+			total += win;
 
-            //Check to see for odd man out, make him fight a random loser for a comeback!
-            for(int k = 0; k < got_to_fight.size(); ++k){
-                if(!got_to_fight[k] && wins[k] >= round && was_a_battle){
-                    for(int w = 0; w < population.size();++w){
-                        if(wins[k] == wins[w] && w != k){
-                            std::cout<< "Ship_" << k << " has to fight loser Ship_" << w << " for a spot in the next round...";
-                            int result = 0;
-							#ifdef _WIN32
-                            TM.startArena(population[k],population[w]);
-                            //0 means first ship wins, 1 means second, and 2 means something went wrong
-                            result = LP.getWinner(population[k], population[w]);
-                            #endif // _WIN32
-                            #ifdef __linux__
-                            result = rand() % 2;
-                            #endif // __linux__
+		std::cout << "Total Wins " << total << "\n";
 
-                            if(result == 1){
-                                std::cout<< " Ship_" << w  << " Wins \n";
-                                wins[w]++;
-                                w=population.size();
-                                k=w;
-                            }
-                            else if(result == 0){
-                                std::cout<< " Ship_" << k  << " Wins \n";
-                                 wins[k]++;
-                                 w=population.size();
-                                 k=w;
-                            }
-							else if (result == 2){
-								std::cout << "One of your path values is incorrect\n";
-								#ifdef _WIN32
-                                _sleep(1000);
-                                #endif // _WIN32
-								exit(-1);
-								//return(-1);
-							}
-                        }
-                    }
-                }
-            }
-        }
+		//Select mate
+		int win_diff = 1000;
+		int mate_index = 0;
+		for (int i = 0; i < wins.size(); ++i){
+			if (wins[winner_index] - wins[i] < win_diff && i != winner_index){
+				win_diff = wins[winner_index] - wins[i];
+				mate_index = i;
+			}
+		}
 
-        //Find winners
-        int number_of_wins = 0;
-        for(int i = 0; i < wins.size(); ++i){
-            if(wins[i] > number_of_wins){
-                number_of_wins = wins[i];
-                winner_index = i;
-            }
-        }
+		std::cout << "\nGeneration " << generation << " over. \n\n" <<
+			population[winner_index].getShipName() << " Has won with " << number_of_wins << " wins and " << population[winner_index].getLifetimeWins() << " life time wins.\n" <<
+			"The winner has chosen a mate, Ship_" << mate_index << ".\nTheir children will be in the next generation\n\n";
 
-        //Select mate
-        int win_diff = 1000;
-        int mate_index = 0;
-        for(int i = 0; i < wins.size(); ++i){
-            if(wins[winner_index] - wins[i] < win_diff && i != winner_index){
-                win_diff = wins[winner_index] - wins[i];
-                mate_index = i;
-            }
-        }
+		std::cout << "--Overall Results--\n";
+		for (int i = 0; i < number_of_ships; ++i){
+			if (i != winner_index)
+				std::cout << population[i].getShipName() << " had " << wins[i] << " wins \n";
+			else
+				std::cout << population[i].getShipName() << " had " << wins[i] << " wins **** \n";
+		}
 
-        std::cout << "\nGeneration " << generation << " over. \n\n" <<
-        population[winner_index].getShipName() <<" Has won with " << number_of_wins << " wins and " << population[winner_index].getLifetimeWins() << " life time wins.\n" <<
-        "The winner has chosen a mate, Ship_" << mate_index << ".\nTheir children will be in the next generation\n\n";
+		//Save the winner and mate
 
-        //Save the winner
-        winner = population[winner_index];
-        Ship mate = population[mate_index];
-        winner.setName("Winner");
-        std::string winner_file_name = "ships/Winner_";
-        std::string faction_name = "Winner";
-        faction_name.append(std::to_string(winner_index));
-        winner_file_name.append(winner.getShipName());
-        winner_file_name.append(".lua");
+		winner = population[winner_index];
+		Ship mate = population[mate_index];
 
-        std::string num_wins = "NumWins";
-        num_wins.append(std::to_string(winner.getLifetimeWins()));
-        winner.writeShip(winner_file_name,num_wins,faction_name);
-        //Seed next population
-        population.clear();
-        std::cout << "\nSeeding next population \n";
-        for(int i = 0; i < number_of_ships; ++i){
-            //Make children, keep mate and winner, seed new population
-            if(i == winner_index){
-            population.push_back(winner);
-            population.back().setName(names[i]);
-            }
-            else if(i == mate_index){
-                population.push_back(mate);
-                population.back().setName(names[i]);
-            }
-            else if(i <= number_of_ships/2)
-                population.push_back(SB.createShip(p_value_target,faction,block_count_limit,thruster_value_target,ship_symmetry,names[i]));
-            else if(i >number_of_ships/2){
-                population.push_back(SB.breedShips(winner,mate,ship_symmetry,mutation_blocks,p_value_target));
-                population.back().setName(names[i]);
-            }
+		std::string winner_file_name = "ships/Winner_";
+		std::string faction_name = "Winner";
+		faction_name.append(std::to_string(winner_index));
+		winner_file_name.append(winner.getShipName());
+		winner_file_name.append(".lua");
 
-            std::string file_name = "ships/";
-            file_name.append(names[i]);
-            file_name.append(".lua");
+		std::string num_wins = "NumWins";
+		num_wins.append(std::to_string(winner.getLifetimeWins()));
+		winner.writeShip(winner_file_name, num_wins, faction_name);
 
-            //Write the ships to file
-            population[i].writeShip(file_name,names[i],names[i]);
-        }
-    }//End of all generations
+		//Seed next population
+		population.clear();
+		std::cout << "\nSeeding next population \n";
+		for (int i = 0; i < number_of_ships; ++i){
+			//Seed the population and keep winner, mate, and breed children
+			if (i == winner_index){
+				population.push_back(winner);
+				population.back().setName(names[i]);
+			}
+			else if (i == mate_index){
+				population.push_back(mate);
+				population.back().setName(names[i]);
+			}
+			else if (i <= number_of_ships / 2){
+				if (is_random_faction)
+					faction = factions[rand() % 3];
+				population.push_back(SB.createShip(p_value_target, faction, block_count_limit, thruster_value_target, ship_symmetry, names[i]));
+			}
+			else if (i >number_of_ships / 2){
+				if (is_random_faction)
+					faction = factions[rand() % 3];
+				population.push_back(SB.breedShips(winner, mate, ship_symmetry, mutation_blocks, p_value_target));
+				population.back().setName(names[i]);
+			}
+
+
+			std::string file_name = "ships/";
+			file_name.append(names[i]);
+			file_name.append(".lua");
+
+			//Write the ships to file
+			population[i].writeShip(file_name, names[i], names[i]);
+		}
+
+	}//End of all generations
+
+	// return(winner);
 }

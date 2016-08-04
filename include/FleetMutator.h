@@ -9,6 +9,8 @@
 #include "LogParser.h"
 #include "FleetBuilder.h"
 
+#include <time.h>
+
 class FleetMutator
 {
     public:
@@ -18,6 +20,7 @@ class FleetMutator
         void init();
 
         void bruteForceFleetBeater();
+		void geneticFleetBeater();
 
     private:
 
@@ -44,6 +47,9 @@ class FleetMutator
         int faction;
         int ship_symmetry;
         int mutation_blocks;
+		int fleet_population_size;
+		int target_number_of_wins;
+
 };
 
 #endif // FLEETMUTATOR_H

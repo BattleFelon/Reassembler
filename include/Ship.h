@@ -32,7 +32,7 @@ class Ship
 
         //Read and write
         void writeShip(std::string file_name,std::string author_name, std::string faction_name);
-        Ship readShip();
+		Ship readShip(std::string file_name);
 
         //Block functions
         void addBlock(Block new_block){m_blocks.push_back(new_block);}
@@ -50,6 +50,8 @@ class Ship
         std::string m_ship_name;
         //The blocks that make up the ship
         std::vector<Block> m_blocks;
+
+		int bracketCount(std::string line);
 };
 
 #endif // SHIP_H

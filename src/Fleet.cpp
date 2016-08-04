@@ -12,7 +12,8 @@
 
 Fleet::Fleet()
 {
-
+	m_score = 0;
+	m_wins = 0;
 }
 
 Fleet::~Fleet()
@@ -25,7 +26,6 @@ Fleet::~Fleet()
 void Fleet::writeFleet(std::string file_name,std::string author_name, std::string faction_name)
 {
     std::ofstream file;
-    m_fleet_name = faction_name;
 
     file.open(file_name);
 

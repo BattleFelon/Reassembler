@@ -30,6 +30,12 @@ class Fleet
         void setName(std::string name){m_fleet_name = name;}
         std::string getName(){return(m_fleet_name);}
 
+		int getScore(){ return(m_score);}
+		void setScore(int new_score) { m_score = new_score; }
+
+		int getWins(){ return m_wins; }
+		void addWin(){ m_wins++; }
+
     private:
 
         int bracketCount(std::string line);
@@ -37,6 +43,10 @@ class Fleet
         int m_faction;
         std::string m_fleet_name;
         std::vector<Ship> m_ships;
+
+		//Genetic fleet data
+		int m_score;
+		int m_wins;
 
 
 
