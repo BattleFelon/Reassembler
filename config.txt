@@ -1,63 +1,72 @@
 #Reassembler Settings
 
-#Global Settings	------------------------------------------------------------
+#Program Mode 1 = Brute Force Fleet Beater, 2 = Genetic Fleet Beater, 
+# 3 = Single Ship Brute Force Beater, 4 = Seeded Single Ship Mutator, 5 = Single Ship Pool Grower
 
-#Mutator type 1 = pool, 2 = bracket, 3 = Brute Force Fleet Beater
-mutator_type = 3;
+program_mode = 2
+#Global Settings	------------------------------------------------------------
 
 #Path Stirngs, just to the folder. Make it look like the ones below.
 path_to_log_folder = C:\Users\Rob\Saved Games\Reassembly\data
 path_to_reassembly_exe = C:\Program Files (x86)\Steam\steamapps\common\Reassembly\win32
 path_to_ships_folder = C:\Users\Rob\Desktop\Reassembler-build\ships
 
-#Faction to build, currently only 8 and 12
-faction = 8;
+#Faction to build, currently only 2,3,8,12
+faction = 8
 
 #Ship Symmetry, 0 = No symmetry, 1 = All will be symmetric, 2 = Random Symmetry
 ship_symmetry = 1
 
 #Number of generations. Number of times it will loop through a given mutator
-num_generations = 10;
+num_generations = 10
 
-#Debug mode 1 = on, 0 = off. Will not work for you
-debug_mode = 0;
+#Genetic Settings 
+
+#Number of mutation blocks. Number of random blocks to attach to child
+mutation_blocks = 5
 
 
+#Mode 1	and 2 Settings			------------------------------------------------------------
 
-#Fleet Mutator Settings		-----------------------------------------------------------
-fleet_p_value = 16000;
-fleet_single_ship_p_value_max = 8000;
-fleet_single_ship_p_value_min = 100;
+#Fleet Mutator Settings
+fleet_p_value = 3000;
+fleet_single_ship_p_value_max = 3000
+fleet_single_ship_p_value_min = 100
 
 #Options for targeted fleet beating
 target_fleet_file = blarg
 target_fleet_name = Rival
 
+#Genetic Settings
+#Number of fleets to have in the population
+fleet_population_size = 10
 
+#Wins required to "win"
+target_number_of_wins = 3
 
-#Single Mutator settings	------------------------------------------------------------
-
-#Number of mutation blocks. Number of random blocks to attach to child
-mutation_blocks = 5;
+#Mode 3	Settings				------------------------------------------------------------
 
 #Options for single ship target, no lua extension added
 target_file_name = blarg
 target_name = ship_name
 
+#Mode 4	Settings				------------------------------------------------------------
+#File Name of the seed, No lua extension 
+seed_file_name = seed_file
 
+#Mode 3, 4, and 5 Settings		------------------------------------------------------------
 
-#Single Ship Settings 	------------------------------------------------------------
 #number of ships to create. This is the population size.
-number_of_ships = 10;
+number_of_ships = 10
 
 #Point value limit
-p_value_target = 900;
+p_value_target = 900
 
 #Thruster value target
-thruster_value_target = 200;
+thruster_value_target = 200
 
 #Max number of blocks a ship can have
-block_count_limit = 1000;
+block_count_limit = 1000
 
 
 

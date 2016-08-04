@@ -24,28 +24,28 @@ int main()
 	FleetMutator FM;
 
 	switch (mode){
-		case 1:
-			M.init();
-			M.singleTargetMutator();
-			break;
-		case 2:
-			M.init();
-			M.poolMutator();
-			break;
-		case 3:
-			M.init();
-			M.seededMutator();
-			break;
-		case 4:
+	    case 1:
 			FM.init();
 			FM.bruteForceFleetBeater();
 			break;
-		case 5:
+        case 2:
 			FM.init();
 			FM.geneticFleetBeater();
 			break;
+		case 3:
+			M.init();
+			M.singleTargetMutator();
+			break;
+        case 4:
+			M.init();
+			M.seededMutator();
+			break;
+		case 5:
+			M.init();
+			M.poolMutator();
+			break;
 		default :
-			std::cout << "Mode must be 1 - 3\n";
+			std::cout << "Mode must be 1 - 5\n";
 	}
 
     return EXIT_SUCCESS;

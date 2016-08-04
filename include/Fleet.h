@@ -3,7 +3,7 @@
 #define FLEET_H
 
 #include "Ship.h"
-
+#include <iostream>
 
 class Fleet
 {
@@ -35,6 +35,11 @@ class Fleet
 
 		int getWins(){ return m_wins; }
 		void addWin(){ m_wins++; }
+		void resetWin(){ m_wins = 0;}
+
+		std::vector<Ship>& getShips(){return m_ships;}
+
+		void setShipName(int index, std::string new_name){if(index < m_ships.size()) m_ships[index].setName(new_name);}
 
     private:
 

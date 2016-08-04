@@ -32,7 +32,7 @@ void FleetMutator::init()
     SP.get("ship_symmetry",ship_symmetry);
     SP.get("mutation_blocks",mutation_blocks);
 	SP.get("fleet_population_size", fleet_population_size);
-	SP.get("target_number_of_wins ", target_number_of_wins);
+	SP.get("target_number_of_wins", target_number_of_wins);
 
     //Output Settings
     std::cout << "Target Fleet Value= " << fleet_p_value << "\n"<<
@@ -63,7 +63,7 @@ void FleetMutator::bruteForceFleetBeater()
     std::string fleet_name = "Rival_of_";
     fleet_name.append(target_fleet_name);
 
-	//Spawn fleet 
+	//Spawn fleet
 	Fleet new_fleet;
 
     //Needs to win twice
@@ -84,8 +84,8 @@ void FleetMutator::bruteForceFleetBeater()
 		}
 
         //Fighting
-		//std::cout << "Starting Battle\n";
-		//Timer
+
+		//Timer for score
 		clock_t timer = clock();
         TM.startString(new_fleet.getName(),target_fleet_file);
         int result = LP.getWinner(fleet_name,target_fleet_name);
@@ -112,9 +112,6 @@ void FleetMutator::bruteForceFleetBeater()
             exit(-1);
         }
 
-		
-
-		
 		if (did_win == 1)
 			new_fleet.writeFleet("ships/one_win_fleet.lua", "Reassembler", "one_win_fleet");
 
@@ -135,44 +132,48 @@ void FleetMutator::geneticFleetBeater()
 	//Vectors for fleet storage
 	std::vector<Fleet> population(fleet_population_size);
 	std::vector<Fleet> top_performers(fleet_population_size);
-	
+
 	//Large lose tracker
 	int loses = 0;
+
+	//First Loop Tracker
+	bool is_first = true;
 
     //Fleet name
     std::string fleet_name = "Rival_of_";
     fleet_name.append(target_fleet_name);
 
+    //Building
+    for (int i = 0; i < fleet_population_size; ++i){
+        population[i] = FB.createFleet(fleet_p_value, fleet_single_ship_p_value_max, fleet_single_ship_p_value_min, block_count_limit, faction, ship_symmetry);
+
+        //Naming
+        std::string file_name = "ships/";
+        file_name.append(fleet_name);
+        file_name.append(std::to_string(i));
+        std::string new_name = fleet_name;
+        new_name.append(std::to_string(i));
+        file_name.append(".lua");
+        population[i].setName(new_name);
+
+        //Writing
+        population[i].writeFleet(file_name, "Reassembler", new_name);
+    }
+
 	//Go until win condition met
-	for (;;){
-
-		//Building
-		for (int i = 0; i < fleet_population_size; ++i){
-			population[i] = FB.createFleet(fleet_p_value, fleet_single_ship_p_value_max, fleet_single_ship_p_value_min, block_count_limit, faction, ship_symmetry);
-
-			//Naming
-			std::string file_name = "ships/";
-			file_name.append(fleet_name);
-			file_name.append(std::to_string(i));
-			std::string new_name = fleet_name;
-			new_name.append(std::to_string(i));
-			file_name.append(".lua");
-			population[i].setName(new_name);
-
-			//Writing
-			population[i].writeFleet(file_name, "Reassembler", new_name);
-		}
+	bool win_condition = false;
+	while(!win_condition){
 
 		//Fighting
 		for (int i = 0; i < fleet_population_size; ++i){
 			//Timer for score calc
 			clock_t timer = clock();
-			TM.startString(population[i].getName(), target_fleet_file);
-			int result = LP.getWinner(population[i].getName(), target_fleet_name);
+			//TM.startString(population[i].getName(), target_fleet_file);
+			//int result = LP.getWinner(population[i].getName(), target_fleet_name);
 
+            int result = rand()%2;
 			//End timer
-			std::cout << "Time Duration Of Battle " << clock() - timer << "\n";
-			int diff = clock() - timer;
+			int diff = rand()%1000;
 
 			//Put in score
 			population[i].setScore(diff);
@@ -183,6 +184,7 @@ void FleetMutator::geneticFleetBeater()
 				if (loses % 100 == 0)
 					std::cout << target_fleet_name << " wins again... that makes " << loses << " in a row\n";
 				std::cout << ".";
+				population[i].resetWin();
 			}
 			else if (result == 0)
 			{
@@ -198,91 +200,79 @@ void FleetMutator::geneticFleetBeater()
 		}//End fighting
 
 		//Process results
-		if (top_performers[0].getScore() == 0){ // Check for first loop
-			std::vector<int> results(fleet_population_size);
-			for (int i = 0; i < fleet_population_size; ++i){
-				for (int j = 0; j < fleet_population_size; ++j){
-					if (i != j){
-						if (population[i].getWins() > 0){ // If did win at least once
-							if (population[i].getWins() > population[j].getWins()){ //Winner Increment
-								results[i]++;
-							}
-							else if (population[i].getWins() == population[j].getWins()){
-								if (population[i].getScore() < population[j].getScore()){ //Winner Increment
-									results[i]++;
-								}
-								else if (population[i].getScore() == population[j].getScore()){
-									population[i].setScore(population[i].getScore() - 1);
-									results[i]++;
-								}
-							}
-						}
-						else{ // If no wins
-							if (population[i].getScore() > population[j].getScore() && population[j].getWins() == 0){ // Winner Increment
-								results[i]++;
-							}
-							else if (population[i].getScore() == population[j].getScore() && population[j].getWins() == 0){
-								population[i].setScore(population[i].getScore() + 1);
-								results[i]++;
-							}
-						}
-					}//End main if
-				}//End for j
-			}//End for i
-
-			//Put first pop into top perfromers
+		if (is_first){ // Check for first loop
+            is_first = false;
+            std::vector<int> results = getResults(population,population);
+			//Put first pop into top performer
 			for (int i = 0; i < fleet_population_size; ++i){
 				top_performers[results[i]] = population[i];
 			}
 		}
 		else{ //Compare against top performers
 
-			std::vector<int> results(fleet_population_size);
+			//Swap the best performer into the performer vector
 			for (int i = 0; i < fleet_population_size; ++i){
-				for (int j = 0; j < fleet_population_size; ++j){
-					if (i != j){
-						if (population[i].getWins() > 0){ // If did win at least once
-							if (population[i].getWins() > top_performers[j].getWins()){ //Winner Increment
-								results[i]++;
-							}
-							else if (population[i].getWins() == top_performers[j].getWins()){
-								if (population[i].getScore() < top_performers[j].getScore()){ //Winner Increment
-									results[i]++;
-								}
-								else if (population[i].getScore() == top_performers[j].getScore()){
-									population[i].setScore(population[i].getScore() - 1);
-									results[i]++;
-								}
-							}
-						}
-						else{ // If no wins
-							if (population[i].getScore() > top_performers[j].getScore() && top_performers[j].getWins() == 0){ // Winner Increment
-								results[i]++;
-							}
-							else if (population[i].getScore() == top_performers[j].getScore() && top_performers[j].getWins() == 0){
-								population[i].setScore(population[i].getScore() + 1);
-								results[i]++;
-							}
-						}
-					}//End main if
-				}//End for j
-			}//End for i
 
-			//Swap the best performer into the top_perfromer vector
-			for (int i = 0; i < fleet_population_size; ++i){
+                std::vector<int> results = getResults(population,top_performers);
+
 				if (results[i] > 0){
-					for (int j = 0; j < results[i] - 1; ++j){
-						top_performers[j] = top_performers[j + 1];
-					}
-					top_performers[results[i]] = population[i];
+					top_performers.erase(top_performers.begin());
+					top_performers.insert(top_performers.begin() + results[i], population[i]);
 				}
 			}
+
+			//Sort top
+			std::vector<int> results = getResults(top_performers,top_performers);
+			//Put first pop into top performer
+			for (int i = 0; i < fleet_population_size; ++i){
+				top_performers[results[i]] = top_performers[i];
+			}
+
 		}
 
-		for (auto fl : top_performers){
-			std::cout << fl.getWins() << " " << fl.getScore() << "\n";
+        //Print top performers
+        std::cout << "\nTop Performers: Wins, Duration Score\n";
+		for(auto fl : top_performers){
+            std::cout << "\t\t " << fl.getWins() << ",\t" << fl.getScore() << "\n";
 		}
 
+		//Save top
+		top_performers[top_performers.size()-1].writeFleet("ships/TopFleet.lua","Rob","TopFleet");
+		top_performers[top_performers.size()-2].writeFleet("ships/SecondFleet.lua","Rob","SecondFleet");
+		top_performers[top_performers.size()-3].writeFleet("ships/ThirdFleet.lua","Rob","ThirdFleet");
+
+		//New Pop Creation
+        for (int i = 0; i < fleet_population_size; ++i){
+            //50% is brand new random fleet other half is bred from top performers pool
+            if(i < fleet_population_size/2){
+                //Keep those that win
+                if(population[i].getWins() == 0)
+                    population[i] = FB.createFleet(fleet_p_value, fleet_single_ship_p_value_max, fleet_single_ship_p_value_min, block_count_limit, faction, ship_symmetry);
+            }
+            else{
+                int random_index = rand()% fleet_population_size;
+                //Keep those that win
+                if(population[i].getWins() == 0)
+                    population[i] = FB.breedFleet(top_performers.back(),top_performers[random_index],fleet_p_value);
+            }
+            //Naming
+            std::string file_name = "ships/";
+            file_name.append(fleet_name);
+            file_name.append(std::to_string(i));
+            std::string new_name = fleet_name;
+            new_name.append(std::to_string(i));
+            file_name.append(".lua");
+            population[i].setName(new_name);
+
+            //Writing
+            population[i].writeFleet(file_name, "Reassembler", new_name);
+        }
+
+        //Check Win condition
+        for(auto fl : top_performers){
+            if(fl.getWins() >= target_number_of_wins)
+                win_condition = true;
+        }
     }
     //Raughing
     std::cout <<"\n\n\n YOU HAVE BEEN BEATEN \n\n\n";
@@ -290,4 +280,42 @@ void FleetMutator::geneticFleetBeater()
 	int a;
 	std::cin >> a;
 
+}
+
+
+std::vector<int> FleetMutator::getResults(std::vector<Fleet>& f1, std::vector<Fleet>& f2)
+{
+
+    std::vector<int> results(f1.size());
+    for (int i = 0; i < f1.size(); ++i){
+        for (int j = 0; j < f1.size(); ++j){
+            if (i != j){
+                if (f1[i].getWins() > 0){ // If did win at least once
+                    if (f1[i].getWins() > f2[j].getWins()){ //Winner Increment
+                        results[i]++;
+                    }
+                    else if (f1[i].getWins() == f2[j].getWins()){
+                        if (f1[i].getScore() < f2[j].getScore()){ //Winner Increment
+                            results[i]++;
+                        }
+                        else if (f1[i].getScore() == f2[j].getScore()){
+                            f1[i].setScore(f1[i].getScore() - 1);
+                            results[i]++;
+                        }
+                    }
+                }
+                else{ // If no wins
+                    if (f1[i].getScore() > f2[j].getScore() && f2[j].getWins() == 0){ // Winner Increment
+                        results[i]++;
+                    }
+                    else if (f1[i].getScore() == f2[j].getScore() && f2[j].getWins() == 0){
+                        f1[i].setScore(f1[i].getScore() + 1);
+                        results[i]++;
+                    }
+                }
+            }//End main if
+        }//End for j
+    }//End for i
+
+    return(results);
 }

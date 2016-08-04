@@ -78,7 +78,7 @@ void Mutator::singleTargetMutator(){
 	std::string ship_name = "rival_of_";
 	ship_name.append(target_name);
 
-	//Init ship 
+	//Init ship
 	if (is_random_faction)
 		faction = factions[rand() % 3];
 
@@ -107,7 +107,7 @@ void Mutator::singleTargetMutator(){
 
 		//Start battle
 		TM.startString(ship_name, target_file_name);
-		
+
 		//Parse Log
 		int result = 0;
 		std::cout << ".";
@@ -149,12 +149,12 @@ void Mutator::singleTargetMutator(){
 
 	int a;
 	std::cout << "\n\n Target has been beaten! \n\n";
-	_beep(523, 500);
-	_sleep(500);
-	_beep(523, 500);
-	_sleep(500);
-	_beep(523, 500);
-	_sleep(500);
+//	_beep(523, 500);
+//	_sleep(500);
+//	_beep(523, 500);
+//	_sleep(500);
+//	_beep(523, 500);
+//	_sleep(500);
 	std::cin >> a;
 }
 

@@ -10,6 +10,8 @@
 #include "FleetBuilder.h"
 
 #include <time.h>
+#include <vector>
+#include <unistd.h>
 
 class FleetMutator
 {
@@ -23,6 +25,8 @@ class FleetMutator
 		void geneticFleetBeater();
 
     private:
+
+        std::vector<int> getResults(std::vector<Fleet>& f1, std::vector<Fleet>& f2);
 
         //Needed classes
         SettingsParser SP;

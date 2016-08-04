@@ -66,7 +66,59 @@ Fleet FleetBuilder::createFleet(int target_p_value, int max_ship_value, int min_
 	std::string name = "Ship_";
 	name.append(std::to_string(ship_name));
 
-	//Add the ship
-	new_fleet.addShip(SB.createShip(ship_p_value, faction, block_limit, min_thruster_points, ship_symm, name));
+	//Add the ship if remaining p is higher than min
+	if(ship_p_value > min_ship_value)
+        new_fleet.addShip(SB.createShip(ship_p_value, faction, block_limit, min_thruster_points, ship_symm, name));
+
+    return(new_fleet);
+}
+
+Fleet FleetBuilder::breedFleet(Fleet& f1, Fleet& f2, int target_value)
+{
+    //New Fleet To build
+    Fleet new_fleet;
+    new_fleet.setFaction(f1.getFaction());
+
+    //Find min value ship
+    int min_value = 1000000;
+
+    for(auto ship : f1.getShips()){
+        if(ship.getTotalValue() < min_value)
+            min_value = ship.getTotalValue();
+    }
+
+    for(auto ship : f2.getShips()){
+        if(ship.getTotalValue() < min_value)
+            min_value = ship.getTotalValue();
+    }
+
+    //Keep adding ships while the min ship value is higher than the remaining p values.
+    int diff = 10000000;
+    while(diff > min_value){
+        diff = target_value - new_fleet.totalValue();
+        //Choose fleet to take ship from
+        int fleet_to_try = rand()%2;
+        int ship_to_add;
+
+        if(fleet_to_try == 0){
+            ship_to_add = rand()%f1.getFleetSize();
+            if(f1.getShip(ship_to_add).getTotalValue() < diff){
+                new_fleet.addShip(f1.getShip(ship_to_add));
+                std::string ship_name = "Fleet_1_Ship_";
+                ship_name.append(std::to_string(ship_to_add));
+                new_fleet.setShipName(new_fleet.getFleetSize()-1,ship_name);
+            }
+        }
+        else{
+            ship_to_add = rand()%f2.getFleetSize();
+            if(f2.getShip(ship_to_add).getTotalValue() < diff){
+                new_fleet.addShip(f2.getShip(ship_to_add));
+                std::string ship_name = "Fleet_2_Ship_";
+                ship_name.append(std::to_string(ship_to_add));
+                new_fleet.setShipName(new_fleet.getFleetSize()-1,ship_name);
+            }
+        }
+    }
+
     return(new_fleet);
 }
