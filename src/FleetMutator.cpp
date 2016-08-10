@@ -168,12 +168,11 @@ void FleetMutator::geneticFleetBeater()
 		for (int i = 0; i < fleet_population_size; ++i){
 			//Timer for score calc
 			clock_t timer = clock();
-			//TM.startString(population[i].getName(), target_fleet_file);
-			//int result = LP.getWinner(population[i].getName(), target_fleet_name);
+			TM.startString(population[i].getName(), target_fleet_file);
+			int result = LP.getWinner(population[i].getName(), target_fleet_name);
 
-            int result = rand()%2;
 			//End timer
-			int diff = rand()%1000;
+			int diff = clock() - timer;
 
 			//Put in score
 			population[i].setScore(diff);

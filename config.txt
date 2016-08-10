@@ -4,6 +4,7 @@
 # 3 = Single Ship Brute Force Beater, 4 = Seeded Single Ship Mutator, 5 = Single Ship Pool Grower
 
 program_mode = 2
+
 #Global Settings	------------------------------------------------------------
 
 #Path Stirngs, just to the folder. Make it look like the ones below.
@@ -11,8 +12,8 @@ path_to_log_folder = C:\Users\Rob\Saved Games\Reassembly\data
 path_to_reassembly_exe = C:\Program Files (x86)\Steam\steamapps\common\Reassembly\win32
 path_to_ships_folder = C:\Users\Rob\Desktop\Reassembler-build\ships
 
-#Faction to build, currently only 2,3,8,12
-faction = 8
+#Faction to build, currently only 2,3,8,12,15
+faction = 15
 
 #Ship Symmetry, 0 = No symmetry, 1 = All will be symmetric, 2 = Random Symmetry
 ship_symmetry = 1
@@ -29,20 +30,20 @@ mutation_blocks = 5
 #Mode 1	and 2 Settings			------------------------------------------------------------
 
 #Fleet Mutator Settings
-fleet_p_value = 3000;
-fleet_single_ship_p_value_max = 3000
+fleet_p_value = 4761
+fleet_single_ship_p_value_max = 4761
 fleet_single_ship_p_value_min = 100
 
 #Options for targeted fleet beating
 target_fleet_file = blarg
-target_fleet_name = Rival
+target_fleet_name = target
 
 #Genetic Settings
 #Number of fleets to have in the population
 fleet_population_size = 10
 
 #Wins required to "win"
-target_number_of_wins = 3
+target_number_of_wins = 10
 
 #Mode 3	Settings				------------------------------------------------------------
 

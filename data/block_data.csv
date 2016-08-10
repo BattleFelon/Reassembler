@@ -38,7 +38,7 @@ Light Bodywork,Triangle_1,12027,0,12,100,12027
 Heavy Bodywork,Triangle_1,12028,0,12,100,12028
 Light Bodywork,Adapter_1,12043,0,12,0,12043
 Heavy Bodywork,Adapter_1,12044,0,12,0,12044
-Light Bodywork,Launcher_1,12051,0,12,100,12051
+Light Bodywork,Armor_Shape,12051,0,12,100,12051
 Impulse Thruster,Thruster_1,12035,3,12,100,12035
 Maneuver Thruster,Thruster_1,12036,5,12,100,12036
 Impulse Thruster,Thruster_2,12037,6,12,100,12037
@@ -50,26 +50,27 @@ Quantum Doom Beam,Beam_2,12122,40,12,100,12122
 PD Subsystem,Square_1,12111,3,12,100,12111
 PD Subsystem,Square_2,12112,6,12,100,12112
 PD Subsystem,Square_3,12113,8,12,100,12113
-Shard Launcher,Launcher_1,12101,16,12,100,12101
+Shard Launcher,Shard_Launcher,12101,16,12,100,12101
 Laser Drone,Launcher_2,12106,121,12,100,12106
 Laser Drone,Launcher_4,12107,180,12,100,12107
 Command,Command_1,200,10,2,0,200
 Adapter,Adapter_1,213,0,2,0,213
-Armor,Armor_Shape,217,0,2,100,217
-Hull,Square_1,219,0,2,100,219
-Hull,Triangle_1,248,0,2,100,248
+Armor,Armor_Shape,217,0,2,1000,217
+Hull,Square_1,219,0,2,1000,219
+Hull,Triangle_1,248,0,2,1000,248
 Small Thruster,Thruster_2,202,4,2,100,202
 Medium Thruster,Thruster_3,203,5,2,100,203
-Large Thruster,Thruster_4,204,7,2,100,204
+Large Thruster,Thruster_6,204,7,2,100,204
 Generator,Square_1,205,36,2,100,205
 Scatter Gun,Scatter_Shape,226,17,2,100,226
 Mini Gun,Square_1,223,18,2,100,223
 MLS Anti Missle,Square_1,238,15,2,100,238
 Shield,Octagon_1,247,33,2,100,247
-ZLM Sparrow,Launcher_1,245,57,2,100,245
+ZLM Sparrow,Shard_Launcher,245,57,2,100,245
 Wall,Square_1,900,0,2,100,900
 Strut,Armor_Shape,903,0,2,100,903
 Mount,Adapter_1,908,0,2,0,908
+Hex Wall,Hexagon_1,924,0,2,100,924
 EXR-1 Railgun,Beam_4,228,29,2,100,228
 HC2,Square_3,227,31,2,100,227
 HC3,Square_3,234,58,2,100,234
@@ -107,3 +108,24 @@ Tempest,Pentagram_2,310,93,3,100,310
 Nano Assembler Beam,Pentagram_2,318,112,3,0,318
 Nano Drone Launcher,Launcher_1,319,39,3,0,319
 Drone Launcher,Launcher_1,313,82,3,100,313
+Command,Command_1,15000,10,15,0,1500
+Segment,Square_1,15102,0,15,1000,15102
+Segment,Square_1,15103,0,15,1000,15103
+Segment,Adapter_1,15126,0,15,1000,15126
+Segment,Adapter_1,15127,0,15,1000,15127
+Segment,Triangle_1,15134,0,15,1000,15134
+Segment,Triangle_1,15135,0,15,1000,15135
+Armor,Adapter_1,15033,1,15,1000,15033
+Armor,Armor_Shape,15035,1,15,1000,15035
+Thruster Mini,Thruster_1,15143,3,15,500,15143
+Thruster Small,Thruster_2,15145,5,15,500,15145
+Thruster Large,Thruster_3,15147,7,15,500,15147
+Flurry Launcher,Shard_Launcher,15003,67,15,100,15003
+Gauss Gun,Gauss_Shape,15001,450,15,100,15001
+Plasma bolt,Square_1,15002,12,15,100,15002
+Armor,Square_1,15030,1,15,1000,15030
+Armor,Triangle_1,15034,1,15,1000,15034
+Annihilator,Square_2,15004,47,15,100,15004
+Reactor,Square_2,1508,300,15,100,1508
+Nuke,Nuke_Shape,15008,2728,15,1,15008
+Obliterator,Square_3,15005,2700,15,1,15005

@@ -325,7 +325,9 @@ bool ShipBuilder::tryNewBlock(Ship& new_ship, int faction,bool is_thrust, bool i
                                 Block mirror_block = bm.getBlock(faction, new_block.getMirror());
 
                                 //Special case section. Non-symmetrical blocks that have no mirror block num. They are themselves but rotated.
-								if (mirror_block.getBlockNum() == 802 || mirror_block.getBlockNum() == 12028 || mirror_block.getBlockNum() == 12027 || mirror_block.getBlockNum() == 248)
+								if (mirror_block.getBlockNum() == 802 || mirror_block.getBlockNum() == 12028 ||
+									mirror_block.getBlockNum() == 12027 || mirror_block.getBlockNum() == 248 ||
+									mirror_block.getBlockNum() == 15134 || mirror_block.getBlockNum() == 15135 || mirror_block.getBlockNum() == 15034)
                                     mirror_angle -= 90;
 
                                 mirror_block.rotateBlock(mirror_angle);
@@ -523,7 +525,9 @@ bool ShipBuilder::forceFitNewBlock(Ship& new_ship, int faction, bool is_symmetri
                                     Block mirror_block = bm.getBlock(faction, new_block.getMirror());
 
                                     //Special case section. Non-symmetrical blocks that have no mirror block num. They are themselves but rotated.
-									if (mirror_block.getBlockNum() == 802 || mirror_block.getBlockNum() == 12028 || mirror_block.getBlockNum() == 12027 || mirror_block.getBlockNum() == 248)
+									if (mirror_block.getBlockNum() == 802 || mirror_block.getBlockNum() == 12028 ||
+										mirror_block.getBlockNum() == 12027 || mirror_block.getBlockNum() == 248 ||
+										mirror_block.getBlockNum() == 15134 || mirror_block.getBlockNum() == 15135 || mirror_block.getBlockNum() == 15034)
                                         mirror_angle -= 90;
 
                                     mirror_block.rotateBlock(mirror_angle);
@@ -717,7 +721,9 @@ bool ShipBuilder::forceFitNewBlock(Ship& new_ship,Block new_block, bool is_symme
                                     Block mirror_block = bm.getBlock(faction, new_block.getMirror());
 
                                     //Special case section. Non-symmetrical blocks that have no mirror block num. They are themselves but rotated.
-									if (mirror_block.getBlockNum() == 802 || mirror_block.getBlockNum() == 12028 || mirror_block.getBlockNum() == 12027 || mirror_block.getBlockNum() == 248)
+									if (mirror_block.getBlockNum() == 802 || mirror_block.getBlockNum() == 12028 ||
+										mirror_block.getBlockNum() == 12027 || mirror_block.getBlockNum() == 248 ||
+										mirror_block.getBlockNum() == 15134 || mirror_block.getBlockNum() == 15135 || mirror_block.getBlockNum() == 15034)
                                         mirror_angle -= 90;
 
                                     mirror_block.rotateBlock(mirror_angle);
