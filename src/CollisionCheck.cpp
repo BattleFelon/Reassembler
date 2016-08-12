@@ -52,7 +52,7 @@ bool CollisionCheck::blockCollisionCheck(Block& b1, Block& b2)
     //Imperfect collision checking. ohhhh welll
     //Check for point int polygon with slight offset towards center point because screw floating point math.
     //b1 points in b2
-    for(int i = 0; i < (int)vec1.size(); ++i){
+    for(int i = 0, n = vec1.size(); i < n; ++i){
         Vector2D temp_vec(vec1[i].x,vec1[i].y);
 
         float diff_x = temp_vec.x - b1.getPosition().x;
@@ -73,7 +73,7 @@ bool CollisionCheck::blockCollisionCheck(Block& b1, Block& b2)
     }
 
     //b2 points in b1
-    for(int i = 0; i < (int)vec2.size(); ++i){
+    for(int i = 0, n = vec2.size(); i < n; ++i){
         Vector2D temp_vec(vec2[i].x,vec2[i].y);
 
         float diff_x = temp_vec.x - b2.getPosition().x;
@@ -83,7 +83,7 @@ bool CollisionCheck::blockCollisionCheck(Block& b1, Block& b2)
         float x_change = std::cos(angle) * distance * .05;
         float y_change = std::sin(angle) * distance * .05;
 
-        for(int j = 0; j < 10; ++j){
+        for(int j = 0; j < 3; ++j){
             temp_vec.x -= x_change;
             temp_vec.y -= y_change;
             if(pointInPolygon(temp_vec,vec1)){
@@ -97,7 +97,7 @@ bool CollisionCheck::blockCollisionCheck(Block& b1, Block& b2)
     return false;
 }
 
-bool CollisionCheck::pointInPolygon(Vector2D point, std::vector<Vector2D> polygon)
+bool CollisionCheck::pointInPolygon(Vector2D &point, std::vector<Vector2D> &polygon)
 {
     for(int i = 0; i < (int)polygon.size(); ++i){
         if(polygon[i].x == point.x || polygon[i].y == point.y){

@@ -33,6 +33,8 @@ class Mutator
 
 		void seededMutator();
 
+		void singleTargetMutatorThreaded();
+
 
     private:
 

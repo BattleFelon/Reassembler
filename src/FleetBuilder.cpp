@@ -73,7 +73,7 @@ Fleet FleetBuilder::createFleet(int target_p_value, int max_ship_value, int min_
     return(new_fleet);
 }
 
-Fleet FleetBuilder::breedFleet(Fleet& f1, Fleet& f2, int target_value)
+Fleet FleetBuilder::breedFleet(Fleet& f1, Fleet& f2, int target_value, int is_symm, int mutation_blocks)
 {
     //New Fleet To build
     Fleet new_fleet;
@@ -97,7 +97,7 @@ Fleet FleetBuilder::breedFleet(Fleet& f1, Fleet& f2, int target_value)
     while(diff > min_value){
         diff = target_value - new_fleet.totalValue();
         //Choose fleet to take ship from
-        int fleet_to_try = rand()%2;
+        int fleet_to_try = rand()%4;
         int ship_to_add;
 
         if(fleet_to_try == 0){
@@ -109,7 +109,7 @@ Fleet FleetBuilder::breedFleet(Fleet& f1, Fleet& f2, int target_value)
                 new_fleet.setShipName(new_fleet.getFleetSize()-1,ship_name);
             }
         }
-        else{
+        else if (fleet_to_try == 2){
             ship_to_add = rand()%f2.getFleetSize();
             if(f2.getShip(ship_to_add).getTotalValue() < diff){
                 new_fleet.addShip(f2.getShip(ship_to_add));
@@ -118,6 +118,10 @@ Fleet FleetBuilder::breedFleet(Fleet& f1, Fleet& f2, int target_value)
                 new_fleet.setShipName(new_fleet.getFleetSize()-1,ship_name);
             }
         }
+		else {
+			//Actual Genes
+			new_fleet.addShip(SB.breedShips(f1.getShip(rand() % f1.getFleetSize()), f2.getShip(rand() % f2.getFleetSize()), is_symm, mutation_blocks, rand() % (diff - min_value) + min_value));
+		}
     }
 
     return(new_fleet);

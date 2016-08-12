@@ -11,6 +11,8 @@
 
 #include <time.h>
 #include <vector>
+#include <thread>
+#include <future>
 
 class FleetMutator
 {
@@ -23,9 +25,16 @@ class FleetMutator
         void bruteForceFleetBeater();
 		void geneticFleetBeater();
 
+		void threadedGeneticFleetBeater();
+
+		int getBestDelay() { return best_delay; }
+		int getBestWins() { return best_wins; }
+
+		bool isThreadActive() { return thread_active; }
     private:
 
         std::vector<int> getResults(std::vector<Fleet>& f1, std::vector<Fleet>& f2);
+		std::vector<int> getFirstResults(std::vector<Fleet>& f1, std::vector<Fleet>& f2);
 
         //Needed classes
         SettingsParser SP;
@@ -53,6 +62,10 @@ class FleetMutator
 		int fleet_population_size;
 		int target_number_of_wins;
 
+		//Thread data
+		int best_delay;
+		int best_wins;
+		bool thread_active;
 };
 
 #endif // FLEETMUTATOR_H

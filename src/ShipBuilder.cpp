@@ -96,6 +96,10 @@ Ship ShipBuilder::breedShips(Ship& father, Ship& mother, int ship_symmetry, int 
     for(auto& block : mother.getBlocks())
         mother_genetics.push_back(block.getBlockNum());
 
+	//Remove command
+	father_genetics.erase(father_genetics.begin());
+	mother_genetics.erase(mother_genetics.begin());
+
     //Symmetry correction
     if(is_symm){
         for(int i = 0; i < father_genetics.size(); ++i){

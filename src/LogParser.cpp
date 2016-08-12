@@ -131,10 +131,8 @@ std::vector<int> LogParser::getWinner(std::vector<std::string> ships)
 	for (auto ship : ships){
 		std::string search = ship;
 		search.append(" - ");
-		search.append(ship);
 
 		serach_strings.push_back(search);
-		std::cout << search << "\n";
 	}
 	//Bool vector as int. too lazy to change
 	std::vector<int> did_win(ships.size(), 0);
@@ -159,7 +157,6 @@ std::vector<int> LogParser::getWinner(std::vector<std::string> ships)
 	path.pop_back();
 
 	//Search for result
-	std::cout << file_names.size() << "\n";
 	for (int i = 0; i < file_names.size(); ++i){
 		std::string new_file_name = path;
 		new_file_name.append(file_names[i]);

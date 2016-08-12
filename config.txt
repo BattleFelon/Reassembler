@@ -1,10 +1,5 @@
 #Reassembler Settings
 
-#Program Mode 1 = Brute Force Fleet Beater, 2 = Genetic Fleet Beater, 
-# 3 = Single Ship Brute Force Beater, 4 = Seeded Single Ship Mutator, 5 = Single Ship Pool Grower
-
-program_mode = 2
-
 #Global Settings	------------------------------------------------------------
 
 #Path Stirngs, just to the folder. Make it look like the ones below.
@@ -18,16 +13,10 @@ faction = 15
 #Ship Symmetry, 0 = No symmetry, 1 = All will be symmetric, 2 = Random Symmetry
 ship_symmetry = 1
 
-#Number of generations. Number of times it will loop through a given mutator
-num_generations = 10
-
 #Genetic Settings 
 
 #Number of mutation blocks. Number of random blocks to attach to child
-mutation_blocks = 5
-
-
-#Mode 1	and 2 Settings			------------------------------------------------------------
+mutation_blocks = 10
 
 #Fleet Mutator Settings
 fleet_p_value = 4761
@@ -40,39 +29,20 @@ target_fleet_name = target
 
 #Genetic Settings
 #Number of fleets to have in the population
-fleet_population_size = 10
+fleet_population_size = 25
 
 #Wins required to "win"
 target_number_of_wins = 10
 
-#Mode 3	Settings				------------------------------------------------------------
-
-#Options for single ship target, no lua extension added
-target_file_name = blarg
-target_name = ship_name
-
-#Mode 4	Settings				------------------------------------------------------------
-#File Name of the seed, No lua extension 
-seed_file_name = seed_file
-
-#Mode 3, 4, and 5 Settings		------------------------------------------------------------
-
-#number of ships to create. This is the population size.
-number_of_ships = 10
-
-#Point value limit
-p_value_target = 900
-
-#Thruster value target
-thruster_value_target = 200
-
 #Max number of blocks a ship can have
 block_count_limit = 1000
 
+#Debug or Not implemented Features -------------------------------------------
+#File Name of the seed, No lua extension 
+seed_file_name = seed_file
 
+#Point value limit
+p_value_target = 6000
 
-#Experimental Settings/Not working yet	--------------------------------------------
-#number of cores your computer has
-core_count = 8
-
-
+#Thruster value target
+thruster_value_target = 700
